@@ -32,9 +32,11 @@ public class GUIRegister extends JFrame {
 	private JButton btnRegister;
 	private JButton btnCancel;
 
-	public GUIRegister(GUILogin gLogin) {
+	// GUIRegisters receive in its contructor a GUILogin class as a parameter
+	// Right now it doesn because it's in test phase
+	public GUIRegister() {
 		super("Register");
-		this.gLogin = gLogin;
+		//this.gLogin = gLogin;
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 336, 300);
 		setLocationRelativeTo(gLogin);
@@ -140,6 +142,8 @@ public class GUIRegister extends JFrame {
 		getContentPane().add(btnCancel);
 
 		ControllerRegister rController = new ControllerRegister(this);
+		
+		setVisible(true);
 	}
 
 	// Add ActionListeners to the buttons of the view

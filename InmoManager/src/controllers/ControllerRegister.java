@@ -91,7 +91,7 @@ public class ControllerRegister {
 	}
 
 	private boolean validatePhone() {
-		if (!gRegister.getFieldPhone().getText().strip().matches("[0-9]+{9,}")) {
+		if (!gRegister.getFieldPhone().getText().strip().matches("([0-9]+){9,12}")) {
 			JOptionPane.showMessageDialog(gRegister, "The phone number doesn't have a valid format", "Format error",
 					JOptionPane.ERROR_MESSAGE);
 			return false;
@@ -101,7 +101,7 @@ public class ControllerRegister {
 
 	private boolean validateEmail() {
 		String email = gRegister.getFieldEmail().getText().strip();
-		if (!email.matches("[a-zA-Z0-9._-\\.]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}")) {
+		if (!email.matches("[a-zA-Z0-9_\\-\\.]+@[a-zA-Z0-9\\-]+\\.[a-zA-Z]{2,}")) {
 			if (email.length() > 80) {
 				JOptionPane.showMessageDialog(gRegister, "The email is too long (Max: 80 characters)", "Format error",
 						JOptionPane.ERROR_MESSAGE);
@@ -176,7 +176,7 @@ public class ControllerRegister {
 				return true;
 			else {
 				JOptionPane.showMessageDialog(gRegister,
-						"The password must contain at least one number and one special characterr", "Format error",
+						"The password must contain at least one number and one special character", "Format error",
 						JOptionPane.ERROR_MESSAGE);
 				return false;
 			}
@@ -184,7 +184,7 @@ public class ControllerRegister {
 	}
 
 	private boolean validateUsername() {
-		if (!gRegister.getFieldUsername().getText().strip().matches("[A-Za-Z0-9]{,36}")) {
+		if (!gRegister.getFieldUsername().getText().strip().matches("[A-Za-z0-9]{0,36}")) {
 			if (gRegister.getFieldUsername().getText().strip().length() > 36) {
 				JOptionPane.showMessageDialog(gRegister, "The username is too long (Max: 36 characters)",
 						"Format error", JOptionPane.ERROR_MESSAGE);
@@ -199,7 +199,7 @@ public class ControllerRegister {
 
 	private boolean validateName() {
 		if (!gRegister.getFieldName().getText().strip().replaceAll("\\s+", " ")
-				.matches("[A-Za-z¡…Õ”⁄·ÈÌÛ˙‹¸—Ò]{,100}")) {
+				.matches("[A-Za-z]{0,100}")) {
 			JOptionPane.showMessageDialog(gRegister, "The name doesn't have a valid format", "Format error",
 					JOptionPane.ERROR_MESSAGE);
 			return false;
@@ -226,7 +226,7 @@ public class ControllerRegister {
 
 		if (DNI.isBlank() || name.isBlank() || username.isBlank() || password.isBlank() || rePassword.isBlank()
 				|| email.isBlank() || phoneNumber.isBlank()) {
-			JOptionPane.showMessageDialog(gRegister, "The must be no blank fields", "Format error",
+			JOptionPane.showMessageDialog(gRegister, "There must be no blank fields", "Format error",
 					JOptionPane.ERROR_MESSAGE);
 			return false;
 		} else
@@ -236,10 +236,12 @@ public class ControllerRegister {
 	private void register() {
 		// - Implement data parsing with database functionality
 		// Must be careful about data type
-		try (Connection conn = ConnectionDB.connect()){
+		/*try (Connection conn = ConnectionDB.connect()){
 			
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
+		*/
+		JOptionPane.showMessageDialog(gRegister, "Todos los campos correctos (TEST)");
 	}
 }
