@@ -1,20 +1,30 @@
 package views;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.border.Border;
 
 import controllers.ControllerRegister;
+import javax.swing.border.LineBorder;
 
+@SuppressWarnings("serial")
 public class GUIRegister extends JFrame {
 
 	private GUILogin gLogin;
+	private JPanel formPanel;
+	private JPanel titlePanel;
+	private JPanel btnPanel;
+	private JLabel lblTitle1;
 	private JLabel lblDNI;
 	private JLabel lblName;
 	private JLabel lblUsername;
@@ -26,140 +36,170 @@ public class GUIRegister extends JFrame {
 	private JTextField fieldDNI;
 	private JTextField fieldName;
 	private JTextField fieldUsername;
+	private JPasswordField fieldPassword;
+	private JPasswordField fieldRepeatPass;
 	private JTextField fieldEmail;
 	private JTextField fieldPhone;
 	private JTextField fieldRegion;
-	private JPasswordField fieldPassword;
-	private JPasswordField fieldRepeatPass;
 	private JButton btnRegister;
 	private JButton btnCancel;
-	private Font fontRegister = new Font("Tahoma", Font.PLAIN, 13);
+	private Font fontRegister = new Font("Consolas", Font.PLAIN, 13);
+	private Border blueBorder = BorderFactory.createLineBorder(Color.BLUE);
 
 	// GUIRegisters receive in its contructor a GUILogin class as a parameter
 	// Right now it doesnt have it because it's in test phase
 	public GUIRegister() {
 		super("Register");
-		//this.gLogin = gLogin;
+		// this.gLogin = gLogin;
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 336, 322);
+		setBounds(100, 100, 337, 536);
 		setLocationRelativeTo(gLogin);
 		setResizable(false);
 		getContentPane().setLayout(null);
 
+		formPanel = new JPanel();
+		formPanel.setBounds(19, 49, 283, 392);
+		getContentPane().add(formPanel);
+		formPanel.setLayout(null);
+
+		titlePanel = new JPanel();
+		titlePanel.setBounds(10, 11, 301, 39);
+		getContentPane().add(titlePanel);
+		titlePanel.setLayout(null);
+
+		btnPanel = new JPanel();
+		btnPanel.setBounds(19, 440, 283, 42);
+		getContentPane().add(btnPanel);
+		btnPanel.setLayout(null);
+
 		lblDNI = new JLabel("DNI: ");
 		lblDNI.setFont(fontRegister);
-		lblDNI.setBounds(29, 22, 46, 14);
-		getContentPane().add(lblDNI);
+		lblDNI.setBounds(21, 11, 46, 14);
+		formPanel.add(lblDNI);
 
 		lblName = new JLabel("Name:");
 		lblName.setFont(fontRegister);
-		lblName.setBounds(29, 47, 46, 14);
-		getContentPane().add(lblName);
+		lblName.setBounds(21, 58, 46, 14);
+		formPanel.add(lblName);
 
 		lblUsername = new JLabel("Username:");
 		lblUsername.setFont(fontRegister);
-		lblUsername.setBounds(29, 72, 81, 14);
-		getContentPane().add(lblUsername);
+		lblUsername.setBounds(21, 105, 81, 14);
+		formPanel.add(lblUsername);
 
 		lblPassword = new JLabel("Password:");
 		lblPassword.setFont(fontRegister);
-		lblPassword.setBounds(29, 97, 81, 14);
-		getContentPane().add(lblPassword);
+		lblPassword.setBounds(21, 152, 81, 14);
+		formPanel.add(lblPassword);
 
 		lblRepeatPassword = new JLabel("Repeat Password:");
 		lblRepeatPassword.setFont(fontRegister);
-		lblRepeatPassword.setBounds(29, 122, 113, 14);
-		getContentPane().add(lblRepeatPassword);
+		lblRepeatPassword.setBounds(21, 198, 113, 14);
+		formPanel.add(lblRepeatPassword);
 
-		lblEmail = new JLabel("Email Adress:");
+		lblEmail = new JLabel("Email Address:");
 		lblEmail.setFont(fontRegister);
-		lblEmail.setBounds(29, 147, 113, 14);
-		getContentPane().add(lblEmail);
+		lblEmail.setBounds(21, 245, 113, 18);
+		formPanel.add(lblEmail);
 
 		lblPhoneNumber = new JLabel("Phone Number:");
 		lblPhoneNumber.setFont(fontRegister);
-		lblPhoneNumber.setBounds(29, 172, 113, 14);
-		getContentPane().add(lblPhoneNumber);
-		
+		lblPhoneNumber.setBounds(21, 291, 113, 14);
+		formPanel.add(lblPhoneNumber);
+
 		lblRegion = new JLabel("Region:");
 		lblRegion.setFont(fontRegister);
-		lblRegion.setBounds(29, 197, 113, 18);
-		getContentPane().add(lblRegion);
+		lblRegion.setBounds(21, 336, 113, 18);
+		formPanel.add(lblRegion);
 
 		fieldDNI = new JTextField();
 		fieldDNI.setToolTipText("Your DNI number (Ex: 00000000A)");
-		fieldDNI.setFont(fontRegister);
 		fieldDNI.setHorizontalAlignment(SwingConstants.CENTER);
-		fieldDNI.setBounds(153, 20, 136, 20);
-		getContentPane().add(fieldDNI);
+		fieldDNI.setFont(fontRegister);
+		fieldDNI.setBorder(new LineBorder(new Color(100, 149, 237)));
 		fieldDNI.setColumns(10);
+		fieldDNI.setBounds(22, 27, 240, 20);
+		formPanel.add(fieldDNI);
 
 		fieldName = new JTextField();
+		fieldName.setBorder(new LineBorder(new Color(100, 149, 237)));
 		fieldName.setToolTipText("Your full name");
 		fieldName.setHorizontalAlignment(SwingConstants.CENTER);
 		fieldName.setFont(fontRegister);
 		fieldName.setColumns(10);
-		fieldName.setBounds(153, 45, 136, 20);
-		getContentPane().add(fieldName);
+		fieldName.setBounds(22, 74, 240, 20);
+		formPanel.add(fieldName);
 
 		fieldUsername = new JTextField();
+		fieldUsername.setBorder(new LineBorder(new Color(100, 149, 237)));
 		fieldUsername.setToolTipText("Your username (Only alphanumeric characters allowed)");
 		fieldUsername.setHorizontalAlignment(SwingConstants.CENTER);
 		fieldUsername.setFont(fontRegister);
 		fieldUsername.setColumns(10);
-		fieldUsername.setBounds(153, 70, 136, 20);
-		getContentPane().add(fieldUsername);
+		fieldUsername.setBounds(21, 121, 241, 20);
+		formPanel.add(fieldUsername);
 
 		fieldPassword = new JPasswordField();
+		fieldPassword.setBorder(new LineBorder(new Color(100, 149, 237)));
 		fieldPassword.setToolTipText("Your password (Must contain at least one number and one special character)");
 		fieldPassword.setHorizontalAlignment(SwingConstants.CENTER);
 		fieldPassword.setFont(fontRegister);
-		fieldPassword.setBounds(153, 95, 136, 20);
-		getContentPane().add(fieldPassword);
+		fieldPassword.setBounds(21, 167, 241, 20);
+		formPanel.add(fieldPassword);
 
 		fieldRepeatPass = new JPasswordField();
+		fieldRepeatPass.setBorder(new LineBorder(new Color(100, 149, 237)));
 		fieldRepeatPass.setToolTipText("Repeat your password");
 		fieldRepeatPass.setHorizontalAlignment(SwingConstants.CENTER);
 		fieldRepeatPass.setFont(fontRegister);
-		fieldRepeatPass.setBounds(153, 120, 136, 20);
-		getContentPane().add(fieldRepeatPass);
+		fieldRepeatPass.setBounds(22, 214, 240, 20);
+		formPanel.add(fieldRepeatPass);
 
 		fieldEmail = new JTextField();
+		fieldEmail.setBorder(new LineBorder(new Color(100, 149, 237)));
 		fieldEmail.setToolTipText("Your Email adress");
 		fieldEmail.setHorizontalAlignment(SwingConstants.CENTER);
 		fieldEmail.setFont(fontRegister);
 		fieldEmail.setColumns(10);
-		fieldEmail.setBounds(153, 145, 136, 20);
-		getContentPane().add(fieldEmail);
+		fieldEmail.setBounds(21, 260, 241, 20);
+		formPanel.add(fieldEmail);
 
 		fieldPhone = new JTextField();
+		fieldPhone.setBorder(new LineBorder(new Color(100, 149, 237)));
 		fieldPhone.setToolTipText("Your personal phone number");
 		fieldPhone.setHorizontalAlignment(SwingConstants.CENTER);
 		fieldPhone.setFont(fontRegister);
 		fieldPhone.setColumns(10);
-		fieldPhone.setBounds(153, 170, 136, 20);
-		getContentPane().add(fieldPhone);
-		
+		fieldPhone.setBounds(21, 305, 241, 20);
+		formPanel.add(fieldPhone);
+
 		fieldRegion = new JTextField();
-		fieldRegion.setToolTipText("Your personal phone number");
+		fieldRegion.setBorder(new LineBorder(new Color(100, 149, 237)));
+		fieldRegion.setToolTipText("Your region");
 		fieldRegion.setHorizontalAlignment(SwingConstants.CENTER);
 		fieldRegion.setFont(fontRegister);
 		fieldRegion.setColumns(10);
-		fieldRegion.setBounds(153, 195, 136, 20);
-		getContentPane().add(fieldRegion);
+		fieldRegion.setBounds(21, 354, 241, 20);
+		formPanel.add(fieldRegion);
+
+		lblTitle1 = new JLabel("REGISTER");
+		lblTitle1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblTitle1.setFont(new Font("Consolas", Font.BOLD, 30));
+		lblTitle1.setBounds(27, 4, 246, 39);
+		titlePanel.add(lblTitle1);
 
 		btnRegister = new JButton("Register");
-		btnRegister.setFont(fontRegister);
-		btnRegister.setBounds(41, 232, 96, 32);
-		getContentPane().add(btnRegister);
+		btnRegister.setBounds(34, 5, 90, 32);
+		btnRegister.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		btnPanel.add(btnRegister);
 
 		btnCancel = new JButton("Cancel");
-		btnCancel.setFont(fontRegister);
-		btnCancel.setBounds(179, 233, 96, 32);
-		getContentPane().add(btnCancel);
+		btnCancel.setBounds(158, 5, 90, 32);
+		btnCancel.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		btnPanel.add(btnCancel);
 
 		new ControllerRegister(this);
-		
+
 		setVisible(true);
 	}
 
@@ -250,11 +290,11 @@ public class GUIRegister extends JFrame {
 	public void setFieldRegion(JTextField fieldRegion) {
 		this.fieldRegion = fieldRegion;
 	}
-	
+
 	public void setBtnRegister(JButton btnRegister) {
 		this.btnRegister = btnRegister;
 	}
-	
+
 	public void setBtnCancel(JButton btnCancel) {
 		this.btnCancel = btnCancel;
 	}

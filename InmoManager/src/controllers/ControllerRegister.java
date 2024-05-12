@@ -15,6 +15,7 @@ import java.util.Set;
 import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.border.LineBorder;
 
 import views.GUILogin;
 import views.GUIRegister;
@@ -90,7 +91,7 @@ public class ControllerRegister {
 			if (!fields.get(textField))
 				textField.setBorder(BorderFactory.createLineBorder(Color.RED));
 			else
-				textField.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+				textField.setBorder(new LineBorder(new Color(100, 149, 237)));
 		}
 	}
 
