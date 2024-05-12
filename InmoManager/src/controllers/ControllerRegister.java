@@ -3,6 +3,8 @@ package controllers;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -234,5 +236,10 @@ public class ControllerRegister {
 	private void register() {
 		// - Implement data parsing with database functionality
 		// Must be careful about data type
+		try (Connection conn = ConnectionDB.connect()){
+			
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
 	}
 }
