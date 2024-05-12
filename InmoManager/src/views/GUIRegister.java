@@ -13,7 +13,7 @@ import javax.swing.SwingConstants;
 import controllers.ControllerRegister;
 
 public class GUIRegister extends JFrame {
-
+	private static final long serialVersionUID = 1L;
 	private GUILogin gLogin;
 	private JLabel lblDNI;
 	private JLabel lblName;

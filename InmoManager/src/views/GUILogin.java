@@ -15,6 +15,7 @@ import javax.swing.border.EmptyBorder;
 
 import controllers.ControllerLogin;
 import java.awt.Color;
+import javax.swing.JSeparator;
 
 public class GUILogin extends JFrame {
 
@@ -41,6 +42,7 @@ public class GUILogin extends JFrame {
 	private JPanel panelError;
 	private JLabel lblError;
 	private Font fontUserPassErr = new Font("Yu Gothic UI Semibold", Font.PLAIN, 13);
+	private JSeparator separator;
 
 	/**
 	 * Create the frame.
@@ -79,6 +81,9 @@ public class GUILogin extends JFrame {
 		panelUserPass = new JPanel();
 		panelData.add(panelUserPass, BorderLayout.CENTER);
 		panelUserPass.setLayout(new BoxLayout(panelUserPass, BoxLayout.Y_AXIS));
+		
+		separator = new JSeparator();
+		panelUserPass.add(separator);
 		
 		panelUsername = new JPanel();
 		panelUserPass.add(panelUsername);

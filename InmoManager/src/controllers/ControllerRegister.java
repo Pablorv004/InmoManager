@@ -240,7 +240,6 @@ public class ControllerRegister {
 		String rePassword = String.valueOf(gRegister.getFieldRepeatPass().getPassword());
 		String email = gRegister.getFieldEmail().getText();
 		String phoneNumber = gRegister.getFieldPhone().getText();
-		String region = gRegister.getFieldRegion().getText();
 
 		if (DNI.isBlank() || name.isBlank() || username.isBlank() || password.isBlank() || rePassword.isBlank()
 				|| email.isBlank() || phoneNumber.isBlank() || phoneNumber.isBlank()) {
