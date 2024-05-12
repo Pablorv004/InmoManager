@@ -17,6 +17,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 
+import util.ConnectionDB;
 import views.GUILogin;
 import views.GUIRegister;
 
@@ -275,7 +276,15 @@ public class ControllerRegister {
 			pst.setInt(6, phoneNumber);
 			pst.setString(7, region);
 			
-			pst.executeUpdate();
+			int insertedData = pst.executeUpdate();
+			
+			if(insertedData > 0)
+				JOptionPane.showMessageDialog(gRegister, "User registered succesfully! You may now log-in!");
+			else
+				JOptionPane.showMessageDialog(gRegister, "Something went wrong! User could not been registered!", "Error",
+						JOptionPane.ERROR_MESSAGE);
+			
+			conn.close();
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
