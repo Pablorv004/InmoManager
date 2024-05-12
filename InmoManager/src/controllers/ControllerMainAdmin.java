@@ -8,7 +8,6 @@ import javax.swing.JOptionPane;
 
 import views.GUILogin;
 import views.GUIMainAdmin;
-import views.GUIMainManager;
 
 public class ControllerMainAdmin {
 	GUIMainAdmin gAdmin;

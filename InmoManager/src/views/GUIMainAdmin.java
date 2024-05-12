@@ -14,7 +14,8 @@ import javax.swing.SwingConstants;
 import controllers.ControllerMainAdmin;
 
 public class GUIMainAdmin extends JFrame {
-	GUILogin gLogin;
+	private static final long serialVersionUID = 1L;
+	private GUILogin gLogin;
 	private JPanel titlePanel;
 	private JLabel lblTitle;
 	private JButton btnManageProperties;
@@ -22,15 +23,15 @@ public class GUIMainAdmin extends JFrame {
 	private JButton btnManageUsers;
 	private JButton btnReturn;
 	private JSeparator separator;
-	public GUIMainAdmin() {
-		//this.gLogin =  gLogin;
+	public GUIMainAdmin(GUILogin login) {
+		this.gLogin =  login;
 		setTitle("Admin View");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(gLogin);
 		setBounds(100, 100, 404, 207);
 		setResizable(false);
 		getContentPane().setLayout(null);
-
+		setLocationRelativeTo(login);
 		titlePanel = new JPanel();
 		titlePanel.setBounds(80, 6, 228, 50);
 		getContentPane().add(titlePanel);

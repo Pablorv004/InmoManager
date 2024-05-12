@@ -14,7 +14,8 @@ import javax.swing.SwingConstants;
 import controllers.ControllerMainManager;
 
 public class GUIMainManager extends JFrame {
-	GUILogin gLogin;
+	private static final long serialVersionUID = 1L;
+	private GUILogin gLogin;
 	private JPanel titlePanel;
 	private JLabel lblTitle;
 	private JButton btnManageProperties;
@@ -30,7 +31,7 @@ public class GUIMainManager extends JFrame {
 		setBounds(100, 100, 404, 169);
 		setResizable(false);
 		getContentPane().setLayout(null);
-
+		setLocationRelativeTo(gLogin);
 		titlePanel = new JPanel();
 		titlePanel.setBounds(80, 6, 228, 50);
 		getContentPane().add(titlePanel);

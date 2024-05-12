@@ -9,6 +9,7 @@ import java.sql.SQLException;
 
 import javax.swing.JButton;
 
+import util.ConnectionDB;
 import views.GUILogin;
 import views.GUIMainAdmin;
 import views.GUIMainManager;
@@ -98,7 +99,7 @@ public class ControllerLogin {
 			if (buttonPressed == login.getBtnExit())
 				System.exit(0);
 			else if (buttonPressed == login.getBtnRegister()) {
-				new GUIRegister();
+				new GUIRegister(login);
 				login.dispose();
 			} else if (buttonPressed == login.getBtnLogin()) {
 				String username = login.getTxtUsername().getText();
@@ -110,8 +111,8 @@ public class ControllerLogin {
 				else {
 					switch (userAccessLvl) {
 					case "Clients" -> new GUIMainUser();
-					case "Managers" -> new GUIMainManager();
-					case "Administrators" -> new GUIMainAdmin();
+					case "Managers" -> new GUIMainManager(login);
+					case "Administrators" -> new GUIMainAdmin(login);
 					default -> System.out.println("What access level is this?");
 					}
 					login.dispose();
