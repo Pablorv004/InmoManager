@@ -54,7 +54,6 @@ public class GUILogin extends JFrame {
 		setLocationRelativeTo(null);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(0, 0));
 		
@@ -141,178 +140,29 @@ public class GUILogin extends JFrame {
 		btnRegister.addActionListener(listener);
 		btnExit.addActionListener(listener);
 	}
-	//Getters n setters for the elements
-	public JPanel getPanelError() {
-		return panelError;
+	public JLabel getLblInmo() {
+		return lblInmo;
 	}
-	public void setPanelError(JPanel panelError) {
-		this.panelError = panelError;
+	public JLabel getLblRegister() {
+		return lblRegister;
+	}
+	public JButton getBtnRegister() {
+		return btnRegister;
+	}
+	public JButton getBtnLogin() {
+		return btnLogin;
+	}
+	public JButton getBtnExit() {
+		return btnExit;
+	}
+	public JPasswordField getPwPassword() {
+		return pwPassword;
 	}
 	public JLabel getLblError() {
 		return lblError;
 	}
-	public void setLblError(JLabel lblError) {
-		this.lblError = lblError;
-	}
-	public Font getFontUserPassErr() {
-		return fontUserPassErr;
-	}
-	public void setFontUserPassErr(Font fontUserPassErr) {
-		this.fontUserPassErr = fontUserPassErr;
-	}
-	
-	public JPanel getContentPane() {
-		return contentPane;
-	}
-
-	public void setContentPane(JPanel contentPane) {
-		this.contentPane = contentPane;
-	}
-
-	public JPanel getPanelLogo() {
-		return panelLogo;
-	}
-
-	public void setPanelLogo(JPanel panelLogo) {
-		this.panelLogo = panelLogo;
-	}
-
-	public JPanel getPanelData() {
-		return panelData;
-	}
-
-	public void setPanelData(JPanel panelData) {
-		this.panelData = panelData;
-	}
-
-	public JPanel getPanelRegister() {
-		return panelRegister;
-	}
-
-	public void setPanelRegister(JPanel panelRegister) {
-		this.panelRegister = panelRegister;
-	}
-
-	public JLabel getLblInmo() {
-		return lblInmo;
-	}
-
-	public void setLblInmo(JLabel lblInmo) {
-		this.lblInmo = lblInmo;
-	}
-
-	public JLabel getLblRegister() {
-		return lblRegister;
-	}
-
-	public void setLblRegister(JLabel lblRegister) {
-		this.lblRegister = lblRegister;
-	}
-
-	public JButton getBtnRegister() {
-		return btnRegister;
-	}
-
-	public void setBtnRegister(JButton btnRegister) {
-		this.btnRegister = btnRegister;
-	}
-
-	public JPanel getPanelLoginExit() {
-		return panelLoginExit;
-	}
-
-	public void setPanelLoginExit(JPanel panelLoginExit) {
-		this.panelLoginExit = panelLoginExit;
-	}
-
-	public JButton getBtnLogin() {
-		return btnLogin;
-	}
-
-	public void setBtnLogin(JButton btnLogin) {
-		this.btnLogin = btnLogin;
-	}
-
-	public JButton getBtnExit() {
-		return btnExit;
-	}
-
-	public void setBtnExit(JButton btnExit) {
-		this.btnExit = btnExit;
-	}
-
-	public JPanel getPanelUserPass() {
-		return panelUserPass;
-	}
-
-	public void setPanelUserPass(JPanel panelUserPass) {
-		this.panelUserPass = panelUserPass;
-	}
-
-	public JPanel getPanelWelcome() {
-		return panelWelcome;
-	}
-
-	public void setPanelWelcome(JPanel panelWelcome) {
-		this.panelWelcome = panelWelcome;
-	}
-
-	public JLabel getLblWelcome() {
-		return lblWelcome;
-	}
-
-	public void setLblWelcome(JLabel lblWelcome) {
-		this.lblWelcome = lblWelcome;
-	}
-
-	public JPanel getPanelUsername() {
-		return panelUsername;
-	}
-
-	public void setPanelUsername(JPanel panelUsername) {
-		this.panelUsername = panelUsername;
-	}
-
-	public JPanel getPanelPassword() {
-		return panelPassword;
-	}
-
-	public void setPanelPassword(JPanel panelPassword) {
-		this.panelPassword = panelPassword;
-	}
-
-	public JLabel getLblUsername() {
-		return lblUsername;
-	}
-
-	public void setLblUsername(JLabel lblUsername) {
-		this.lblUsername = lblUsername;
-	}
-
-	public JLabel getLblPassword() {
-		return lblPassword;
-	}
-
-	public void setLblPassword(JLabel lblPassword) {
-		this.lblPassword = lblPassword;
-	}
-
-	public JPasswordField getPwPassword() {
-		return pwPassword;
-	}
-
-	public void setPwPassword(JPasswordField pwPassword) {
-		this.pwPassword = pwPassword;
-	}
-
 	public JTextField getTxtUsername() {
 		return txtUsername;
 	}
-
-	public void setTxtUsername(JTextField txtUsername) {
-		this.txtUsername = txtUsername;
-	}
 	
-	
-
 }
