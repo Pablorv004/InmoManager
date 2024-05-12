@@ -44,13 +44,10 @@ public class GUIRegister extends JFrame {
 	private JButton btnRegister;
 	private JButton btnCancel;
 	private Font fontRegister = new Font("Consolas", Font.PLAIN, 13);
-	private Border blueBorder = BorderFactory.createLineBorder(Color.BLUE);
-
-	// GUIRegisters receive in its contructor a GUILogin class as a parameter
-	// Right now it doesnt have it because it's in test phase
-	public GUIRegister() {
+	
+	public GUIRegister(GUILogin gLogin) {
 		super("Register");
-		// this.gLogin = gLogin;
+		this.gLogin = gLogin;
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 337, 536);
 		setLocationRelativeTo(gLogin);
@@ -114,7 +111,7 @@ public class GUIRegister extends JFrame {
 
 		fieldDNI = new JTextField();
 		fieldDNI.setToolTipText("Your DNI number (Ex: 00000000A)");
-		fieldDNI.setHorizontalAlignment(SwingConstants.CENTER);
+		fieldDNI.setHorizontalAlignment(SwingConstants.LEFT);
 		fieldDNI.setFont(fontRegister);
 		fieldDNI.setBorder(new LineBorder(new Color(100, 149, 237)));
 		fieldDNI.setColumns(10);
@@ -124,7 +121,7 @@ public class GUIRegister extends JFrame {
 		fieldName = new JTextField();
 		fieldName.setBorder(new LineBorder(new Color(100, 149, 237)));
 		fieldName.setToolTipText("Your full name");
-		fieldName.setHorizontalAlignment(SwingConstants.CENTER);
+		fieldName.setHorizontalAlignment(SwingConstants.LEFT);
 		fieldName.setFont(fontRegister);
 		fieldName.setColumns(10);
 		fieldName.setBounds(22, 74, 240, 20);
@@ -133,7 +130,7 @@ public class GUIRegister extends JFrame {
 		fieldUsername = new JTextField();
 		fieldUsername.setBorder(new LineBorder(new Color(100, 149, 237)));
 		fieldUsername.setToolTipText("Your username (Only alphanumeric characters allowed)");
-		fieldUsername.setHorizontalAlignment(SwingConstants.CENTER);
+		fieldUsername.setHorizontalAlignment(SwingConstants.LEFT);
 		fieldUsername.setFont(fontRegister);
 		fieldUsername.setColumns(10);
 		fieldUsername.setBounds(21, 121, 241, 20);
@@ -142,7 +139,7 @@ public class GUIRegister extends JFrame {
 		fieldPassword = new JPasswordField();
 		fieldPassword.setBorder(new LineBorder(new Color(100, 149, 237)));
 		fieldPassword.setToolTipText("Your password (Must contain at least one number and one special character)");
-		fieldPassword.setHorizontalAlignment(SwingConstants.CENTER);
+		fieldPassword.setHorizontalAlignment(SwingConstants.LEFT);
 		fieldPassword.setFont(fontRegister);
 		fieldPassword.setBounds(21, 167, 241, 20);
 		formPanel.add(fieldPassword);
@@ -150,7 +147,7 @@ public class GUIRegister extends JFrame {
 		fieldRepeatPass = new JPasswordField();
 		fieldRepeatPass.setBorder(new LineBorder(new Color(100, 149, 237)));
 		fieldRepeatPass.setToolTipText("Repeat your password");
-		fieldRepeatPass.setHorizontalAlignment(SwingConstants.CENTER);
+		fieldRepeatPass.setHorizontalAlignment(SwingConstants.LEFT);
 		fieldRepeatPass.setFont(fontRegister);
 		fieldRepeatPass.setBounds(22, 214, 240, 20);
 		formPanel.add(fieldRepeatPass);
@@ -158,7 +155,7 @@ public class GUIRegister extends JFrame {
 		fieldEmail = new JTextField();
 		fieldEmail.setBorder(new LineBorder(new Color(100, 149, 237)));
 		fieldEmail.setToolTipText("Your Email adress");
-		fieldEmail.setHorizontalAlignment(SwingConstants.CENTER);
+		fieldEmail.setHorizontalAlignment(SwingConstants.LEFT);
 		fieldEmail.setFont(fontRegister);
 		fieldEmail.setColumns(10);
 		fieldEmail.setBounds(21, 260, 241, 20);
@@ -167,7 +164,7 @@ public class GUIRegister extends JFrame {
 		fieldPhone = new JTextField();
 		fieldPhone.setBorder(new LineBorder(new Color(100, 149, 237)));
 		fieldPhone.setToolTipText("Your personal phone number");
-		fieldPhone.setHorizontalAlignment(SwingConstants.CENTER);
+		fieldPhone.setHorizontalAlignment(SwingConstants.LEFT);
 		fieldPhone.setFont(fontRegister);
 		fieldPhone.setColumns(10);
 		fieldPhone.setBounds(21, 305, 241, 20);
@@ -176,7 +173,7 @@ public class GUIRegister extends JFrame {
 		fieldRegion = new JTextField();
 		fieldRegion.setBorder(new LineBorder(new Color(100, 149, 237)));
 		fieldRegion.setToolTipText("Your region");
-		fieldRegion.setHorizontalAlignment(SwingConstants.CENTER);
+		fieldRegion.setHorizontalAlignment(SwingConstants.LEFT);
 		fieldRegion.setFont(fontRegister);
 		fieldRegion.setColumns(10);
 		fieldRegion.setBounds(21, 354, 241, 20);
