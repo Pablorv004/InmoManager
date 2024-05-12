@@ -19,7 +19,7 @@ import javax.swing.border.LineBorder;
 
 @SuppressWarnings("serial")
 public class GUIRegister extends JFrame {
-
+	private static final long serialVersionUID = 1L;
 	private GUILogin gLogin;
 	private JPanel formPanel;
 	private JPanel titlePanel;
