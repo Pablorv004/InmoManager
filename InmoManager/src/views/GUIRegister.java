@@ -33,6 +33,7 @@ public class GUIRegister extends JFrame {
 	private JPasswordField fieldRepeatPass;
 	private JButton btnRegister;
 	private JButton btnCancel;
+	private Font fontRegister = new Font("Tahoma", Font.PLAIN, 13);
 
 	// GUIRegisters receive in its contructor a GUILogin class as a parameter
 	// Right now it doesnt have it because it's in test phase
@@ -46,48 +47,48 @@ public class GUIRegister extends JFrame {
 		getContentPane().setLayout(null);
 
 		lblDNI = new JLabel("DNI: ");
-		lblDNI.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		lblDNI.setFont(fontRegister);
 		lblDNI.setBounds(29, 22, 46, 14);
 		getContentPane().add(lblDNI);
 
 		lblName = new JLabel("Name:");
-		lblName.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		lblName.setFont(fontRegister);
 		lblName.setBounds(29, 47, 46, 14);
 		getContentPane().add(lblName);
 
 		lblUsername = new JLabel("Username:");
-		lblUsername.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		lblUsername.setFont(fontRegister);
 		lblUsername.setBounds(29, 72, 81, 14);
 		getContentPane().add(lblUsername);
 
 		lblPassword = new JLabel("Password:");
-		lblPassword.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		lblPassword.setFont(fontRegister);
 		lblPassword.setBounds(29, 97, 81, 14);
 		getContentPane().add(lblPassword);
 
 		lblRepeatPassword = new JLabel("Repeat Password:");
-		lblRepeatPassword.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		lblRepeatPassword.setFont(fontRegister);
 		lblRepeatPassword.setBounds(29, 122, 113, 14);
 		getContentPane().add(lblRepeatPassword);
 
 		lblEmail = new JLabel("Email Adress:");
-		lblEmail.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		lblEmail.setFont(fontRegister);
 		lblEmail.setBounds(29, 147, 113, 14);
 		getContentPane().add(lblEmail);
 
 		lblPhoneNumber = new JLabel("Phone Number:");
-		lblPhoneNumber.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		lblPhoneNumber.setFont(fontRegister);
 		lblPhoneNumber.setBounds(29, 172, 113, 14);
 		getContentPane().add(lblPhoneNumber);
 		
 		lblRegion = new JLabel("Region:");
-		lblRegion.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		lblRegion.setFont(fontRegister);
 		lblRegion.setBounds(29, 197, 113, 18);
 		getContentPane().add(lblRegion);
 
 		fieldDNI = new JTextField();
 		fieldDNI.setToolTipText("Your DNI number (Ex: 00000000A)");
-		fieldDNI.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		fieldDNI.setFont(fontRegister);
 		fieldDNI.setHorizontalAlignment(SwingConstants.CENTER);
 		fieldDNI.setBounds(153, 20, 136, 20);
 		getContentPane().add(fieldDNI);
@@ -96,7 +97,7 @@ public class GUIRegister extends JFrame {
 		fieldName = new JTextField();
 		fieldName.setToolTipText("Your full name");
 		fieldName.setHorizontalAlignment(SwingConstants.CENTER);
-		fieldName.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		fieldName.setFont(fontRegister);
 		fieldName.setColumns(10);
 		fieldName.setBounds(153, 45, 136, 20);
 		getContentPane().add(fieldName);
@@ -104,7 +105,7 @@ public class GUIRegister extends JFrame {
 		fieldUsername = new JTextField();
 		fieldUsername.setToolTipText("Your username (Only alphanumeric characters allowed)");
 		fieldUsername.setHorizontalAlignment(SwingConstants.CENTER);
-		fieldUsername.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		fieldUsername.setFont(fontRegister);
 		fieldUsername.setColumns(10);
 		fieldUsername.setBounds(153, 70, 136, 20);
 		getContentPane().add(fieldUsername);
@@ -112,21 +113,21 @@ public class GUIRegister extends JFrame {
 		fieldPassword = new JPasswordField();
 		fieldPassword.setToolTipText("Your password (Must contain at least one number and one special character)");
 		fieldPassword.setHorizontalAlignment(SwingConstants.CENTER);
-		fieldPassword.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		fieldPassword.setFont(fontRegister);
 		fieldPassword.setBounds(153, 95, 136, 20);
 		getContentPane().add(fieldPassword);
 
 		fieldRepeatPass = new JPasswordField();
 		fieldRepeatPass.setToolTipText("Repeat your password");
 		fieldRepeatPass.setHorizontalAlignment(SwingConstants.CENTER);
-		fieldRepeatPass.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		fieldRepeatPass.setFont(fontRegister);
 		fieldRepeatPass.setBounds(153, 120, 136, 20);
 		getContentPane().add(fieldRepeatPass);
 
 		fieldEmail = new JTextField();
 		fieldEmail.setToolTipText("Your Email adress");
 		fieldEmail.setHorizontalAlignment(SwingConstants.CENTER);
-		fieldEmail.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		fieldEmail.setFont(fontRegister);
 		fieldEmail.setColumns(10);
 		fieldEmail.setBounds(153, 145, 136, 20);
 		getContentPane().add(fieldEmail);
@@ -134,7 +135,7 @@ public class GUIRegister extends JFrame {
 		fieldPhone = new JTextField();
 		fieldPhone.setToolTipText("Your personal phone number");
 		fieldPhone.setHorizontalAlignment(SwingConstants.CENTER);
-		fieldPhone.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		fieldPhone.setFont(fontRegister);
 		fieldPhone.setColumns(10);
 		fieldPhone.setBounds(153, 170, 136, 20);
 		getContentPane().add(fieldPhone);
@@ -142,22 +143,22 @@ public class GUIRegister extends JFrame {
 		fieldRegion = new JTextField();
 		fieldRegion.setToolTipText("Your personal phone number");
 		fieldRegion.setHorizontalAlignment(SwingConstants.CENTER);
-		fieldRegion.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		fieldRegion.setFont(fontRegister);
 		fieldRegion.setColumns(10);
 		fieldRegion.setBounds(153, 195, 136, 20);
 		getContentPane().add(fieldRegion);
 
 		btnRegister = new JButton("Register");
-		btnRegister.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		btnRegister.setFont(fontRegister);
 		btnRegister.setBounds(41, 232, 96, 32);
 		getContentPane().add(btnRegister);
 
 		btnCancel = new JButton("Cancel");
-		btnCancel.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		btnCancel.setFont(fontRegister);
 		btnCancel.setBounds(179, 233, 96, 32);
 		getContentPane().add(btnCancel);
 
-		ControllerRegister rController = new ControllerRegister(this);
+		new ControllerRegister(this);
 		
 		setVisible(true);
 	}
