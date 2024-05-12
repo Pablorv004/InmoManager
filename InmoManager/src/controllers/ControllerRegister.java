@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -53,12 +54,14 @@ public class ControllerRegister {
 			boolean validRePassword = validateRePassword();
 			boolean validEmail = validateEmail();
 			boolean validPhone = validatePhone();
+			boolean validRegion = validateRegion();
 
-			if (validDNI && validName && validUsername && validPassword && validRePassword && validEmail && validPhone)
+			if (validDNI && validName && validUsername && validPassword && validRePassword && validEmail && validPhone
+					&& validRegion)
 				return true;
 			else {
 				paintInvalidFields(validDNI, validName, validUsername, validPassword, validRePassword, validEmail,
-						validPhone);
+						validPhone, validRegion);
 				return false;
 			}
 
@@ -68,7 +71,7 @@ public class ControllerRegister {
 	}
 
 	private void paintInvalidFields(boolean validDNI, boolean validName, boolean validUsername, boolean validPassword,
-			boolean validRePassword, boolean validEmail, boolean validPhone) {
+			boolean validRePassword, boolean validEmail, boolean validPhone, boolean validRegion) {
 
 		Map<JTextField, Boolean> fields = new HashMap<>();
 
@@ -79,6 +82,7 @@ public class ControllerRegister {
 		fields.put(gRegister.getFieldRepeatPass(), validRePassword);
 		fields.put(gRegister.getFieldEmail(), validEmail);
 		fields.put(gRegister.getFieldPhone(), validPhone);
+		fields.put(gRegister.getFieldRegion(), validRegion);
 
 		Iterator<JTextField> it = fields.keySet().iterator();
 		while (it.hasNext()) {
@@ -90,12 +94,26 @@ public class ControllerRegister {
 		}
 	}
 
+	private boolean validateRegion() {
+		if (!gRegister.getFieldRegion().getText().strip().matches("[A-Za-z ]+")) {
+			if (gRegister.getFieldRegion().getText().strip().length() > 45) {
+				JOptionPane.showMessageDialog(gRegister, "The region name is too long (Max: 45 characters)", "Format error",
+						JOptionPane.ERROR_MESSAGE);
+			} else {
+				JOptionPane.showMessageDialog(gRegister, "The region doesn't have a valid format", "Format error",
+						JOptionPane.ERROR_MESSAGE);
+			}
+			return false;
+		} else
+			return true;
+	}
+
 	private boolean validatePhone() {
 		if (!gRegister.getFieldPhone().getText().strip().matches("([0-9]+){9,12}")) {
 			JOptionPane.showMessageDialog(gRegister, "The phone number doesn't have a valid format", "Format error",
 					JOptionPane.ERROR_MESSAGE);
 			return false;
-		}else
+		} else
 			return true;
 	}
 
@@ -105,7 +123,7 @@ public class ControllerRegister {
 			if (email.length() > 80) {
 				JOptionPane.showMessageDialog(gRegister, "The email is too long (Max: 80 characters)", "Format error",
 						JOptionPane.ERROR_MESSAGE);
-			}else {
+			} else {
 				JOptionPane.showMessageDialog(gRegister, "The email doesn't have a valid format", "Format error",
 						JOptionPane.ERROR_MESSAGE);
 			}
@@ -198,8 +216,7 @@ public class ControllerRegister {
 	}
 
 	private boolean validateName() {
-		if (!gRegister.getFieldName().getText().strip().replaceAll("\\s+", " ")
-				.matches("[A-Za-z]{0,100}")) {
+		if (!gRegister.getFieldName().getText().strip().replaceAll("\\s+", " ").matches("[A-Za-z ]{0,100}")) {
 			JOptionPane.showMessageDialog(gRegister, "The name doesn't have a valid format", "Format error",
 					JOptionPane.ERROR_MESSAGE);
 			return false;
@@ -223,24 +240,44 @@ public class ControllerRegister {
 		String rePassword = String.valueOf(gRegister.getFieldRepeatPass().getPassword());
 		String email = gRegister.getFieldEmail().getText();
 		String phoneNumber = gRegister.getFieldPhone().getText();
+		String region = gRegister.getFieldRegion().getText();
 
 		if (DNI.isBlank() || name.isBlank() || username.isBlank() || password.isBlank() || rePassword.isBlank()
-				|| email.isBlank() || phoneNumber.isBlank()) {
+				|| email.isBlank() || phoneNumber.isBlank() || phoneNumber.isBlank()) {
 			JOptionPane.showMessageDialog(gRegister, "There must be no blank fields", "Format error",
 					JOptionPane.ERROR_MESSAGE);
 			return false;
 		} else
 			return true;
 	}
-
+	
+	// Inserts a new user into the database
 	private void register() {
-		// - Implement data parsing with database functionality
-		// Must be careful about data type
-		try (Connection conn = ConnectionDB.connect()){
+		
+		try (Connection conn = ConnectionDB.connect()) {
+			String DNI = gRegister.getFieldDNI().getText().strip();
+			String fullname = gRegister.getFieldName().getText().strip().replaceAll("\\s+", " ");
+			String username = gRegister.getFieldUsername().getText().strip();
+			String password = String.valueOf(gRegister.getFieldPassword().getPassword()).strip();
+			String email = gRegister.getFieldEmail().getText().strip();
+			int phoneNumber = Integer.parseInt(gRegister.getFieldPhone().getText().strip());
+			String region = gRegister.getFieldRegion().getText().strip().replaceAll("\\s+", " ");
+
+			PreparedStatement pst = conn
+					.prepareStatement("INSERT INTO inmomanager.Clients (DNI,fullName,userName,password,email,phoneNum,region)"
+									+ "VALUES (?,?,?,?,?,?,?)");
+			pst.setString(1, DNI);
+			pst.setString(2, fullname);
+			pst.setString(3, username);
+			pst.setString(4, password);
+			pst.setString(5, email);
+			pst.setInt(6, phoneNumber);
+			pst.setString(7, region);
 			
+			pst.executeUpdate();
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
 }
