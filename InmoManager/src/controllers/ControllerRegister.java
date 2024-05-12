@@ -236,12 +236,11 @@ public class ControllerRegister {
 	private void register() {
 		// - Implement data parsing with database functionality
 		// Must be careful about data type
-		/*try (Connection conn = ConnectionDB.connect()){
+		try (Connection conn = ConnectionDB.connect()){
 			
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
-		*/
-		JOptionPane.showMessageDialog(gRegister, "Todos los campos correctos (TEST)");
+		
 	}
 }
