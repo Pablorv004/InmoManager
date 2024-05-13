@@ -1,0 +1,17 @@
+{
+    "sqltools.connections": [
+        {
+            "mysqlOptions": {
+                "authProtocol": "default",
+                "enableSsl": "Disabled"
+            },
+            "previewLimit": 50,
+            "server": "158.179.219.75",
+            "port": 3306,
+            "driver": "MySQL",
+            "name": "InmoManager",
+            "database": "inmomanager",
+            "username": "pablorv28"
+        }
+    ]
+}
