@@ -110,7 +110,7 @@ public class ControllerLogin {
 					login.getLblError().setText("Incorrect password.");
 				else {
 					switch (userAccessLvl) {
-					case "Clients" -> new GUIMainUser();
+					case "Clients" -> new GUIMainUser(login);
 					case "Managers" -> new GUIMainManager(login);
 					case "Administrators" -> new GUIMainAdmin(login);
 					default -> System.out.println("What access level is this?");
