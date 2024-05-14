@@ -7,7 +7,7 @@ public class GlobalResources {
 	private static Icon iconSmall;
 
 	public GlobalResources() {
-		iconSmall = new ImageIcon("files/images/InmoManagerSmol.png");
+		iconSmall = new ImageIcon("files/images/InmoManagerSmol64.png");
 	}
 
 	public static Icon getIconSmall() {
