@@ -1,7 +1,6 @@
 package models;
 
 public class Property {
-	private int id;
 	private String address;
 	private String city;
 	private String type;
@@ -22,16 +21,15 @@ public class Property {
 	private boolean available;
 	private String status;
 
-	public Property() {
-		super();
+	public Property(){
+		
 	}
 
-	public Property(int id, String address, String city, String type, int age, int rooms, int floors, int bathrooms,
+	public Property(String address, String city, String type, int age, int rooms, int floors, int bathrooms,
 			int propertySize, int terrainSize, int garageSize, boolean hasGarden, boolean hasBasement,
 			boolean hasGarage, boolean hasPool, boolean hasLift, boolean hasTerrace, boolean hasAC, boolean available,
 			String status) {
 		super();
-		this.id = id;
 		this.address = address;
 		this.city = city;
 		this.type = type;
@@ -52,15 +50,6 @@ public class Property {
 		this.available = available;
 		this.status = status;
 	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
 	public String getAddress() {
 		return address;
 	}
@@ -215,7 +204,7 @@ public class Property {
 
 	@Override
 	public String toString() {
-		return getClass().getSimpleName() + " -> id=" + id + ", address=" + address + ", city=" + city + ", type=" + type + ", age=" + age
+		return getClass().getSimpleName() + " -> address=" + address + ", city=" + city + ", type=" + type + ", age=" + age
 				+ ", rooms=" + rooms + ", floors=" + floors + ", bathrooms=" + bathrooms + ", propertySize="
 				+ propertySize + ", terrainSize=" + terrainSize + ", garageSize=" + garageSize + ", hasGarden="
 				+ hasGarden + ", hasBasement=" + hasBasement + ", hasGarage=" + hasGarage + ", hasPool=" + hasPool
