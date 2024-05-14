@@ -24,7 +24,7 @@ public class GUIMainUser extends JFrame {
 	private JPanel panelButtons;
 	private JLabel lblTitle;
 	private JButton btnView;
-	private JButton btnSell;
+	private JButton btnAdd;
 	private JSeparator separator;
 	private JButton btnReturn;
 	private JButton btnUser;
@@ -48,9 +48,9 @@ public class GUIMainUser extends JFrame {
 		btnView.setFont(new Font("Yu Gothic UI", Font.PLAIN, 20));
 		panelButtons.add(btnView);
 		
-		btnSell = new JButton("Sell");
-		btnSell.setFont(new Font("Yu Gothic UI", Font.PLAIN, 20));
-		panelButtons.add(btnSell);
+		btnAdd = new JButton("Add");
+		btnAdd.setFont(new Font("Yu Gothic UI", Font.PLAIN, 20));
+		panelButtons.add(btnAdd);
 		
 		separator = new JSeparator();
 		separator.setBounds(0, 75, 482, 2);
@@ -82,7 +82,7 @@ public class GUIMainUser extends JFrame {
 	
 	public void addActListeners(ActionListener listener) {
 		btnView.addActionListener(listener);
-		btnSell.addActionListener(listener);
+		btnAdd.addActionListener(listener);
 		btnReturn.addActionListener(listener);
 		btnUser.addActionListener(listener);
 	}
@@ -95,12 +95,12 @@ public class GUIMainUser extends JFrame {
 		this.btnView = btnView;
 	}
 
-	public JButton getBtnSell() {
-		return btnSell;
+	public JButton getBtnAdd() {
+		return btnAdd;
 	}
 
-	public void setBtnSell(JButton btnSell) {
-		this.btnSell = btnSell;
+	public void setBtnAdd(JButton btnAdd) {
+		this.btnAdd = btnAdd;
 	}
 
 	public JButton getBtnReturn() {

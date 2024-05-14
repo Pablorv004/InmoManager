@@ -8,6 +8,7 @@ import javax.swing.JOptionPane;
 
 import views.GUILogin;
 import views.GUIMainUser;
+import views.GUIUserAdd;
 
 public class ControllerMainUser {
 	private GUIMainUser mainUser;
@@ -34,9 +35,9 @@ public class ControllerMainUser {
 			else if (buttonPressed == mainUser.getBtnUser()) {
 				mainUser.dispose();
 				//TODO: Add connection to class GUIUserProfile.
-			} else if(buttonPressed == mainUser.getBtnSell()) {
+			} else if(buttonPressed == mainUser.getBtnAdd()) {
 				mainUser.dispose();
-				//TODO: Add connection to class GUIUserSell.
+				new GUIUserAdd(mainUser);
 			} else if(buttonPressed == mainUser.getBtnView()) {
 				mainUser.dispose();
 				//TODO: Add connection to class GUIUserView.
