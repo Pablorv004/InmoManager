@@ -5,9 +5,7 @@ import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-
 import javax.swing.JButton;
-
 import util.ConnectionDB;
 import views.GUILogin;
 import views.GUIMainAdmin;
@@ -17,7 +15,6 @@ import views.GUIRegister;
 
 public class ControllerLogin {
 	private GUILogin login;
-	private String userAccessLvl;
 
 	public ControllerLogin(GUILogin login) {
 		this.login = login;
@@ -36,9 +33,9 @@ public class ControllerLogin {
 					.prepareStatement("SELECT userName FROM inmomanager.Clients WHERE userName = ?");
 			statementConnection.setString(1, username);
 			if (statementConnection.executeQuery().next()) {
-
 				userFound = true;
-				userAccessLvl = "Clients";
+				ConnectionDB.setUserAccessLvl("Clients");
+				ConnectionDB.setCurrentUsername(username);
 			} else {
 				// Checking managers...
 				statementConnection = conn
@@ -46,7 +43,8 @@ public class ControllerLogin {
 				statementConnection.setString(1, username);
 				if (statementConnection.executeQuery().next()) {
 					userFound = true;
-					userAccessLvl = "Managers";
+					ConnectionDB.setUserAccessLvl("Managers");
+					ConnectionDB.setCurrentUsername(username);
 				} else {
 					// Checking administrators...
 					statementConnection = conn
@@ -54,7 +52,8 @@ public class ControllerLogin {
 					statementConnection.setString(1, username);
 					if (statementConnection.executeQuery().next()) {
 						userFound = true;
-						userAccessLvl = "Administrators";
+						ConnectionDB.setUserAccessLvl("Administrators");
+						ConnectionDB.setCurrentUsername(username);
 					}
 				}
 			}
@@ -72,8 +71,9 @@ public class ControllerLogin {
 		try {
 			// Let's determine which table to check:
 			Connection conn = ConnectionDB.connect();
-			if (userAccessLvl != null) {
-				String query = "SELECT userName FROM inmomanager." + userAccessLvl + " WHERE userName = ? AND password = ?";
+			if (ConnectionDB.getUserAccessLvl() != null) {
+				String query = "SELECT userName FROM inmomanager." + ConnectionDB.getUserAccessLvl()
+						+ " WHERE userName = ? AND password = ?";
 				try (PreparedStatement statementConnection = conn.prepareStatement(query)) {
 					statementConnection.setString(1, username);
 					statementConnection.setString(2, password);
@@ -87,6 +87,7 @@ public class ControllerLogin {
 		return false;
 	}
 
+	
 	private class ActListener implements ActionListener {
 
 		@Override
@@ -106,12 +107,13 @@ public class ControllerLogin {
 				else if (!passwordMatches(username, password))
 					login.getLblError().setText("Incorrect password.");
 				else {
-					switch (userAccessLvl) {
-					case "Clients" -> new GUIMainUser(login);
-					case "Managers" -> new GUIMainManager(login);
-					case "Administrators" -> new GUIMainAdmin(login);
+					switch (ConnectionDB.getUserAccessLvl()) {
+						case "Clients" -> new GUIMainUser(login);
+						case "Managers" -> new GUIMainManager(login);
+						case "Administrators" -> new GUIMainAdmin(login);
 					}
 					login.dispose();
+					ConnectionDB.getCurrentUser();
 				}
 			}
 		}
