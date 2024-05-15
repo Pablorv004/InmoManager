@@ -8,6 +8,7 @@ import javax.swing.JOptionPane;
 
 import views.GUILogin;
 import views.GUIMainManager;
+import views.GUIManageManagers;
 
 public class ControllerMainManager {
 	GUIMainManager gManager;
@@ -34,7 +35,7 @@ public class ControllerMainManager {
 				}
 			} else if (btn == gManager.getBtnManageManagers()) {
 				gManager.dispose();
-				// PLACEHOLDER FOR GUIMANAGERMANAGEMENT VIEW
+				new GUIManageManagers(gManager);
 			} else if (btn == gManager.getBtnManageProperties()) {
 				gManager.dispose();
 				// PLACEHOLDER FOR GUIPROPERTYMANAGEMENT VIEW
