@@ -4,7 +4,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import javax.swing.JButton;
@@ -59,7 +58,6 @@ public class ControllerLogin {
 					}
 				}
 			}
-			System.out.println("Users access level: " + userAccessLvl);
 		} catch (ClassNotFoundException e1) {
 			login.getLblError().setText("Contact an administrator for help. (Code: ClassNotFoundException, 1)");
 			e1.printStackTrace();
@@ -79,8 +77,7 @@ public class ControllerLogin {
 				try (PreparedStatement statementConnection = conn.prepareStatement(query)) {
 					statementConnection.setString(1, username);
 					statementConnection.setString(2, password);
-					ResultSet resultSet = statementConnection.executeQuery();
-					return resultSet.next();
+					return statementConnection.executeQuery().next();
 				}
 			}
 		} catch (ClassNotFoundException | SQLException e) {
@@ -113,7 +110,6 @@ public class ControllerLogin {
 					case "Clients" -> new GUIMainUser(login);
 					case "Managers" -> new GUIMainManager(login);
 					case "Administrators" -> new GUIMainAdmin(login);
-					default -> System.out.println("What access level is this?");
 					}
 					login.dispose();
 				}

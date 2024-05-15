@@ -575,7 +575,4 @@ public class GUIUserAdd extends JFrame {
 	public void setTxtValue(JTextField txtValue) {
 		this.txtValue = txtValue;
 	}
-	
-	
-
 }

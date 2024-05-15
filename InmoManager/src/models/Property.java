@@ -20,16 +20,19 @@ public class Property {
 	private boolean hasAC;
 	private boolean available;
 	private String status;
+	private int id;
+
 
 	public Property(){
 		
 	}
 
-	public Property(String address, String city, String type, int age, int rooms, int floors, int bathrooms,
+	public Property(int id, String address, String city, String type, int age, int rooms, int floors, int bathrooms,
 			int propertySize, int terrainSize, int garageSize, boolean hasGarden, boolean hasBasement,
 			boolean hasGarage, boolean hasPool, boolean hasLift, boolean hasTerrace, boolean hasAC, boolean available,
 			String status) {
 		super();
+		this.id = id;
 		this.address = address;
 		this.city = city;
 		this.type = type;
@@ -50,6 +53,15 @@ public class Property {
 		this.available = available;
 		this.status = status;
 	}
+	
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+	
 	public String getAddress() {
 		return address;
 	}

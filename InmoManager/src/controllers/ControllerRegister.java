@@ -99,15 +99,16 @@ public class ControllerRegister {
 	private boolean validateRegion() {
 		if (!gRegister.getFieldRegion().getText().strip().matches("[A-Za-z ]+")) {
 			if (gRegister.getFieldRegion().getText().strip().length() > 45) {
-				JOptionPane.showMessageDialog(gRegister, "The region name is too long (Max: 45 characters)", "Format error",
+				JOptionPane.showMessageDialog(gRegister, "The region name is too long (Max: 45 characters)",
+						"Format error",
 						JOptionPane.ERROR_MESSAGE);
 			} else {
 				JOptionPane.showMessageDialog(gRegister, "The region doesn't have a valid format", "Format error",
 						JOptionPane.ERROR_MESSAGE);
 			}
 			return false;
-		} else
-			return true;
+		}
+		return true;
 	}
 
 	private boolean validatePhone() {
@@ -115,8 +116,8 @@ public class ControllerRegister {
 			JOptionPane.showMessageDialog(gRegister, "The phone number doesn't have a valid format", "Format error",
 					JOptionPane.ERROR_MESSAGE);
 			return false;
-		} else
-			return true;
+		}
+		return true;
 	}
 
 	private boolean validateEmail() {
@@ -130,8 +131,8 @@ public class ControllerRegister {
 						JOptionPane.ERROR_MESSAGE);
 			}
 			return false;
-		} else
-			return true;
+		}
+		return true;
 	}
 
 	private boolean validateRePassword() {
@@ -140,11 +141,9 @@ public class ControllerRegister {
 
 		if (password.equals(rePassword))
 			return true;
-		else {
-			JOptionPane.showMessageDialog(gRegister, "The passwords doesn't match", "Passwords error",
-					JOptionPane.ERROR_MESSAGE);
-			return false;
-		}
+		JOptionPane.showMessageDialog(gRegister, "The passwords doesn't match", "Passwords error",
+				JOptionPane.ERROR_MESSAGE);
+		return false;
 	}
 
 	private boolean validatePassword() {
@@ -194,12 +193,10 @@ public class ControllerRegister {
 
 			if (hasSpecial && hasNumber)
 				return true;
-			else {
-				JOptionPane.showMessageDialog(gRegister,
-						"The password must contain at least one number and one special character", "Format error",
-						JOptionPane.ERROR_MESSAGE);
-				return false;
-			}
+			JOptionPane.showMessageDialog(gRegister,
+					"The password must contain at least one number and one special character", "Format error",
+					JOptionPane.ERROR_MESSAGE);
+			return false;
 		}
 	}
 
@@ -213,8 +210,8 @@ public class ControllerRegister {
 						JOptionPane.ERROR_MESSAGE);
 			}
 			return false;
-		} else
-			return true;
+		}
+		return true;
 	}
 
 	private boolean validateName() {
@@ -222,16 +219,16 @@ public class ControllerRegister {
 			JOptionPane.showMessageDialog(gRegister, "The name doesn't have a valid format", "Format error",
 					JOptionPane.ERROR_MESSAGE);
 			return false;
-		} else
-			return true;
+		}
+		return true;
 	}
 
 	private boolean validateDNI() {
 		if (!gRegister.getFieldDNI().getText().strip().matches("[0-9]{8}[A-Z]")) {
 			JOptionPane.showMessageDialog(gRegister, "The DNI doesn't have a valid format [00000000A]");
 			return false;
-		} else
-			return true;
+		}
+		return true;
 	}
 
 	private boolean checkBlankValues() {
@@ -251,11 +248,12 @@ public class ControllerRegister {
 		} else
 			return true;
 	}
-	
+
 	// Inserts a new user into the database
 	private void register() {
-		
-		try (Connection conn = ConnectionDB.connect()) {
+
+		try {
+			Connection conn = ConnectionDB.connect();
 			String DNI = gRegister.getFieldDNI().getText().strip();
 			String fullname = gRegister.getFieldName().getText().strip().replaceAll("\\s+", " ");
 			String username = gRegister.getFieldUsername().getText().strip();
@@ -265,7 +263,8 @@ public class ControllerRegister {
 			String region = gRegister.getFieldRegion().getText().strip().replaceAll("\\s+", " ");
 
 			PreparedStatement pst = conn
-					.prepareStatement("INSERT INTO inmomanager.Clients (DNI,fullName,userName,password,email,phoneNum,region)"
+					.prepareStatement(
+							"INSERT INTO inmomanager.Clients (DNI,fullName,userName,password,email,phoneNum,region)"
 									+ "VALUES (?,?,?,?,?,?,?)");
 			pst.setString(1, DNI);
 			pst.setString(2, fullname);
@@ -274,15 +273,16 @@ public class ControllerRegister {
 			pst.setString(5, email);
 			pst.setInt(6, phoneNumber);
 			pst.setString(7, region);
-			
+
 			int insertedData = pst.executeUpdate();
-			
-			if(insertedData > 0)
+
+			if (insertedData > 0)
 				JOptionPane.showMessageDialog(gRegister, "User registered succesfully! You may now log-in!");
 			else
-				JOptionPane.showMessageDialog(gRegister, "Something went wrong! User could not been registered!", "Error",
+				JOptionPane.showMessageDialog(gRegister, "Something went wrong! User could not been registered!",
+						"Error",
 						JOptionPane.ERROR_MESSAGE);
-			
+
 			conn.close();
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
