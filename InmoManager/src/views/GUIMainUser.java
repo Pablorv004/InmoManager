@@ -5,8 +5,6 @@ package views;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ActionListener;
-
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -15,6 +13,7 @@ import javax.swing.JSeparator;
 import javax.swing.border.EmptyBorder;
 
 import controllers.ControllerMainUser;
+import util.GlobalResources;
 
 public class GUIMainUser extends JFrame {
 
@@ -58,7 +57,7 @@ public class GUIMainUser extends JFrame {
 		
 		btnReturn = new JButton("");
 		btnReturn.setBounds(8, 6, 30, 30);
-		btnReturn.setIcon(new ImageIcon("files/images/Return25.png"));
+		btnReturn.setIcon(GlobalResources.getIconReturn());
 		btnReturn.setBorderPainted(false);
 		btnReturn.setContentAreaFilled(false);
 		contentPane.add(btnReturn);
@@ -73,7 +72,7 @@ public class GUIMainUser extends JFrame {
 		btnUser.setContentAreaFilled(false);
 		btnUser.setBorderPainted(false);
 		btnUser.setBounds(439, 6, 33, 30);
-		btnUser.setIcon(new ImageIcon("files/images/user.png"));
+		btnUser.setIcon(GlobalResources.getIconUser());
 		contentPane.add(btnUser);
 		//Adding controller
 		new ControllerMainUser(this);

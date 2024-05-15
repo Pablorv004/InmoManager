@@ -2,8 +2,6 @@ package views;
 
 import java.awt.Font;
 import java.awt.event.ActionListener;
-
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -12,6 +10,7 @@ import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 
 import controllers.ControllerMainAdmin;
+import util.GlobalResources;
 
 public class GUIMainAdmin extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -55,7 +54,7 @@ public class GUIMainAdmin extends JFrame {
 
 		btnReturn = new JButton("");
 		btnReturn.setBounds(8, 6, 30, 30);
-		btnReturn.setIcon(new ImageIcon("files/images/Return25.png"));
+		btnReturn.setIcon(GlobalResources.getIconReturn());
 		btnReturn.setBorderPainted(false);
 		btnReturn.setContentAreaFilled(false);
 		getContentPane().add(btnReturn);
