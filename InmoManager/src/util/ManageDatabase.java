@@ -7,7 +7,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.JOptionPane;
 
@@ -17,49 +19,95 @@ import models.Rentable_Property;
 
 public class ManageDatabase {
 
-    public static List<Property> getProperties(boolean searchRentables, boolean searchPurchasable, String... filters){
-        List<Property> properties = new ArrayList<Property>();
-        try{
+    public static Map<String, Integer> getCityCountMap(boolean searchRentable, boolean searchPurchasable) {
+        Map<String, Integer> cityCountMap = new LinkedHashMap<>();
+        try {
             Connection conn = ConnectionDB.connect();
-            String queryProperties = "SELECT * FROM inmomanager.";
-            String queryPropertiesP = "SELECT * FROM inmomanager.";
-            if(searchRentables)
-                queryProperties += "Rentable_Properties";
-            if (searchPurchasable)
-                queryPropertiesP += "Purchasable_Properties";
-            if(filters.length > 0){
-                queryProperties += " WHERE ";
-                queryPropertiesP += " WHERE ";
-            for(int i = 0; i < filters.length; i++){
-                String addition = filters[i];
-                if(i != filters.length - 1){
-                    queryProperties += addition + " AND ";
-                    queryPropertiesP += addition + " AND ";
-                }
-                else{
-                    queryProperties += addition + ";";
-                    queryPropertiesP += addition + ";";
-                }
-                Statement search = conn.createStatement();
-                ResultSet rs;
-                if(searchRentables){
-                    rs = search.executeQuery(queryProperties);
-                    while(rs.next()){
-                        properties.add(getRentableProperty(rs));
-                    }
-                }
-                if(searchPurchasable){
-                    rs = search.executeQuery(queryPropertiesP);
-                    while(rs.next()){
-                        properties.add(getPurchasableProperty(rs));
+            String queryRentable = "SELECT city, available FROM inmomanager.Rentable_Properties";
+            String queryPurchasable = "SELECT city, available FROM inmomanager.Purchasable_Properties";
+            Statement statement = conn.createStatement();
+            ResultSet rs;
+            if (searchRentable) {
+                rs = statement.executeQuery(queryRentable);
+                while (rs.next()) {
+                    boolean available = rs.getInt("available") == 1 ? true : false;
+                    if (available) {
+                        String city = rs.getString("city");
+                        cityCountMap.put(city, 1 + cityCountMap.getOrDefault(city, 0));
                     }
                 }
             }
-            return properties;
+            if (searchPurchasable) {
+                rs = statement.executeQuery(queryPurchasable);
+                while (rs.next()) {
+                    boolean available = rs.getInt("available") == 1 ? true : false;
+                    if (available) {
+                        String city = rs.getString("city");
+                        cityCountMap.put(city, 1 + cityCountMap.getOrDefault(city, 0));
+                    }
+                }
+            }
+
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
         }
-    } catch(ClassNotFoundException | SQLException e){
-        e.printStackTrace();
+        // Sort and return map
+        List<Map.Entry<String, Integer>> mapentrylist = new ArrayList<>(cityCountMap.entrySet());
+        mapentrylist.sort(Map.Entry.<String, Integer>comparingByValue().reversed());
+
+        Map<String, Integer> sortedMap = new LinkedHashMap<>();
+        for (Map.Entry<String, Integer> entry : mapentrylist)
+            sortedMap.put(entry.getKey(), entry.getValue());
+        return sortedMap;
     }
+
+    public static List<Property> getProperties(boolean searchRentables, boolean searchPurchasable, String... filters) {
+        List<Property> properties = new ArrayList<Property>();
+        try {
+            Connection conn = ConnectionDB.connect();
+            String queryProperties = "SELECT * FROM inmomanager.";
+            String queryPropertiesP = "SELECT * FROM inmomanager.";
+            if (searchRentables)
+                queryProperties += "Rentable_Properties";
+            if (searchPurchasable)
+                queryPropertiesP += "Purchasable_Properties";
+            if (filters.length > 0) {
+                queryProperties += " WHERE ";
+                queryPropertiesP += " WHERE ";
+                for (int i = 0; i < filters.length; i++) {
+                    String addition = filters[i];
+                    if (i != filters.length - 1) {
+                        queryProperties += addition + " AND ";
+                        queryPropertiesP += addition + " AND ";
+                    } else {
+                        if (addition.matches("totalValue .*")) {
+                            if (searchRentables) {
+                                addition = "rentValue " + filters[i].substring(10);
+                            }
+                        }
+                        queryProperties += addition + ";";
+                        queryPropertiesP += filters[i] + ";";
+                    }
+                }
+                Statement search = conn.createStatement();
+                ResultSet rs;
+                if (searchRentables) {
+                    rs = search.executeQuery(queryProperties);
+                    while (rs.next()) {
+                        properties.add(getRentableProperty(rs));
+                    }
+                }
+                if (searchPurchasable) {
+                    rs = search.executeQuery(queryPropertiesP);
+                    while (rs.next()) {
+                        properties.add(getPurchasableProperty(rs));
+                    }
+                }
+                return properties;
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
         return properties;
     }
 
@@ -73,11 +121,9 @@ public class ManageDatabase {
             boolean hasTerrace = resultSet.getInt("hasTerrace") == 1 ? true : false;
             boolean hasAC = resultSet.getInt("hasAC") == 1 ? true : false;
             boolean available = resultSet.getInt("available") == 1 ? true : false;
-            int garageSize = hasGarage ? resultSet.getInt("garageSize") : 0; //if the property has garage, then the garage size is not null
+            int garageSize = hasGarage ? resultSet.getInt("garageSize") : 0; // if the property has garage, then the
+                                                                             // garage size is not null
             int terrainSize = resultSet.getInt("terrainSize");
-            if(resultSet.wasNull()){
-                terrainSize = 0;
-            }
             return new Rentable_Property(resultSet.getInt("id"),
                     resultSet.getString("address"), resultSet.getString("city"),
                     resultSet.getString("type"), resultSet.getInt("age"),
@@ -91,6 +137,7 @@ public class ManageDatabase {
         }
         return null;
     }
+
     public static Property getPurchasableProperty(ResultSet resultSet) {
         try {
             boolean hasGarden = resultSet.getInt("hasGarden") == 1 ? true : false;
@@ -101,9 +148,10 @@ public class ManageDatabase {
             boolean hasTerrace = resultSet.getInt("hasTerrace") == 1 ? true : false;
             boolean hasAC = resultSet.getInt("hasAC") == 1 ? true : false;
             boolean available = resultSet.getInt("available") == 1 ? true : false;
-            int garageSize = hasGarage ? resultSet.getInt("garageSize") : 0; //if the property has garage, then the garage size is not null
+            int garageSize = hasGarage ? resultSet.getInt("garageSize") : 0; // if the property has garage, then the
+                                                                             // garage size is not null
             int terrainSize = resultSet.getInt("terrainSize");
-            if(resultSet.wasNull()){
+            if (resultSet.wasNull()) {
                 terrainSize = 0;
             }
             return new Purchasable_Property(resultSet.getInt("id"),

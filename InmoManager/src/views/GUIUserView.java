@@ -18,6 +18,7 @@ import javax.swing.border.EmptyBorder;
 
 import controllers.ControllerUserView;
 import util.GlobalResources;
+import java.awt.Color;
 
 public class GUIUserView extends JFrame {
 
@@ -70,21 +71,21 @@ public class GUIUserView extends JFrame {
 	private JLabel lblGarageSize;
 	private JButton btnInterestedList;
 	private JLabel lblIndex;
-	private GUIMainUser mainUser;
 	private JLabel lblPrice;
 	private JPanel panelPrice;
 	private JLabel lblPriceTag;
 	private JLabel lblBasement;
+	private ControllerUserView controllerUserView;
+	private JLabel lblResults;
 	/**
 	 * Create the frame.
 	 * @param mainUser 
 	 */
-	public GUIUserView(GUIMainUser mainUser) {
-		this.mainUser = mainUser;
+	public GUIUserView(JFrame frame) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 980, 545);
 		setTitle("View Properties");
-		setLocationRelativeTo(this.mainUser);
+		setLocationRelativeTo(frame);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -122,6 +123,11 @@ public class GUIUserView extends JFrame {
 		
 		panelInterestedCart = new JPanel();
 		panelTitle.add(panelInterestedCart, BorderLayout.EAST);
+		
+		lblResults = new JLabel("0 result(s) found.");
+		lblResults.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblResults.setForeground(new Color(0, 128, 0));
+		panelInterestedCart.add(lblResults);
 		
 		lblInterestedCount = new JLabel("0");
 		lblInterestedCount.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -208,18 +214,18 @@ public class GUIUserView extends JFrame {
 		panelData.add(panelSizes);
 		
 		lblPropertySize = new JLabel("100");
-		lblPropertySize.setIcon(new ImageIcon("files/images/propertySize40.png"));
+		lblPropertySize.setIcon(GlobalResources.getIconPropertySize());
 		lblPropertySize.setToolTipText("Has " + lblPropertySize.getText() + " square meters of terrain size.");
 		lblPropertySize.setFont(fontPropertyNumbers);
 		panelSizes.add(lblPropertySize);
 		
 		lblTerrainSize = new JLabel("150");
-		lblTerrainSize.setIcon(new ImageIcon("files/images/terrainSize40.png"));
+		lblTerrainSize.setIcon(GlobalResources.getIconTerrainSize());
 		lblTerrainSize.setToolTipText("Has " + lblTerrainSize.getText() + " square meters of terrain size.");
 		lblTerrainSize.setFont(fontPropertyNumbers);
 		
 		lblGarageSize = new JLabel("20");
-		lblGarageSize.setIcon(new ImageIcon("files/images/garageSize40.png"));
+		lblGarageSize.setIcon(GlobalResources.getIconGarageSize());
 		lblGarageSize.setToolTipText("Has " + lblGarageSize.getText() + " square meters of garage size.");
 		lblGarageSize.setFont(fontPropertyNumbers);
 		
@@ -231,19 +237,19 @@ public class GUIUserView extends JFrame {
 		panelData.add(panelRooms);
 		
 		lblFloors = new JLabel("1");
-		lblFloors.setIcon(new ImageIcon("files/images/floors40.png"));
+		lblFloors.setIcon(GlobalResources.getIconFloors());
 		lblFloors.setToolTipText("Has " + lblFloors.getText() + " floors.");
 		lblFloors.setFont(fontPropertyNumbers);
 		panelRooms.add(lblFloors);
 		
 		lblRooms = new JLabel("1");
-		lblRooms.setIcon(new ImageIcon("files/images/rooms40.png"));
+		lblRooms.setIcon(GlobalResources.getIconRooms());
 		lblRooms.setToolTipText("Has " + lblRooms.getText() + " rooms.");
 		lblRooms.setFont(fontPropertyNumbers);
 		panelRooms.add(lblRooms);
 		
 		lblBathrooms = new JLabel("1");
-		lblBathrooms.setIcon(new ImageIcon("files/images/bathrooms40.png"));
+		lblBathrooms.setIcon(GlobalResources.getIconBathrooms());
 		lblBathrooms.setToolTipText("Has " + lblBathrooms.getText() + " bathrooms.");
 		lblBathrooms.setFont(fontPropertyNumbers);
 		panelRooms.add(lblBathrooms);
@@ -258,43 +264,43 @@ public class GUIUserView extends JFrame {
 		lblLift = new JLabel("");
 		lblLift.setFont(fontPropertyNumbers);
 		lblLift.setToolTipText("Has a lift.");
-		lblLift.setIcon(new ImageIcon("files/images/lift40.png"));
+		lblLift.setIcon(GlobalResources.getIconLift());
 		panelFeatures.add(lblLift);
 		
 		lblAC = new JLabel("");
 		lblAC.setFont(fontPropertyNumbers);
 		lblAC.setToolTipText("Has an Air Conditioning unit.");
-		lblAC.setIcon(new ImageIcon("files/Images/ac40.png"));
+		lblAC.setIcon(GlobalResources.getIconAC());
 		panelFeatures.add(lblAC);
 		
 		lblGarden = new JLabel("");
 		lblGarden.setFont(fontPropertyNumbers);
 		lblGarden.setToolTipText("Has a garden.");
-		lblGarden.setIcon(new ImageIcon("files/Images/garden40.png"));
+		lblGarden.setIcon(GlobalResources.getIconGarden());
 		panelFeatures.add(lblGarden);
 		
 		lblGarage = new JLabel("");
 		lblGarage.setFont(fontPropertyNumbers);
 		lblGarage.setToolTipText("Has a garage.");
-		lblGarage.setIcon(new ImageIcon("files/Images/garage40.png"));
+		lblGarage.setIcon(GlobalResources.getIconGarage());
 		panelFeatures.add(lblGarage);
 		
 		lblTerrace = new JLabel("");
 		lblTerrace.setFont(fontPropertyNumbers);
 		lblTerrace.setToolTipText("Has a terrace.");
-		lblTerrace.setIcon(new ImageIcon("files/Images/terrace40.png"));
+		lblTerrace.setIcon(GlobalResources.getIconTerrace());
 		panelFeatures.add(lblTerrace);
 		
 		lblPool = new JLabel("");
 		lblPool.setFont(fontPropertyNumbers);
 		lblPool.setToolTipText("Has a pool.");
-		lblPool.setIcon(new ImageIcon("files/Images/pool40.png"));
+		lblPool.setIcon(GlobalResources.getIconPool());
 		panelFeatures.add(lblPool);
 		
 		lblBasement = new JLabel("");
 		lblBasement.setFont(fontPropertyNumbers);
 		lblBasement.setToolTipText("Has a basement.");
-		lblBasement.setIcon(new ImageIcon("files/Images/basement40.png"));
+		lblBasement.setIcon(GlobalResources.getIconBasement());
 		panelFeatures.add(lblBasement);
 		
 		lblPrice = new JLabel("Price");
@@ -308,7 +314,7 @@ public class GUIUserView extends JFrame {
 		
 		setVisible(true);
 		//Adding controllers...
-		new ControllerUserView(this);
+		setControllerUserView(new ControllerUserView(this));
 	}
 	public void addActListeners(ActionListener listener) {
 		btnNext.addActionListener(listener);
@@ -627,11 +633,17 @@ public class GUIUserView extends JFrame {
 	public void setLblIndex(JLabel lblIndex) {
 		this.lblIndex = lblIndex;
 	}
-	public GUIMainUser getMainUser() {
-		return mainUser;
+	public ControllerUserView getControllerUserView() {
+		return controllerUserView;
 	}
-	public void setMainUser(GUIMainUser mainUser) {
-		this.mainUser = mainUser;
+	public void setControllerUserView(ControllerUserView controllerUserView) {
+		this.controllerUserView = controllerUserView;
+	}
+	public JLabel getLblResults() {
+		return lblResults;
+	}
+	public void setLblResults(JLabel lblResults) {
+		this.lblResults = lblResults;
 	}
 	
 	

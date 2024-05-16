@@ -13,17 +13,19 @@ import models.Purchasable_Property;
 import models.Rentable_Property;
 import util.ManageDatabase;
 import views.GUIMainUser;
+import views.GUIPropertyFilter;
 import views.GUIUserView;
 
 public class ControllerUserView {
 	private GUIUserView userView;
-	private List<Property> properties, interestedProperties;
+	private List<Property> properties;
+
 	private int currentIdx = 0;
 	private Property currProperty;
 
 	public ControllerUserView(GUIUserView userView) {
 		this.userView = userView;
-		interestedProperties = new ArrayList<>();
+		new ArrayList<>();
 		this.userView.addActListeners(new ButtonListeners());
 		loadFirstProperties();
 		loadPropertyOnScreen();
@@ -44,7 +46,7 @@ public class ControllerUserView {
 				userView.dispose();
 				new GUIMainUser(null);
 			} else if (buttonPressed == userView.getBtnFilter()) {
-				// TODO: Add GUIPropertyFilter call.
+				new GUIPropertyFilter(userView);
 			} else if (buttonPressed == userView.getBtnInterested()) {
 				setInterested();
 			} else if (buttonPressed == userView.getBtnNext()) {
@@ -54,17 +56,17 @@ public class ControllerUserView {
 				currentIdx--;
 				loadPropertyOnScreen();
 			} else if (buttonPressed == userView.getBtnInterested()) {
-				//TODO: Add GUIPropertyInterestedList call.
 			}
 		}
 	}
 
-	public void refreshIdx(){
-		if(currentIdx == 0)
+	public void refreshIdx() {
+		userView.getLblResults().setText(properties.size() + " result(s) found.");
+		if (currentIdx == 0)
 			userView.getBtnPrevious().setEnabled(false);
 		else
 			userView.getBtnPrevious().setEnabled(true);
-		if(currentIdx == properties.size()-1)
+		if (currentIdx == properties.size() - 1)
 			userView.getBtnNext().setEnabled(false);
 		else
 			userView.getBtnNext().setEnabled(true);
@@ -76,69 +78,70 @@ public class ControllerUserView {
 		properties = ManageDatabase.getProperties(true, true, baseFilters);
 	}
 
-	public void loadOptionalProperties(){
+	public void loadOptionalProperties() {
 		currProperty = properties.get(currentIdx);
-		//These might not show...
-		if(currProperty.isHasGarden() && userView.getLblGarden().getParent() != userView.getPanelFeatures())
+		// These might not show...
+		if (currProperty.isHasGarden() && userView.getLblGarden().getParent() != userView.getPanelFeatures())
 			userView.getPanelFeatures().add(userView.getLblGarden());
 		else if (!currProperty.isHasGarden() && userView.getLblGarden().getParent() == userView.getPanelFeatures())
 			userView.getPanelFeatures().remove(userView.getLblGarden());
-		
-		if(currProperty.isHasBasement() && userView.getLblBasement().getParent() != userView.getPanelFeatures())
-		userView.getPanelFeatures().add(userView.getLblBasement());
+
+		if (currProperty.isHasBasement() && userView.getLblBasement().getParent() != userView.getPanelFeatures())
+			userView.getPanelFeatures().add(userView.getLblBasement());
 		else if (!currProperty.isHasBasement() && userView.getLblBasement().getParent() == userView.getPanelFeatures())
-		userView.getPanelFeatures().remove(userView.getLblBasement());
+			userView.getPanelFeatures().remove(userView.getLblBasement());
 
-		if(currProperty.isHasGarage() && userView.getLblGarage().getParent() != userView.getPanelFeatures())
-		userView.getPanelFeatures().add(userView.getLblGarage());
+		if (currProperty.isHasGarage() && userView.getLblGarage().getParent() != userView.getPanelFeatures())
+			userView.getPanelFeatures().add(userView.getLblGarage());
 		else if (!currProperty.isHasGarage() && userView.getLblGarage().getParent() == userView.getPanelFeatures())
-		userView.getPanelFeatures().remove(userView.getLblGarage());
+			userView.getPanelFeatures().remove(userView.getLblGarage());
 
-		if(currProperty.isHasPool() && userView.getLblPool().getParent() != userView.getPanelFeatures())
-		userView.getPanelFeatures().add(userView.getLblPool());
+		if (currProperty.isHasPool() && userView.getLblPool().getParent() != userView.getPanelFeatures())
+			userView.getPanelFeatures().add(userView.getLblPool());
 		else if (!currProperty.isHasPool() && userView.getLblPool().getParent() == userView.getPanelFeatures())
-		userView.getPanelFeatures().remove(userView.getLblPool());
+			userView.getPanelFeatures().remove(userView.getLblPool());
 
-		if(currProperty.isHasAC() && userView.getLblAC().getParent() != userView.getPanelFeatures())
-		userView.getPanelFeatures().add(userView.getLblAC());
+		if (currProperty.isHasAC() && userView.getLblAC().getParent() != userView.getPanelFeatures())
+			userView.getPanelFeatures().add(userView.getLblAC());
 		else if (!currProperty.isHasAC() && userView.getLblAC().getParent() == userView.getPanelFeatures())
-		userView.getPanelFeatures().remove(userView.getLblAC());
-		
-		if(currProperty.isHasLift() && userView.getLblLift().getParent() != userView.getPanelFeatures())
-		userView.getPanelFeatures().add(userView.getLblLift());
-		else if (!currProperty.isHasLift() && userView.getLblLift().getParent() == userView.getPanelFeatures())
-		userView.getPanelFeatures().remove(userView.getLblLift());
+			userView.getPanelFeatures().remove(userView.getLblAC());
 
-		if(currProperty.isHasTerrace() && userView.getLblTerrace().getParent() != userView.getPanelFeatures())
-		userView.getPanelFeatures().add(userView.getLblTerrace());
+		if (currProperty.isHasLift() && userView.getLblLift().getParent() != userView.getPanelFeatures())
+			userView.getPanelFeatures().add(userView.getLblLift());
+		else if (!currProperty.isHasLift() && userView.getLblLift().getParent() == userView.getPanelFeatures())
+			userView.getPanelFeatures().remove(userView.getLblLift());
+
+		if (currProperty.isHasTerrace() && userView.getLblTerrace().getParent() != userView.getPanelFeatures())
+			userView.getPanelFeatures().add(userView.getLblTerrace());
 		else if (!currProperty.isHasTerrace() && userView.getLblTerrace().getParent() == userView.getPanelFeatures())
-		userView.getPanelFeatures().remove(userView.getLblTerrace());
+			userView.getPanelFeatures().remove(userView.getLblTerrace());
 
 		userView.getPanelFeatures().revalidate();
 		userView.getPanelFeatures().repaint();
 
-		
-		if(currProperty.getTerrainSize() != 0 && userView.getLblTerrainSize().getParent() != userView.getPanelSizes())
-		userView.getPanelSizes().add(userView.getLblTerrainSize());
-		else if (currProperty.getTerrainSize() == 0 && userView.getLblTerrainSize().getParent() == userView.getPanelSizes())
-		userView.getPanelSizes().remove(userView.getLblTerrainSize());
+		if (currProperty.getTerrainSize() != 0 && userView.getLblTerrainSize().getParent() != userView.getPanelSizes())
+			userView.getPanelSizes().add(userView.getLblTerrainSize());
+		else if (currProperty.getTerrainSize() == 0
+				&& userView.getLblTerrainSize().getParent() == userView.getPanelSizes())
+			userView.getPanelSizes().remove(userView.getLblTerrainSize());
 
-		if(currProperty.isHasGarage() && userView.getLblGarageSize().getParent() != userView.getPanelSizes())
-		userView.getPanelSizes().add(userView.getLblGarageSize());
+		if (currProperty.isHasGarage() && userView.getLblGarageSize().getParent() != userView.getPanelSizes())
+			userView.getPanelSizes().add(userView.getLblGarageSize());
 		else if (!currProperty.isHasGarage() && userView.getLblGarageSize().getParent() == userView.getPanelSizes())
-		userView.getPanelSizes().remove(userView.getLblGarageSize());
+			userView.getPanelSizes().remove(userView.getLblGarageSize());
 
 		userView.getPanelSizes().revalidate();
 		userView.getPanelSizes().repaint();
 
 	}
 
-	public void loadPropertyOnScreen(){
+	public void loadPropertyOnScreen() {
 		currProperty = properties.get(currentIdx);
 		String sellOrRent = currProperty instanceof Rentable_Property ? " To Rent" : " For Purchase";
 		String priceType = currProperty instanceof Rentable_Property ? "Monthly Rent" : "Price";
-		int priceValue = currProperty instanceof Rentable_Property ? ((Rentable_Property)currProperty).getRentValue() : ((Purchasable_Property)currProperty).getTotalValue();
-		//These'll always show!
+		int priceValue = currProperty instanceof Rentable_Property ? ((Rentable_Property) currProperty).getRentValue()
+				: ((Purchasable_Property) currProperty).getTotalValue();
+		// These'll always show!
 		userView.getLblType().setText(currProperty.getType() + sellOrRent);
 		userView.getLblCity().setText(currProperty.getCity());
 		userView.getTxtStatus().setText(currProperty.getStatus());
@@ -152,12 +155,25 @@ public class ControllerUserView {
 		userView.getLblPriceTag().setText(String.valueOf(priceValue));
 		userView.getLblPropertyPhoto().setIcon(new ImageIcon("files/images/" + currProperty.getId() + ".png"));
 		userView.getLblPropertyMap().setIcon(new ImageIcon("files/images/" + currProperty.getId() + "Map.png"));
-		
-		//Let's set the tooltiptexts:
+
+		// Let's set the tooltiptexts:
 		userView.getLblRooms().setToolTipText("Has " + userView.getLblRooms().getText() + " rooms.");
 		userView.getLblBathrooms().setToolTipText("Has " + userView.getLblBathrooms().getText() + " bathrooms.");
 		userView.getLblFloors().setToolTipText("Has " + userView.getLblFloors().getText() + " floors.");
 		loadOptionalProperties();
 		refreshIdx();
 	}
+
+	public void resetIdx(){
+		currentIdx = 0;
+	}
+
+	public List<Property> getProperties() {
+		return properties;
+	}
+
+	public void setProperties(List<Property> properties) {
+		this.properties = properties;
+	}
+
 }
