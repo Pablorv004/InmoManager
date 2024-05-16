@@ -73,12 +73,17 @@ public class ManageDatabase {
             boolean hasTerrace = resultSet.getInt("hasTerrace") == 1 ? true : false;
             boolean hasAC = resultSet.getInt("hasAC") == 1 ? true : false;
             boolean available = resultSet.getInt("available") == 1 ? true : false;
+            int garageSize = hasGarage ? resultSet.getInt("garageSize") : 0; //if the property has garage, then the garage size is not null
+            int terrainSize = resultSet.getInt("terrainSize");
+            if(resultSet.wasNull()){
+                terrainSize = 0;
+            }
             return new Rentable_Property(resultSet.getInt("id"),
                     resultSet.getString("address"), resultSet.getString("city"),
                     resultSet.getString("type"), resultSet.getInt("age"),
                     resultSet.getInt("rooms"), resultSet.getInt("floors"), resultSet.getInt("bathrooms"),
-                    resultSet.getInt("propertySize"), resultSet.getInt("terrainSize"),
-                    resultSet.getInt("garageSize"), hasGarden, hasBasement, hasGarage, hasPool,
+                    resultSet.getInt("propertySize"), terrainSize,
+                    garageSize, hasGarden, hasBasement, hasGarage, hasPool,
                     hasLift, hasTerrace, hasAC, available, resultSet.getString("status"),
                     resultSet.getInt("rentValue"));
         } catch (SQLException e) {
@@ -96,14 +101,19 @@ public class ManageDatabase {
             boolean hasTerrace = resultSet.getInt("hasTerrace") == 1 ? true : false;
             boolean hasAC = resultSet.getInt("hasAC") == 1 ? true : false;
             boolean available = resultSet.getInt("available") == 1 ? true : false;
+            int garageSize = hasGarage ? resultSet.getInt("garageSize") : 0; //if the property has garage, then the garage size is not null
+            int terrainSize = resultSet.getInt("terrainSize");
+            if(resultSet.wasNull()){
+                terrainSize = 0;
+            }
             return new Purchasable_Property(resultSet.getInt("id"),
                     resultSet.getString("address"), resultSet.getString("city"),
                     resultSet.getString("type"), resultSet.getInt("age"),
                     resultSet.getInt("rooms"), resultSet.getInt("floors"), resultSet.getInt("bathrooms"),
-                    resultSet.getInt("propertySize"), resultSet.getInt("terrainSize"),
-                    resultSet.getInt("garageSize"), hasGarden, hasBasement, hasGarage, hasPool,
+                    resultSet.getInt("propertySize"), terrainSize,
+                    garageSize, hasGarden, hasBasement, hasGarage, hasPool,
                     hasLift, hasTerrace, hasAC, available, resultSet.getString("status"),
-                    resultSet.getInt("rentValue"));
+                    resultSet.getInt("totalValue"));
         } catch (SQLException e) {
             e.printStackTrace();
         }
