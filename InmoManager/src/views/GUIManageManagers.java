@@ -21,6 +21,7 @@ import util.GlobalResources;
 public class GUIManageManagers extends JFrame {
 
 	private static final long serialVersionUID = 1L;
+	private JScrollPane scrollPane;
 	private GUIMainManager gManager;
 	private JPanel contentPane;
 	private JPanel panelTitle;
@@ -83,7 +84,7 @@ public class GUIManageManagers extends JFrame {
 		
 		JLabel lblTitle = new JLabel("Manager Management");
 		lblTitle.setFont(new Font("Tahoma", Font.PLAIN, 30));
-		lblTitle.setBounds(192, 11, 297, 37);
+		lblTitle.setBounds(192, 11, 329, 37);
 		panelTitle.add(lblTitle);
 		lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		
@@ -96,7 +97,7 @@ public class GUIManageManagers extends JFrame {
 		separator.setBounds(0, 71, 714, 8);
 		contentPane.add(separator);
 		
-		JScrollPane scrollPane = new JScrollPane();
+		scrollPane = new JScrollPane();
 		scrollPane.setBounds(10, 82, 682, 168);
 		contentPane.add(scrollPane);
 		
@@ -337,6 +338,9 @@ public class GUIManageManagers extends JFrame {
 
 	public void setTable(JTable table) {
 		this.table = table;
+		scrollPane.setViewportView(table);
+	    contentPane.revalidate();
+	    contentPane.repaint();
 	}
 
 	public JButton getBtnReset() {

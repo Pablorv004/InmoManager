@@ -52,6 +52,11 @@ public class Manager extends User {
 	public void setManagerId(int managerId) {
 		this.managerId = managerId;
 	}
+	
+	public Object[] toArray() {
+		Object [] array = {this.getID(),this.getDNI(),this.getFullName(),this.getEmail(),this.getPhoneNum(),this.getHireDate(),this.getManagerId(),this.getSalary()};
+		return array;
+	}
 
 	@Override
 	public String toString() {
