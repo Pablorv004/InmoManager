@@ -2,8 +2,8 @@ package views;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionListener;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -23,13 +23,13 @@ public class GUIManageManagers extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private GUIMainManager gManager;
 	private JPanel contentPane;
-	private JPanel titlePanel;
+	private JPanel panelTitle;
 	private JTable table;
 	private JLabel lblLogo;
 	private JButton btnReset;
 	private JButton btnSearch;
-	private JPanel panel;
-	private JPanel panel_1;
+	private JPanel panelForm;
+	private JPanel panelImage;
 	private JLabel lblImage_1;
 	private JButton btnNext;
 	private JButton btnPrevious;
@@ -39,7 +39,7 @@ public class GUIManageManagers extends JFrame {
 	private JTextField fieldID;
 	private JLabel lblDNI;
 	private JTextField fieldDNI;
-	private JPanel panel_2;
+	private JPanel panelEdit;
 	private JLabel lblName;
 	private JTextField fieldName;
 	private JPanel panelCredentials;
@@ -76,20 +76,21 @@ public class GUIManageManagers extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		titlePanel = new JPanel();
-		titlePanel.setBounds(10, 11, 682, 60);
-		contentPane.add(titlePanel);
-		titlePanel.setLayout(null);
+		panelTitle = new JPanel();
+		panelTitle.setBounds(10, 11, 682, 60);
+		contentPane.add(panelTitle);
+		panelTitle.setLayout(null);
 		
 		JLabel lblTitle = new JLabel("Manager Management");
 		lblTitle.setFont(new Font("Tahoma", Font.PLAIN, 30));
 		lblTitle.setBounds(192, 11, 297, 37);
-		titlePanel.add(lblTitle);
+		panelTitle.add(lblTitle);
 		lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		
 		lblLogo = new JLabel("");
+		lblLogo.setIcon(GlobalResources.getIconSmall());
 		lblLogo.setBounds(0, 2, 64, 55);
-		titlePanel.add(lblLogo);
+		panelTitle.add(lblLogo);
 		
 		JSeparator separator = new JSeparator();
 		separator.setBounds(0, 71, 714, 8);
@@ -114,66 +115,66 @@ public class GUIManageManagers extends JFrame {
 		btnReset.setBounds(506, 254, 88, 23);
 		contentPane.add(btnReset);
 		
-		panel = new JPanel();
-		panel.setBorder(new LineBorder(new Color(192, 192, 192)));
-		panel.setBounds(10, 302, 479, 280);
-		contentPane.add(panel);
-		panel.setLayout(null);
+		panelForm = new JPanel();
+		panelForm.setBorder(new LineBorder(new Color(192, 192, 192)));
+		panelForm.setBounds(10, 302, 479, 280);
+		contentPane.add(panelForm);
+		panelForm.setLayout(null);
 		
 		lblID = new JLabel("ID");
 		lblID.setBounds(413, 11, 25, 20);
-		panel.add(lblID);
+		panelForm.add(lblID);
 		
 		fieldID = new JTextField();
 		fieldID.setEditable(false);
 		fieldID.setHorizontalAlignment(SwingConstants.LEFT);
 		fieldID.setBounds(434, 11, 35, 20);
-		panel.add(fieldID);
+		panelForm.add(fieldID);
 		fieldID.setColumns(10);
 		
 		lblDNI = new JLabel("DNI");
 		lblDNI.setBounds(10, 45, 25, 20);
-		panel.add(lblDNI);
+		panelForm.add(lblDNI);
 		
 		fieldDNI = new JTextField();
 		fieldDNI.setEditable(false);
 		fieldDNI.setHorizontalAlignment(SwingConstants.LEFT);
 		fieldDNI.setColumns(10);
 		fieldDNI.setBounds(52, 45, 83, 20);
-		panel.add(fieldDNI);
+		panelForm.add(fieldDNI);
 		
-		panel_2 = new JPanel();
-		panel_2.setBorder(new LineBorder(new Color(192, 192, 192)));
-		panel_2.setBounds(285, 240, 189, 35);
-		panel.add(panel_2);
-		panel_2.setLayout(null);
+		panelEdit = new JPanel();
+		panelEdit.setBorder(new LineBorder(new Color(192, 192, 192)));
+		panelEdit.setBounds(285, 240, 189, 35);
+		panelForm.add(panelEdit);
+		panelEdit.setLayout(null);
 		
 		btnEdit = new JButton("Edit");
 		btnEdit.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		btnEdit.setBounds(4, 6, 60, 23);
-		panel_2.add(btnEdit);
+		panelEdit.add(btnEdit);
 		
 		btnApply = new JButton("Apply Changes");
 		btnApply.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		btnApply.setEnabled(false);
 		btnApply.setBounds(68, 6, 117, 23);
-		panel_2.add(btnApply);
+		panelEdit.add(btnApply);
 		
 		lblName = new JLabel("Name");
 		lblName.setBounds(10, 79, 43, 20);
-		panel.add(lblName);
+		panelForm.add(lblName);
 		
 		fieldName = new JTextField();
 		fieldName.setEditable(false);
 		fieldName.setHorizontalAlignment(SwingConstants.LEFT);
 		fieldName.setColumns(10);
 		fieldName.setBounds(52, 79, 210, 20);
-		panel.add(fieldName);
+		panelForm.add(fieldName);
 		
 		panelCredentials = new JPanel();
 		panelCredentials.setBorder(new LineBorder(new Color(192, 192, 192)));
 		panelCredentials.setBounds(285, 153, 189, 76);
-		panel.add(panelCredentials);
+		panelForm.add(panelCredentials);
 		panelCredentials.setLayout(null);
 		
 		lblUsername = new JLabel("Username");
@@ -201,112 +202,302 @@ public class GUIManageManagers extends JFrame {
 		lblCredentials = new JLabel("Credentials");
 		lblCredentials.setHorizontalAlignment(SwingConstants.CENTER);
 		lblCredentials.setBounds(337, 134, 75, 14);
-		panel.add(lblCredentials);
+		panelForm.add(lblCredentials);
 		
 		lblEmail = new JLabel("Email");
 		lblEmail.setBounds(10, 113, 43, 20);
-		panel.add(lblEmail);
+		panelForm.add(lblEmail);
 		
 		fieldEmail = new JTextField();
 		fieldEmail.setHorizontalAlignment(SwingConstants.LEFT);
 		fieldEmail.setEditable(false);
 		fieldEmail.setColumns(10);
 		fieldEmail.setBounds(52, 113, 210, 20);
-		panel.add(fieldEmail);
+		panelForm.add(fieldEmail);
 		
 		lblPhone = new JLabel("Phone");
 		lblPhone.setBounds(10, 147, 43, 20);
-		panel.add(lblPhone);
+		panelForm.add(lblPhone);
 		
 		fieldPhone = new JTextField();
 		fieldPhone.setHorizontalAlignment(SwingConstants.LEFT);
 		fieldPhone.setEditable(false);
 		fieldPhone.setColumns(10);
 		fieldPhone.setBounds(52, 147, 106, 20);
-		panel.add(fieldPhone);
+		panelForm.add(fieldPhone);
 		
 		lblCommission = new JLabel("Commission");
 		lblCommission.setBounds(10, 249, 78, 20);
-		panel.add(lblCommission);
+		panelForm.add(lblCommission);
 		
 		fieldCommission = new JTextField();
 		fieldCommission.setHorizontalAlignment(SwingConstants.LEFT);
 		fieldCommission.setEditable(false);
 		fieldCommission.setColumns(10);
 		fieldCommission.setBounds(88, 249, 35, 20);
-		panel.add(fieldCommission);
+		panelForm.add(fieldCommission);
 		
 		lblBank = new JLabel("Bank Account");
 		lblBank.setBounds(10, 11, 90, 20);
-		panel.add(lblBank);
+		panelForm.add(lblBank);
 		
 		fieldBank = new JTextField();
 		fieldBank.setHorizontalAlignment(SwingConstants.LEFT);
 		fieldBank.setEditable(false);
 		fieldBank.setColumns(10);
 		fieldBank.setBounds(96, 11, 307, 20);
-		panel.add(fieldBank);
+		panelForm.add(fieldBank);
 		
 		lblHireDate = new JLabel("Hire Date");
 		lblHireDate.setHorizontalAlignment(SwingConstants.LEFT);
 		lblHireDate.setBounds(10, 181, 68, 20);
-		panel.add(lblHireDate);
+		panelForm.add(lblHireDate);
 		
 		fieldHireDate = new JTextField();
 		fieldHireDate.setHorizontalAlignment(SwingConstants.LEFT);
 		fieldHireDate.setEditable(false);
 		fieldHireDate.setColumns(10);
 		fieldHireDate.setBounds(72, 181, 131, 20);
-		panel.add(fieldHireDate);
+		panelForm.add(fieldHireDate);
 		
 		lblManagerID = new JLabel("Manager ID");
 		lblManagerID.setBounds(142, 249, 78, 20);
-		panel.add(lblManagerID);
+		panelForm.add(lblManagerID);
 		
 		fieldManagerID = new JTextField();
 		fieldManagerID.setHorizontalAlignment(SwingConstants.LEFT);
 		fieldManagerID.setEditable(false);
 		fieldManagerID.setColumns(10);
 		fieldManagerID.setBounds(223, 249, 35, 20);
-		panel.add(fieldManagerID);
+		panelForm.add(fieldManagerID);
 		
 		lblSalary = new JLabel("Salary");
 		lblSalary.setBounds(10, 215, 43, 20);
-		panel.add(lblSalary);
+		panelForm.add(lblSalary);
 		
 		fieldSalary = new JTextField();
 		fieldSalary.setHorizontalAlignment(SwingConstants.LEFT);
 		fieldSalary.setEditable(false);
 		fieldSalary.setColumns(10);
 		fieldSalary.setBounds(63, 215, 61, 20);
-		panel.add(fieldSalary);
+		panelForm.add(fieldSalary);
 		
-		panel_1 = new JPanel();
-		panel_1.setBounds(506, 302, 186, 210);
-		contentPane.add(panel_1);
-		panel_1.setLayout(null);
+		panelImage = new JPanel();
+		panelImage.setBounds(506, 302, 186, 210);
+		contentPane.add(panelImage);
+		panelImage.setLayout(null);
 		
 		lblImage_1 = new JLabel("Image");
 		lblImage_1.setBounds(7, 0, 171, 167);
 		lblImage_1.setBorder(new LineBorder(new Color(192, 192, 192)));
 		lblImage_1.setHorizontalAlignment(SwingConstants.CENTER);
-		panel_1.add(lblImage_1);
+		panelImage.add(lblImage_1);
 		
 		btnNext = new JButton("Next");
 		btnNext.setBounds(6, 178, 77, 23);
-		panel_1.add(btnNext);
+		panelImage.add(btnNext);
 		
 		btnPrevious = new JButton("Previous");
 		btnPrevious.setBounds(89, 178, 89, 23);
-		panel_1.add(btnPrevious);
+		panelImage.add(btnPrevious);
 		
 		btnReturn = new JButton("");
 		btnReturn.setBounds(642, 11, 30, 30);
 		btnReturn.setIcon(GlobalResources.getIconReturn());
 		btnReturn.setContentAreaFilled(false);
 		btnReturn.setBorderPainted(false);
-		titlePanel.add(btnReturn);
+		panelTitle.add(btnReturn);
+		
+		new ControllerManageManagers(this);
 		
 		setVisible(true);
 	}
+	
+	public void addActListener (ActionListener listener) {
+		this.btnApply.addActionListener(listener);
+		this.btnEdit.addActionListener(listener);
+		this.btnNext.addActionListener(listener);
+		this.btnPrevious.addActionListener(listener);
+		this.btnReset.addActionListener(listener);
+		this.btnReturn.addActionListener(listener);
+		this.btnSearch.addActionListener(listener);
+	}
+
+	public GUIMainManager getgManager() {
+		return gManager;
+	}
+
+	public void setgManager(GUIMainManager gManager) {
+		this.gManager = gManager;
+	}
+
+	public JTable getTable() {
+		return table;
+	}
+
+	public void setTable(JTable table) {
+		this.table = table;
+	}
+
+	public JButton getBtnReset() {
+		return btnReset;
+	}
+
+	public void setBtnReset(JButton btnReset) {
+		this.btnReset = btnReset;
+	}
+
+	public JButton getBtnSearch() {
+		return btnSearch;
+	}
+
+	public void setBtnSearch(JButton btnSearch) {
+		this.btnSearch = btnSearch;
+	}
+
+	public JLabel getLblImage_1() {
+		return lblImage_1;
+	}
+
+	public void setLblImage_1(JLabel lblImage_1) {
+		this.lblImage_1 = lblImage_1;
+	}
+
+	public JButton getBtnNext() {
+		return btnNext;
+	}
+
+	public void setBtnNext(JButton btnNext) {
+		this.btnNext = btnNext;
+	}
+
+	public JButton getBtnPrevious() {
+		return btnPrevious;
+	}
+
+	public void setBtnPrevious(JButton btnPrevious) {
+		this.btnPrevious = btnPrevious;
+	}
+
+	public JButton getBtnEdit() {
+		return btnEdit;
+	}
+
+	public void setBtnEdit(JButton btnEdit) {
+		this.btnEdit = btnEdit;
+	}
+
+	public JButton getBtnApply() {
+		return btnApply;
+	}
+
+	public void setBtnApply(JButton btnApply) {
+		this.btnApply = btnApply;
+	}
+
+	public JTextField getFieldID() {
+		return fieldID;
+	}
+
+	public void setFieldID(JTextField fieldID) {
+		this.fieldID = fieldID;
+	}
+
+	public JTextField getFieldDNI() {
+		return fieldDNI;
+	}
+
+	public void setFieldDNI(JTextField fieldDNI) {
+		this.fieldDNI = fieldDNI;
+	}
+
+	public JTextField getFieldName() {
+		return fieldName;
+	}
+
+	public void setFieldName(JTextField fieldName) {
+		this.fieldName = fieldName;
+	}
+
+	public JTextField getFieldUsername() {
+		return fieldUsername;
+	}
+
+	public void setFieldUsername(JTextField fieldUsername) {
+		this.fieldUsername = fieldUsername;
+	}
+
+	public JTextField getFieldPassword() {
+		return fieldPassword;
+	}
+
+	public void setFieldPassword(JTextField fieldPassword) {
+		this.fieldPassword = fieldPassword;
+	}
+
+	public JTextField getFieldEmail() {
+		return fieldEmail;
+	}
+
+	public void setFieldEmail(JTextField fieldEmail) {
+		this.fieldEmail = fieldEmail;
+	}
+
+	public JTextField getFieldPhone() {
+		return fieldPhone;
+	}
+
+	public void setFieldPhone(JTextField fieldPhone) {
+		this.fieldPhone = fieldPhone;
+	}
+
+	public JTextField getFieldCommission() {
+		return fieldCommission;
+	}
+
+	public void setFieldCommission(JTextField fieldCommission) {
+		this.fieldCommission = fieldCommission;
+	}
+
+	public JTextField getFieldBank() {
+		return fieldBank;
+	}
+
+	public void setFieldBank(JTextField fieldBank) {
+		this.fieldBank = fieldBank;
+	}
+
+	public JTextField getFieldHireDate() {
+		return fieldHireDate;
+	}
+
+	public void setFieldHireDate(JTextField fieldHireDate) {
+		this.fieldHireDate = fieldHireDate;
+	}
+
+	public JTextField getFieldManagerID() {
+		return fieldManagerID;
+	}
+
+	public void setFieldManagerID(JTextField fieldManagerID) {
+		this.fieldManagerID = fieldManagerID;
+	}
+
+	public JTextField getFieldSalary() {
+		return fieldSalary;
+	}
+
+	public void setFieldSalary(JTextField fieldSalary) {
+		this.fieldSalary = fieldSalary;
+	}
+
+	public JButton getBtnReturn() {
+		return btnReturn;
+	}
+
+	public void setBtnReturn(JButton btnReturn) {
+		this.btnReturn = btnReturn;
+	}
+	
+	
 }
