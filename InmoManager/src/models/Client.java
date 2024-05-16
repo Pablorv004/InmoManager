@@ -12,8 +12,8 @@ public class Client extends User {
 	}
 
 	public Client(int iD, String dNI, String fullName, String userName, String password, String email, int phoneNum,
-			String region, String backAccountNum, LocalDateTime creationTime) {
-		super(iD, dNI, fullName, userName, password, email, phoneNum, backAccountNum);
+			String region, String bankAccountNum, LocalDateTime creationTime) {
+		super(iD, dNI, fullName, userName, password, email, phoneNum, bankAccountNum);
 		this.region = region;
 		this.creationTime = creationTime;
 	}

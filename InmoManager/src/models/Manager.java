@@ -13,8 +13,8 @@ public class Manager extends User {
 	}
 
 	public Manager(int iD, String dNI, String fullName, String userName, String password, String email, int phoneNum,
-			double comission, String backAccountNum, LocalDateTime hireDate, int managerId, double salary) {
-		super(iD, dNI, fullName, userName, password, email, phoneNum, backAccountNum);
+			double comission, String bankAccountNum, LocalDateTime hireDate, int managerId, double salary) {
+		super(iD, dNI, fullName, userName, password, email, phoneNum, bankAccountNum);
 		this.comission = comission;
 		this.salary = salary;
 		this.hireDate = hireDate;
