@@ -1,4 +1,4 @@
-package views;
+package controllers;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,6 +20,8 @@ import models.Admin;
 import models.Manager;
 import models.User;
 import util.ConnectionDB;
+import views.GUIMainManager;
+import views.GUIManageManagers;
 
 public class ControllerManageManagers {
 	GUIManageManagers gManageManagers;
@@ -30,7 +32,7 @@ public class ControllerManageManagers {
 		this.gManageManagers = gManageManagers;
 		this.currentUser = ConnectionDB.getCurrentUser();
 		this.managerList = getManagers();
-		enabledFields();
+		enableFields();
 		updateTable();
 
 		gManageManagers.addActListener(new ActListener());
@@ -83,7 +85,7 @@ public class ControllerManageManagers {
 	// METHODS
 	
 	// Enables TextFields depending of the current user being an Admin or a Manager
-	private void enabledFields() {
+	private void enableFields() {
 		if (currentUser instanceof Admin)
 			for (JTextField textField : gManageManagers.getTextFieldList())
 				textField.setEditable(true);

@@ -20,6 +20,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.event.ListSelectionListener;
 
+import controllers.ControllerManageManagers;
 import util.GlobalResources;
 
 public class GUIManageManagers extends JFrame {
