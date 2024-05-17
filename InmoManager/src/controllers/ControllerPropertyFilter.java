@@ -62,7 +62,10 @@ public class ControllerPropertyFilter {
         }
     }
 
-    // Call methods for each one
+    /**
+     * @param frame Parent frame. you must check if the parent frame you're working
+     *              on is checked in this method. If not, it won't filter anything.
+     */
     public static void applyFilters(JFrame frame, boolean checkRentable, boolean checkPurchasable,
             String... filters) {
         if (frame instanceof GUIUserView) {
@@ -99,13 +102,10 @@ public class ControllerPropertyFilter {
         }
 
     }
-
-    public boolean garageInserted() {
-        return (propertyFilter.getCbxGarage().isSelected() && !propertyFilter.getTxtGarageInit().getText().isBlank()
-                && !propertyFilter.getTxtGarageFinal().getText().isBlank())
-                || !propertyFilter.getCbxGarage().isSelected();
-    }
-
+    /**
+     * Gets all the filters.
+     * @return String[] filters to apply to the properties.
+     */
     public String[] getFilters() throws NumberFormatException {
         List<String> filters = new ArrayList<>();
         filters.add("available = 1");
@@ -178,7 +178,9 @@ public class ControllerPropertyFilter {
         System.out.println(Arrays.toString(ConversionMethods.stringListToArray(filters)));
         return ConversionMethods.stringListToArray(filters);
     }
-
+    /**
+     * Gets the filter for the cities.
+     */
     public String getSelectedCitiesFilter() {
         String cities = "";
         List<String> selectedCities = propertyFilter.getListCities().getSelectedValuesList();
@@ -190,7 +192,9 @@ public class ControllerPropertyFilter {
         }
         return cities;
     }
-
+    /**
+     * Recovers a map containing the city and the quantity of properties in it, and puts it on a DefaultListModel to then apply, revalidate and repaint.
+     */
     public void initializeListCities() {
         Map<String, Integer> map = ManageDatabase.getCityCountMap(propertyFilter.getCbxRent().isSelected(),
                 propertyFilter.getCbxSale().isSelected());
@@ -199,10 +203,13 @@ public class ControllerPropertyFilter {
         for (Map.Entry<String, Integer> entry : map.entrySet())
             dlm.add(idx++, entry.getKey() + "(" + entry.getValue() + ")");
         propertyFilter.getListCities().setModel(dlm);
-        propertyFilter.getPanelData().revalidate();
+     
+
         propertyFilter.getPanelData().repaint();
     }
-
+    /**
+     * Initializes all the comboboxes.
+     */
     public void initializeCBCounts() {
         for (int i = 0; i < 100; i++) {
             propertyFilter.getCbFloors().addItem(i);
@@ -210,10 +217,13 @@ public class ControllerPropertyFilter {
             propertyFilter.getCbRooms().addItem(i);
         }
         propertyFilter.getCbFloors().setSelectedIndex(-1);
-        propertyFilter.getCbRooms().setSelectedIndex(-1);
+     
+
         propertyFilter.getCbBathrooms().setSelectedIndex(-1);
     }
-
+    /**
+     * Resets all JComponents to default.
+     */
     public void resetFilters() {
         // Default filters:
         propertyFilter.getCbxRent().setSelected(true);
