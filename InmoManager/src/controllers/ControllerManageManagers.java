@@ -32,7 +32,6 @@ public class ControllerManageManagers {
 		this.gManageManagers = gManageManagers;
 		this.currentUser = ConnectionDB.getCurrentUser();
 		this.managerList = getManagers();
-		enableFields();
 		updateTable();
 
 		gManageManagers.addActListener(new ActListener());
@@ -49,6 +48,8 @@ public class ControllerManageManagers {
 			if (obj == gManageManagers.getBtnReturn()) {
 				gManageManagers.dispose();
 				new GUIMainManager(gManageManagers.getgManager().getgLogin());
+			} else if (obj == gManageManagers.getBtnEdit()) {
+				enableFields();
 			}
 		}
 	}
