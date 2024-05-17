@@ -42,12 +42,12 @@ public class ConnectionDB {
         ConnectionDB.userAccessLvl = userAccessLvl;
     }
 
-    public static String getCurrentUsername() {
+    public static String getLoginUsername() {
         return currentUsername;
     }
 
-    public static void setCurrentUsername(String currentUsername) {
-        ConnectionDB.currentUsername = currentUsername;
+    public static void setLoginUsername(String loginUsername) {
+        ConnectionDB.currentUsername = loginUsername;
     }
 
     public static User getCurrentUser() {
@@ -56,7 +56,7 @@ public class ConnectionDB {
 			Connection conn = ConnectionDB.connect();
 			if (ConnectionDB.getUserAccessLvl() != null) {
 				String query = "SELECT * FROM inmomanager." + ConnectionDB.getUserAccessLvl() + " WHERE userName = '"
-						+ ConnectionDB.getCurrentUsername() + "'";
+						+ ConnectionDB.getLoginUsername() + "'";
 				try (Statement statementConnection = conn.createStatement()) {
 					ResultSet result = statementConnection.executeQuery(query);
 					result.next();

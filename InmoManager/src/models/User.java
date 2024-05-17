@@ -8,14 +8,14 @@ public class User {
 	private String password;
 	private String email;
 	private int phoneNum;
-	private String backAccountNum;
+	private String bankAccountNum;
 
 	public User() {
 		super();
 	}
 
 	public User(int id, String DNI, String fullName, String userName, String password, String email, int phoneNum,
-			String backAccountNum) {
+			String bankAccountNum) {
 		super();
 		this.id = id;
 		this.DNI = DNI;
@@ -24,7 +24,7 @@ public class User {
 		this.password = password;
 		this.email = email;
 		this.phoneNum = phoneNum;
-		this.backAccountNum = backAccountNum;
+		this.bankAccountNum = bankAccountNum;
 	}
 
 	public int getID() {
@@ -83,18 +83,18 @@ public class User {
 		this.phoneNum = phoneNum;
 	}
 
-	public String getBackAccountNum() {
-		return backAccountNum;
+	public String getBankAccountNum() {
+		return bankAccountNum;
 	}
 
-	public void setBackAccountNum(String backAccountNum) {
-		this.backAccountNum = backAccountNum;
+	public void setBankAccountNum(String backAccountNum) {
+		this.bankAccountNum = backAccountNum;
 	}
 
 	@Override
 	public String toString() {
 		return getClass().getSimpleName() + " -> ID=" + id + ", DNI=" + DNI + ", fullName=" + fullName + ", userName=" + userName + ", password="
-				+ password + ", email=" + email + ", phoneNum=" + phoneNum + ", backAccountNum=" + backAccountNum;
+				+ password + ", email=" + email + ", phoneNum=" + phoneNum + ", backAccountNum=" + bankAccountNum;
 	}
 
 }

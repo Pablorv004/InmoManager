@@ -35,7 +35,7 @@ public class ControllerLogin {
 			if (statementConnection.executeQuery().next()) {
 				userFound = true;
 				ConnectionDB.setUserAccessLvl("Clients");
-				ConnectionDB.setCurrentUsername(username);
+				ConnectionDB.setLoginUsername(username);
 			} else {
 				// Checking managers...
 				statementConnection = conn
@@ -44,7 +44,7 @@ public class ControllerLogin {
 				if (statementConnection.executeQuery().next()) {
 					userFound = true;
 					ConnectionDB.setUserAccessLvl("Managers");
-					ConnectionDB.setCurrentUsername(username);
+					ConnectionDB.setLoginUsername(username);
 				} else {
 					// Checking administrators...
 					statementConnection = conn
@@ -53,7 +53,7 @@ public class ControllerLogin {
 					if (statementConnection.executeQuery().next()) {
 						userFound = true;
 						ConnectionDB.setUserAccessLvl("Administrators");
-						ConnectionDB.setCurrentUsername(username);
+						ConnectionDB.setLoginUsername(username);
 					}
 				}
 			}

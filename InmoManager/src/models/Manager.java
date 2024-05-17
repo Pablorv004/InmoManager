@@ -13,8 +13,8 @@ public class Manager extends User {
 	}
 
 	public Manager(int iD, String dNI, String fullName, String userName, String password, String email, int phoneNum,
-			double comission, String backAccountNum, LocalDateTime hireDate, int managerId, double salary) {
-		super(iD, dNI, fullName, userName, password, email, phoneNum, backAccountNum);
+			double comission, String bankAccountNum, LocalDateTime hireDate, int managerId, double salary) {
+		super(iD, dNI, fullName, userName, password, email, phoneNum, bankAccountNum);
 		this.comission = comission;
 		this.salary = salary;
 		this.hireDate = hireDate;
@@ -51,6 +51,11 @@ public class Manager extends User {
 
 	public void setManagerId(int managerId) {
 		this.managerId = managerId;
+	}
+	
+	public Object[] toArray() {
+		Object [] array = {this.getID(),this.getDNI(),this.getFullName(),this.getEmail(),this.getPhoneNum(),this.getHireDate(),this.getManagerId(),this.getSalary()};
+		return array;
 	}
 
 	@Override
