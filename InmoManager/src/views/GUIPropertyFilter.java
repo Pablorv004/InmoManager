@@ -36,7 +36,7 @@ public class GUIPropertyFilter extends JFrame {
 	private JPanel panelRentSale;
 	private JCheckBox cbxRent;
 	private JCheckBox cbxSale;
-	private GUIUserView userView;
+	private JFrame parentFrame;
 	private JLabel lblCities;
 	private JLabel lblAge;
 	private JPanel panelAgeRange;
@@ -97,12 +97,12 @@ public class GUIPropertyFilter extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public GUIPropertyFilter(GUIUserView userView) {
-		this.userView = userView;
+	public GUIPropertyFilter(JFrame parentFrame) {
+		this.parentFrame = parentFrame;
 		setTitle("Filter");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 900, 800);
-		setLocationRelativeTo(this.userView);
+		setLocationRelativeTo(this.parentFrame);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -345,7 +345,7 @@ public class GUIPropertyFilter extends JFrame {
 		lblEur = new JLabel("EUR");
 		panelPriceRange.add(lblEur);
 		//Add controller
-		new ControllerPropertyFilter(this, userView);
+		new ControllerPropertyFilter(this, parentFrame);
 		setVisible(true);
 		
 	}
@@ -448,12 +448,12 @@ public class GUIPropertyFilter extends JFrame {
 		this.cbxSale = cbxSale;
 	}
 
-	public GUIUserView getUserView() {
-		return userView;
+	public JFrame getParentFrame() {
+		return parentFrame;
 	}
 
-	public void setUserView(GUIUserView userView) {
-		this.userView = userView;
+	public void setParentFrame(JFrame parentFrame) {
+		this.parentFrame = parentFrame;
 	}
 
 	public JLabel getLblCities() {

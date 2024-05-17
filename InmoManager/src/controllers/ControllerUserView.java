@@ -1,5 +1,6 @@
 package controllers;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -7,6 +8,7 @@ import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 
 import models.Property;
 import models.Purchasable_Property;
@@ -61,7 +63,7 @@ public class ControllerUserView {
 	}
 
 	public void refreshIdx() {
-		userView.getLblResults().setText(properties.size() + " result(s) found.");
+
 		if (currentIdx == 0)
 			userView.getBtnPrevious().setEnabled(false);
 		else
@@ -73,9 +75,18 @@ public class ControllerUserView {
 		userView.getLblIndex().setText((currentIdx + 1) + "/" + properties.size());
 	}
 
+	public void setResultsFound() {
+		userView.getLblResults().setText(properties.size() + " result(s) found.");
+		if (properties.size() == 0) {
+			userView.getLblResults().setForeground(new Color(128, 0, 0));
+		} else
+			userView.getLblResults().setForeground(new Color(0, 128, 0));
+	}
+
 	public void loadFirstProperties() {
 		String[] baseFilters = { "available = 1" };
 		properties = ManageDatabase.getProperties(true, true, baseFilters);
+		setResultsFound();
 	}
 
 	public void loadOptionalProperties() {
@@ -136,6 +147,7 @@ public class ControllerUserView {
 	}
 
 	public void loadPropertyOnScreen() {
+		refreshIdx();
 		currProperty = properties.get(currentIdx);
 		String sellOrRent = currProperty instanceof Rentable_Property ? " To Rent" : " For Purchase";
 		String priceType = currProperty instanceof Rentable_Property ? "Monthly Rent" : "Price";
@@ -161,10 +173,10 @@ public class ControllerUserView {
 		userView.getLblBathrooms().setToolTipText("Has " + userView.getLblBathrooms().getText() + " bathrooms.");
 		userView.getLblFloors().setToolTipText("Has " + userView.getLblFloors().getText() + " floors.");
 		loadOptionalProperties();
-		refreshIdx();
+
 	}
 
-	public void resetIdx(){
+	public void resetIdx() {
 		currentIdx = 0;
 	}
 
@@ -174,6 +186,24 @@ public class ControllerUserView {
 
 	public void setProperties(List<Property> properties) {
 		this.properties = properties;
+	}
+
+	public void applyFilters(boolean checkRentable, boolean checkPurchasable, String... filters) {
+		resetIdx();
+		properties = ManageDatabase.getProperties(checkRentable,
+				checkPurchasable, filters);
+		setResultsFound();
+		if (properties.size() == 0) {
+			JOptionPane.showMessageDialog(userView,
+					"Sorry, there's no results for your desired inputs. Try again or come back later.",
+					"No results found", JOptionPane.INFORMATION_MESSAGE);
+			loadFirstProperties();
+		}
+		else {
+			userView.getControllerUserView()
+					.setProperties(properties);
+			userView.getControllerUserView().loadPropertyOnScreen();
+		}
 	}
 
 }

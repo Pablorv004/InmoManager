@@ -13,9 +13,9 @@ import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import models.Property;
 import util.ConversionMethods;
 import util.ManageDatabase;
 import views.GUIPropertyFilter;
@@ -24,11 +24,11 @@ import views.GUIUserView;
 public class ControllerPropertyFilter {
 
     private GUIPropertyFilter propertyFilter;
-    private GUIUserView userView;
+    private JFrame parentFrame;
 
-    public ControllerPropertyFilter(GUIPropertyFilter propertyFilter, GUIUserView userView) {
+    public ControllerPropertyFilter(GUIPropertyFilter propertyFilter, JFrame parentFrame) {
         this.propertyFilter = propertyFilter;
-        this.userView = userView;
+        this.parentFrame = parentFrame;
         initializeListCities();
         initializeCBCounts();
         this.propertyFilter.addActListeners(new ButtonListeners());
@@ -53,27 +53,21 @@ public class ControllerPropertyFilter {
                             JOptionPane.ERROR_MESSAGE);
                 }
                 if (filters != null) {
-                    List<Property> properties = ManageDatabase.getProperties(propertyFilter.getCbxRent().isSelected(),
+                    propertyFilter.dispose();
+                    applyFilters(parentFrame, propertyFilter.getCbxRent().isSelected(),
                             propertyFilter.getCbxSale().isSelected(), filters);
-                    if (!garageInserted()) {
-                        JOptionPane.showMessageDialog(propertyFilter,
-                                "If you select the \"garage\" checkbox, you must input it's size!",
-                                "Warning", JOptionPane.WARNING_MESSAGE);
-                    }
-                    if (properties.size() == 0)
-                        JOptionPane.showMessageDialog(propertyFilter,
-                                "Sorry, there's no results for your desired inputs. Try again or come back later.",
-                                "No results found", JOptionPane.INFORMATION_MESSAGE);
-                    else {
-                        userView.getControllerUserView()
-                                .setProperties(properties);
-                        userView.getControllerUserView().loadPropertyOnScreen();
-                        propertyFilter.dispose();
-                    }
                 }
+
             }
         }
+    }
 
+    // Call methods for each one
+    public static void applyFilters(JFrame frame, boolean checkRentable, boolean checkPurchasable,
+            String... filters) {
+        if (frame instanceof GUIUserView) {
+            ((GUIUserView) frame).getControllerUserView().applyFilters(checkRentable, checkPurchasable, filters);
+        }
     }
 
     private class ItemListeners implements ItemListener {
@@ -86,21 +80,21 @@ public class ControllerPropertyFilter {
             else if (checkboxSelected == propertyFilter.getCbxGarage()) {
                 if (checkboxSelected.isSelected()) {
                     checkboxSelected.setIcon(new ImageIcon(
-                        "files/images/" + checkboxSelected.getToolTipText().toLowerCase() + "40S.png"));
+                            "files/images/" + checkboxSelected.getToolTipText().toLowerCase() + "40S.png"));
                     propertyFilter.getTxtGarageInit().setEnabled(true);
                     propertyFilter.getTxtGarageFinal().setEnabled(true);
                 } else {
                     checkboxSelected.setIcon(new ImageIcon(
-                        "files/images/" + checkboxSelected.getToolTipText().toLowerCase() + "40.png"));
+                            "files/images/" + checkboxSelected.getToolTipText().toLowerCase() + "40.png"));
                     propertyFilter.getTxtGarageInit().setEnabled(false);
                     propertyFilter.getTxtGarageFinal().setEnabled(false);
                 }
-            } else if(checkboxSelected.isSelected())
+            } else if (checkboxSelected.isSelected())
                 checkboxSelected.setIcon(new ImageIcon(
                         "files/images/" + checkboxSelected.getToolTipText().toLowerCase() + "40S.png"));
-            else 
-            checkboxSelected.setIcon(new ImageIcon(
-                "files/images/" + checkboxSelected.getToolTipText().toLowerCase() + "40.png"));
+            else
+                checkboxSelected.setIcon(new ImageIcon(
+                        "files/images/" + checkboxSelected.getToolTipText().toLowerCase() + "40.png"));
 
         }
 
@@ -143,13 +137,11 @@ public class ControllerPropertyFilter {
         }
         String garageSizeInit = propertyFilter.getTxtGarageInit().getText();
         String garageSizeFinal = propertyFilter.getTxtGarageFinal().getText();
-        int garageSelected = propertyFilter.getCbxGarage().isSelected() ? 1 : 0;
-        if ((!garageSizeInit.isBlank() || !garageSizeFinal.isBlank()) && garageSelected == 1) {
+        if ((!garageSizeInit.isBlank() || !garageSizeFinal.isBlank()) && propertyFilter.getCbxGarage().isSelected()) {
             int garageInit = Integer.parseInt(garageSizeInit);
             int garageFinal = Integer.parseInt(garageSizeFinal);
             String garageSize = "garageSize BETWEEN " + garageInit + " AND " + garageFinal;
             filters.add(garageSize);
-            filters.add("hasGarage = 1");
         }
         int numFloors = propertyFilter.getCbFloors().getSelectedIndex();
         int numRooms = propertyFilter.getCbRooms().getSelectedIndex();
@@ -160,6 +152,8 @@ public class ControllerPropertyFilter {
             filters.add("rooms = " + numRooms);
         if (numBathrooms != -1 && numBathrooms != 0)
             filters.add("bathrooms = " + numBathrooms);
+        if (propertyFilter.getCbxGarage().isSelected())
+            filters.add("hasGarage = 1");
         if (propertyFilter.getCbxLift().isSelected())
             filters.add("hasLift = 1");
         if (propertyFilter.getCbxGarden().isSelected())
