@@ -58,7 +58,7 @@ public class ControllerManageManagers {
 				}else
 					JOptionPane.showMessageDialog(gManageManagers, "There's no manager selected in the table.\nPlease select one row","Error",JOptionPane.ERROR_MESSAGE);
 			} else if (obj == gManageManagers.getBtnApply()) {
-				applyChanges();
+				checkChanges();
 			}
 		}
 	}
@@ -77,18 +77,55 @@ public class ControllerManageManagers {
 	
 	// METHODS
 	
-	private void applyChanges() {
-//		gManageManagers.getFieldBank().setEditable(onOff);
-//		gManageManagers.getFieldEmail().setEditable(onOff);
-//		gManageManagers.getFieldPhone().setEditable(onOff);
-//		gManageManagers.getFieldSalary().setEditable(onOff);
-//		gManageManagers.getFieldCommission().setEditable(onOff);
-//		gManageManagers.getBtnApply().setEnabled(onOff);
+	// Checks if the values from the fields are valid
+	private void checkChanges() {
 		boolean validBankAccount = FieldUtils.validateBankAccount(gManageManagers.getFieldBank().getText().strip(), gManageManagers);
 		boolean validEmail = FieldUtils.validateEmail(gManageManagers.getFieldEmail().getText().strip(), gManageManagers);
+		boolean validPhone = FieldUtils.validatePhone(gManageManagers.getFieldPhone().getText().strip(), gManageManagers);
+		boolean validSalary = FieldUtils.validateSalary(gManageManagers.getFieldSalary().getText().strip(), gManageManagers);
+		boolean validCommission = FieldUtils.validateComission(gManageManagers.getFieldCommission().getText().strip(), gManageManagers);
 		
-		if(validEmail)
-			System.out.println("BIEN!");
+		if(validBankAccount && validEmail && validPhone && validSalary && validCommission) {
+			applyChanges();
+			managerList = getManagers();
+			updateTable();
+		}
+		
+	}
+
+	// Applies the changes updating the manager information searching by its DNI
+	private void applyChanges() {
+		try {
+			String DNI = gManageManagers.getFieldDNI().getText().strip();
+			
+			Connection conn = ConnectionDB.connect();
+			PreparedStatement pst = conn.prepareStatement("UPDATE inmomanager.Managers "
+														+ "SET bankAccountNum = ?, "
+															+ "email = ?, "
+															+ "phoneNum = ?, "
+															+ "salary = ?, "
+															+ "commission = ?"
+														+ "WHERE DNI = ?");
+			pst.setString(1, gManageManagers.getFieldBank().getText().strip());
+			pst.setString(2, gManageManagers.getFieldEmail().getText().strip());
+			pst.setInt(3, Integer.parseInt(gManageManagers.getFieldPhone().getText().strip()));
+			pst.setDouble(4, Double.parseDouble(gManageManagers.getFieldSalary().getText().strip()));
+			pst.setDouble(5, Double.parseDouble(gManageManagers.getFieldCommission().getText().strip()));
+			pst.setString(6, DNI);
+			
+			int result = pst.executeUpdate();
+			
+			if(result != 0)
+				JOptionPane.showMessageDialog(gManageManagers, "The manager data has been updated", "Manager updated",
+						JOptionPane.INFORMATION_MESSAGE);
+			else
+				JOptionPane.showMessageDialog(gManageManagers, "There has been an unexpected error", "Error",
+						JOptionPane.ERROR_MESSAGE);
+			
+			pst.close();
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 	// Search for a manager by it's DNI and returns it

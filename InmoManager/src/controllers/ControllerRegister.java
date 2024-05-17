@@ -50,13 +50,13 @@ public class ControllerRegister {
 
 	private boolean validateFields() {
 		if (checkBlankValues()) {
-			boolean validDNI = FieldUtils.validateDNI(gRegister.getFieldDNI().getText().strip(), "Clients", gRegister);
+			boolean validDNI = FieldUtils.validateDNI(gRegister.getFieldDNI().getText().strip(), gRegister);
 			boolean validName = FieldUtils.validateName(gRegister.getFieldName().getText().strip().replaceAll("\\s+", " "), gRegister);
-			boolean validUsername = FieldUtils.validateUsername(gRegister.getFieldUsername().getText().strip(), "Clients",gRegister);
+			boolean validUsername = FieldUtils.validateUsername(gRegister.getFieldUsername().getText().strip(), gRegister);
 			boolean validPassword = FieldUtils.validatePassword(gRegister.getFieldPassword().getPassword(), gRegister);
 			boolean validRePassword = FieldUtils.validateRePassword(gRegister.getFieldPassword().getPassword(),gRegister.getFieldRepeatPass().getPassword(), gRegister);
 			boolean validEmail = FieldUtils.validateEmail(gRegister.getFieldEmail().getText().strip(), gRegister);
-			boolean validPhone = FieldUtils.validatePhone(gRegister.getFieldPhone().getText().strip(), "Clients", gRegister);
+			boolean validPhone = FieldUtils.validatePhone(gRegister.getFieldPhone().getText().strip(), gRegister);
 			boolean validRegion = FieldUtils.validateRegion(gRegister.getFieldRegion().getText().strip(), gRegister);
 
 			if (validDNI && validName && validUsername && validPassword && validRePassword && validEmail && validPhone

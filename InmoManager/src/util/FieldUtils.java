@@ -30,7 +30,7 @@ public class FieldUtils {
 	}
 
 	// Checks DNI field format and checks if it already exists in the database
-	public static boolean validateDNI(String DNI, String table, JFrame frame) {
+	public static boolean validateDNI(String DNI, JFrame frame) {
 		if (!DNI.matches("[0-9]{8}[A-Z]")) {
 			JOptionPane.showMessageDialog(frame, "The DNI doesn't have a valid format [00000000A]");
 			return false;
@@ -53,7 +53,7 @@ public class FieldUtils {
 	}
 
 	// Checks username field format and checks if it already exists in the database
-	public static boolean validateUsername(String username, String table, JFrame frame) {
+	public static boolean validateUsername(String username, JFrame frame) {
 		if (!username.matches("[A-Za-z0-9]{0,36}")) {
 			JOptionPane.showMessageDialog(frame, "The username doesn't have a valid format", "Format error",
 					JOptionPane.ERROR_MESSAGE);
@@ -140,7 +140,7 @@ public class FieldUtils {
 	}
 
 	// Checks phone field format and checks if it already exists in the database
-	public static boolean validatePhone(String phoneNum, String table, JFrame frame) {
+	public static boolean validatePhone(String phoneNum, JFrame frame) {
 		if (!phoneNum.matches("([0-9]+){9,12}")) {
 			JOptionPane.showMessageDialog(frame, "The phone number doesn't have a valid format", "Format error",
 					JOptionPane.ERROR_MESSAGE);
@@ -162,6 +162,16 @@ public class FieldUtils {
 				JOptionPane.showMessageDialog(frame, "The region doesn't have a valid format", "Format error",
 						JOptionPane.ERROR_MESSAGE);
 			}
+			return false;
+		}
+		return true;
+	}
+	
+	// Checks commission field format
+	public static boolean validateComission(String commission, JFrame frame) {
+		if (!commission.matches("\\d{1,2}\\.\\d{1,2}")) {
+			JOptionPane.showMessageDialog(frame, "The commission doesn't have a valid format\nFormat: 0.00 or 00.00", "Format error",
+					JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
 		return true;
@@ -266,7 +276,7 @@ public class FieldUtils {
 
 	// Checks salary field format
 	public static boolean validateSalary(String salary, JFrame frame) {
-		if (!salary.matches("\\d{1,10}(\\.\\d{2})?")) {
+		if (!salary.matches("\\d{1,4}(\\.\\d{2})?")) {
 			JOptionPane.showMessageDialog(frame,
 					"The salary doesn't have a valid format:\nMust be a number with two optionals decimals (Example: 00000.00 or 00000)",
 					"Format error", JOptionPane.ERROR_MESSAGE);
@@ -320,11 +330,11 @@ public class FieldUtils {
 	        ") AS AllData " +
 	        "WHERE " + field + " = ";
 	    
-	    if (input instanceof String) {
-	        query += "'" + input + "'";
-	    } else if (input instanceof Integer) {
-	        query += input;
-	    }
+		    if (input instanceof String) {
+		        query += "'" + input + "'";
+		    } else if (input instanceof Integer) {
+		        query += input;
+		    }
 	    
 	    	Connection conn = ConnectionDB.connect();
 	        Statement st = conn.createStatement();
