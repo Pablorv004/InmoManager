@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.swing.JOptionPane;
 
 import models.Property;
@@ -60,6 +59,25 @@ public class ManageDatabase {
             sortedMap.put(entry.getKey(), entry.getValue());
         return sortedMap;
     }
+
+    public static boolean propertyExists(boolean searchRentable, boolean searchPurchasable, Property property){
+		try{
+			Connection conn = ConnectionDB.connect();
+            String query;
+            Statement statement = conn.createStatement();
+            if (searchRentable){
+                query = "SELECT id FROM inmomanager.Rentable_Properties WHERE address = '" + property.getAddress() + "'";
+                return statement.executeQuery(query).next();
+            }
+            if (searchPurchasable){
+                query = "SELECT id FROM inmomanager.Purchasable_Properties WHERE address = '" + property.getAddress() + "'";
+              return statement.executeQuery(query).next();
+            }
+		} catch(ClassNotFoundException | SQLException e){
+            e.printStackTrace();
+        }
+        return false;
+	}
 
     public static List<Property> getProperties(boolean searchRentables, boolean searchPurchasable, String... filters) {
         List<Property> properties = new ArrayList<Property>();

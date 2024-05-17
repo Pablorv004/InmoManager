@@ -80,9 +80,9 @@ public class ControllerUserAdd {
 						userAdd.getCbxTerrace().isSelected(),
 						userAdd.getCbxAC().isSelected(), true,
 						userAdd.getTxtStatus().getText(), Integer.parseInt(userAdd.getTxtValue().getText()));
-		}catch (NumberFormatException e) {
+		} catch (NumberFormatException e) {
 			throw e;
-		} 
+		}
 	}
 
 	private class RadioButtonListeners implements ItemListener {
@@ -131,13 +131,23 @@ public class ControllerUserAdd {
 					JOptionPane.showMessageDialog(userAdd, "Please fill all the required fields.", "Fill",
 							JOptionPane.WARNING_MESSAGE);
 				} else {
-					try{
-					ManageDatabase.addPropertyToDatabase(getPropertyData());
+					try {
+						if (!ManageDatabase.propertyExists(userAdd.getRdBtnRent().isSelected(),
+								userAdd.getRdBtnSell().isSelected(), getPropertyData())) {
+							ManageDatabase.addPropertyToDatabase(getPropertyData());
+							new GUIMainUser(null);
+						}
+
+						else
+							JOptionPane.showMessageDialog(userAdd,
+									"A property with that address already exists in our system!", "Error",
+									JOptionPane.ERROR_MESSAGE);
+
+					} catch (NumberFormatException e1) {
+						JOptionPane.showMessageDialog(null, "Input a valid number!", "Error",
+								JOptionPane.ERROR_MESSAGE);
+					}
 					userAdd.dispose();
-					new GUIMainUser(null);
-				} catch(NumberFormatException e1){
-					JOptionPane.showMessageDialog(null, "Input a valid number!", "Error", JOptionPane.ERROR_MESSAGE);
-				}
 				}
 			}
 		}

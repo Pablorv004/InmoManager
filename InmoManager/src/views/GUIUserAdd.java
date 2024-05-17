@@ -153,7 +153,7 @@ public class GUIUserAdd extends JFrame {
 		panelData.add(txtCity);
 		txtCity.setColumns(10);
 		
-		lblAge = new JLabel("Age(Years):");
+		lblAge = new JLabel("Age(Years)(*):");
 		panelData.add(lblAge);
 		
 		txtAge = new JTextField();
@@ -194,13 +194,15 @@ public class GUIUserAdd extends JFrame {
 		cBBathrooms.setSelectedIndex(0);
 		cBRooms.setSelectedIndex(0);
 		
-		lblFloors = new JLabel("How many floors?:");
-		panelData.add(lblFloors);
-		
 		sliderFloors = new JSlider();
 		sliderFloors.setValue(1);
 		sliderFloors.setMinimum(1);
 		sliderFloors.setMaximum(10);
+		
+		lblFloors = new JLabel("Floors: " + sliderFloors.getValue());
+		panelData.add(lblFloors);
+		
+		
 		panelData.add(sliderFloors);
 		
 		lblValue = new JLabel("Value(*):");
