@@ -1,9 +1,9 @@
 package dummy;
 
-import views.GUILogin;
+import views.GUIConnect;
 
 public class Test {
     public static void main(String[] args) {
-    	new GUILogin();
+    	new GUIConnect();
     }
 }

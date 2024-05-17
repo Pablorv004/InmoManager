@@ -87,6 +87,7 @@ public class ControllerUserView {
 		String[] baseFilters = { "available = 1" };
 		properties = ManageDatabase.getProperties(true, true, baseFilters);
 		setResultsFound();
+		refreshIdx();
 	}
 
 	public void loadOptionalProperties() {
@@ -165,15 +166,15 @@ public class ControllerUserView {
 		userView.getLblFloors().setText(String.valueOf(currProperty.getFloors()));
 		userView.getLblPrice().setText(priceType);
 		userView.getLblPriceTag().setText(String.valueOf(priceValue));
-		userView.getLblPropertyPhoto().setIcon(new ImageIcon("files/images/" + currProperty.getId() + ".png"));
-		userView.getLblPropertyMap().setIcon(new ImageIcon("files/images/" + currProperty.getId() + "Map.png"));
+		userView.getLblPropertyPhoto().setIcon(new ImageIcon("files/images/properties/" + currProperty.getId() + ".png"));
+		userView.getLblPropertyMap().setIcon(new ImageIcon("files/images/properties/" + currProperty.getId() + "Map.png"));
 
 		// Let's set the tooltiptexts:
 		userView.getLblRooms().setToolTipText("Has " + userView.getLblRooms().getText() + " rooms.");
 		userView.getLblBathrooms().setToolTipText("Has " + userView.getLblBathrooms().getText() + " bathrooms.");
 		userView.getLblFloors().setToolTipText("Has " + userView.getLblFloors().getText() + " floors.");
 		loadOptionalProperties();
-
+		refreshIdx();
 	}
 
 	public void resetIdx() {
@@ -189,19 +190,20 @@ public class ControllerUserView {
 	}
 
 	public void applyFilters(boolean checkRentable, boolean checkPurchasable, String... filters) {
-		resetIdx();
+
 		properties = ManageDatabase.getProperties(checkRentable,
 				checkPurchasable, filters);
 		setResultsFound();
 		if (properties.size() == 0) {
 			JOptionPane.showMessageDialog(userView,
-					"Sorry, there's no results for your desired inputs. Try again or come back later.",
+					"Sorry, there are no results for your desired inputs. Try again or come back later.",
 					"No results found", JOptionPane.INFORMATION_MESSAGE);
 			loadFirstProperties();
-		}
-		else {
+			resetIdx();
+		} else {
 			userView.getControllerUserView()
 					.setProperties(properties);
+			resetIdx();
 			userView.getControllerUserView().loadPropertyOnScreen();
 		}
 	}

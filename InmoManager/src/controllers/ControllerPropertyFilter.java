@@ -217,8 +217,7 @@ public class ControllerPropertyFilter {
             propertyFilter.getCbRooms().addItem(i);
         }
         propertyFilter.getCbFloors().setSelectedIndex(-1);
-     
-
+        propertyFilter.getCbRooms().setSelectedIndex(-1);
         propertyFilter.getCbBathrooms().setSelectedIndex(-1);
     }
     /**
