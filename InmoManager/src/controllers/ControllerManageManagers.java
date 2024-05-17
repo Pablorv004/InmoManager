@@ -22,6 +22,7 @@ import models.Admin;
 import models.Manager;
 import models.User;
 import util.ConnectionDB;
+import util.FieldUtils;
 import views.GUIMainManager;
 import views.GUIManageManagers;
 
@@ -77,9 +78,17 @@ public class ControllerManageManagers {
 	// METHODS
 	
 	private void applyChanges() {
+//		gManageManagers.getFieldBank().setEditable(onOff);
+//		gManageManagers.getFieldEmail().setEditable(onOff);
+//		gManageManagers.getFieldPhone().setEditable(onOff);
+//		gManageManagers.getFieldSalary().setEditable(onOff);
+//		gManageManagers.getFieldCommission().setEditable(onOff);
+//		gManageManagers.getBtnApply().setEnabled(onOff);
+		boolean validBankAccount = FieldUtils.validateBankAccount(gManageManagers.getFieldBank().getText().strip(), gManageManagers);
+		boolean validEmail = FieldUtils.validateEmail(gManageManagers.getFieldEmail().getText().strip(), gManageManagers);
 		
-		String bankAccount = gManageManagers.getFieldBank().getText().strip();
-		
+		if(validEmail)
+			System.out.println("BIEN!");
 	}
 
 	// Search for a manager by it's DNI and returns it
