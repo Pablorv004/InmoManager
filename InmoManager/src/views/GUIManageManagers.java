@@ -1,11 +1,13 @@
 package views;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -26,17 +28,16 @@ import util.GlobalResources;
 public class GUIManageManagers extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-	private GUIMainManager gManager;
+	private GUILogin gLogin;
 	private JScrollPane scrollPane;
 	private JPanel contentPane;
 	private JPanel panelTitle;
 	private JPanel panelEdit;
 	private JPanel panelCredentials;
+	private JPanel panelImage;
 	private JTable table;
 	private JButton btnReset;
-	private JButton btnSearch;
-	private JButton btnNext;
-	private JButton btnPrevious;
+	private JButton btnFilter;
 	private JButton btnEdit;
 	private JButton btnApply;
 	private JButton btnReturn;
@@ -54,8 +55,6 @@ public class GUIManageManagers extends JFrame {
 	private JTextField fieldSalary;
 	private JLabel lblLogo;
 	private JPanel panelForm;
-	private JPanel panelImage;
-	private JLabel lblImage_1;
 	private JLabel lblID;
 	private JLabel lblDNI;
 	private JLabel lblName;
@@ -69,15 +68,16 @@ public class GUIManageManagers extends JFrame {
 	private JLabel lblHireDate;
 	private JLabel lblManagerID;
 	private JLabel lblSalary;
+	private JLabel lblImage;
 	private List<JTextField> textFieldList;
 
-	public GUIManageManagers(GUIMainManager gManager) {
+	public GUIManageManagers(GUILogin gLogin) {
 		super("Managers Managements");
-		this.gManager = gManager;
+		this.gLogin = gLogin;
 		this.textFieldList = new ArrayList<>();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 716, 630);
-		setLocationRelativeTo(gManager);
+		setLocationRelativeTo(gLogin);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -115,9 +115,9 @@ public class GUIManageManagers extends JFrame {
 		separator_1.setBounds(0, 283, 714, 8);
 		contentPane.add(separator_1);
 
-		btnSearch = new JButton("Search");
-		btnSearch.setBounds(601, 253, 88, 23);
-		contentPane.add(btnSearch);
+		btnFilter = new JButton("Filter");
+		btnFilter.setBounds(601, 253, 88, 23);
+		contentPane.add(btnFilter);
 
 		btnReset = new JButton("Reset");
 		btnReset.setBounds(506, 254, 88, 23);
@@ -158,6 +158,7 @@ public class GUIManageManagers extends JFrame {
 		panelEdit.setLayout(null);
 
 		btnEdit = new JButton("Edit");
+		btnEdit.setEnabled(false);
 		btnEdit.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		btnEdit.setBounds(4, 6, 60, 23);
 		panelEdit.add(btnEdit);
@@ -291,23 +292,14 @@ public class GUIManageManagers extends JFrame {
 		panelForm.add(fieldSalary);
 
 		panelImage = new JPanel();
-		panelImage.setBounds(506, 302, 186, 210);
+		panelImage.setBounds(501, 333, 186, 210);
 		contentPane.add(panelImage);
-		panelImage.setLayout(null);
-
-		lblImage_1 = new JLabel("Image");
-		lblImage_1.setBounds(7, 0, 171, 167);
-		lblImage_1.setBorder(new LineBorder(new Color(192, 192, 192)));
-		lblImage_1.setHorizontalAlignment(SwingConstants.CENTER);
-		panelImage.add(lblImage_1);
-
-		btnNext = new JButton("Next");
-		btnNext.setBounds(6, 178, 77, 23);
-		panelImage.add(btnNext);
-
-		btnPrevious = new JButton("Previous");
-		btnPrevious.setBounds(89, 178, 89, 23);
-		panelImage.add(btnPrevious);
+		panelImage.setLayout(new BorderLayout(0, 0));
+		
+		lblImage = new JLabel("");
+		lblImage.setIcon(new ImageIcon("files/images/InmoManager186-210.png"));
+		lblImage.setHorizontalAlignment(SwingConstants.CENTER);
+		panelImage.add(lblImage, BorderLayout.CENTER);
 
 		btnReturn = new JButton("");
 		btnReturn.setBounds(642, 11, 30, 30);
@@ -324,11 +316,9 @@ public class GUIManageManagers extends JFrame {
 	public void addActListener(ActionListener listener) {
 		this.btnApply.addActionListener(listener);
 		this.btnEdit.addActionListener(listener);
-		this.btnNext.addActionListener(listener);
-		this.btnPrevious.addActionListener(listener);
 		this.btnReset.addActionListener(listener);
 		this.btnReturn.addActionListener(listener);
-		this.btnSearch.addActionListener(listener);
+		this.btnFilter.addActionListener(listener);
 	}
 
 	public void addTableListener(ListSelectionListener listener) {
@@ -353,12 +343,12 @@ public class GUIManageManagers extends JFrame {
 
 	// GETTERS AND SETTERS
 
-	public GUIMainManager getgManager() {
-		return gManager;
+	public GUILogin getgLogin() {
+		return gLogin;
 	}
 
-	public void setgManager(GUIMainManager gManager) {
-		this.gManager = gManager;
+	public void setgLogin(GUILogin gLogin) {
+		this.gLogin = gLogin;
 	}
 
 	public JTable getTable() {
@@ -368,8 +358,6 @@ public class GUIManageManagers extends JFrame {
 	public void setTable(JTable table) {
 		this.table = table;
 		scrollPane.setViewportView(table);
-		scrollPane.revalidate();
-		scrollPane.repaint();
 	}
 
 	public JButton getBtnReset() {
@@ -380,36 +368,20 @@ public class GUIManageManagers extends JFrame {
 		this.btnReset = btnReset;
 	}
 
-	public JButton getBtnSearch() {
-		return btnSearch;
+	public JButton getBtnFilter() {
+		return btnFilter;
 	}
 
-	public void setBtnSearch(JButton btnSearch) {
-		this.btnSearch = btnSearch;
+	public void setBtnFilter(JButton btnSearch) {
+		this.btnFilter = btnSearch;
 	}
 
 	public JLabel getLblImage_1() {
-		return lblImage_1;
+		return lblImage;
 	}
 
-	public void setLblImage_1(JLabel lblImage_1) {
-		this.lblImage_1 = lblImage_1;
-	}
-
-	public JButton getBtnNext() {
-		return btnNext;
-	}
-
-	public void setBtnNext(JButton btnNext) {
-		this.btnNext = btnNext;
-	}
-
-	public JButton getBtnPrevious() {
-		return btnPrevious;
-	}
-
-	public void setBtnPrevious(JButton btnPrevious) {
-		this.btnPrevious = btnPrevious;
+	public void setLblImage_1(JLabel lblImage) {
+		this.lblImage = lblImage;
 	}
 
 	public JButton getBtnEdit() {
@@ -571,5 +543,4 @@ public class GUIManageManagers extends JFrame {
 	public void setPanelImage(JPanel panelImage) {
 		this.panelImage = panelImage;
 	}
-
 }

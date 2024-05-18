@@ -35,7 +35,7 @@ public class ControllerMainManager {
 				}
 			} else if (btn == gManager.getBtnManageManagers()) {
 				gManager.dispose();
-				new GUIManageManagers(gManager);
+				new GUIManageManagers(gManager.getgLogin());
 			} else if (btn == gManager.getBtnManageProperties()) {
 				gManager.dispose();
 				// PLACEHOLDER FOR GUIPROPERTYMANAGEMENT VIEW

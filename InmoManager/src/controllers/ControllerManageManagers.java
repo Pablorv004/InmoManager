@@ -10,8 +10,10 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
@@ -20,24 +22,30 @@ import models.Admin;
 import models.Manager;
 import models.User;
 import util.ConnectionDB;
+import util.FieldUtils;
+import views.GUIFilterManager;
+import views.GUIMainAdmin;
 import views.GUIMainManager;
 import views.GUIManageManagers;
 
 public class ControllerManageManagers {
-	GUIManageManagers gManageManagers;
-	List<Manager> managerList;
-	User currentUser;
+	private GUIManageManagers gManage;
+	private List<Manager> managerList;
+	private User currentUser;
 
 	public ControllerManageManagers(GUIManageManagers gManageManagers) {
-		this.gManageManagers = gManageManagers;
+		this.gManage = gManageManagers;
 		this.currentUser = ConnectionDB.getCurrentUser();
 		this.managerList = getManagers();
 		updateTable();
+		
+		showPassword();
 
 		gManageManagers.addActListener(new ActListener());
-		gManageManagers.addTableListener(new TableListener());
 	}
 	
+	
+
 	// PRIVATE CLASSES
 
 	private class ActListener implements ActionListener {
@@ -45,11 +53,15 @@ public class ControllerManageManagers {
 		public void actionPerformed(ActionEvent e) {
 			Object obj = e.getSource();
 	
-			if (obj == gManageManagers.getBtnReturn()) {
-				gManageManagers.dispose();
-				new GUIMainManager(gManageManagers.getgManager().getgLogin());
-			} else if (obj == gManageManagers.getBtnEdit()) {
-				enableFields();
+			if (obj == gManage.getBtnReturn()) {
+				handleBtnReturn();
+			} else if (obj == gManage.getBtnEdit()) {
+				enableDisableComponents(true);
+			} else if (obj == gManage.getBtnApply()) {
+				checkChanges();
+			} else if (obj == gManage.getBtnFilter()) {
+				gManage.setEnabled(false);
+				new GUIFilterManager(gManage);
 			}
 		}
 	}
@@ -57,53 +69,145 @@ public class ControllerManageManagers {
 	private class TableListener implements ListSelectionListener {
 		@Override
 		public void valueChanged(ListSelectionEvent e) {
-			
-			int selectedRow = gManageManagers.getTable().getSelectedRow();
-			
-			// The load order of the managers in the table is the same as in the list
-			// We do this because the table row does not have all the information about the manager
-			Manager manager = managerList.get(selectedRow);
-			
-			fillFields(manager);
-		}
-
-		private void fillFields(Manager manager) {
-			gManageManagers.getFieldID().setText(String.valueOf(manager.getID()));
-			gManageManagers.getFieldDNI().setText(manager.getDNI());
-			gManageManagers.getFieldName().setText(manager.getFullName());
-			gManageManagers.getFieldUsername().setText(manager.getUserName());
-			gManageManagers.getFieldPassword().setText(manager.getPassword());
-			gManageManagers.getFieldEmail().setText(manager.getEmail());
-			gManageManagers.getFieldPhone().setText(String.valueOf(manager.getPhoneNum()));
-			gManageManagers.getFieldCommission().setText(String.valueOf(manager.getComission()));
-			gManageManagers.getFieldBank().setText(manager.getBankAccountNum());
-			gManageManagers.getFieldHireDate().setText(String.valueOf(manager.getHireDate()));
-			gManageManagers.getFieldManagerID().setText(String.valueOf(manager.getManagerId()));
-			gManageManagers.getFieldSalary().setText(String.valueOf(manager.getSalary()));
+			// Disables editable textFields each time a row is clicked
+			enableDisableComponents(false);
+			gManage.getBtnEdit().setEnabled(true);
+			int selectedRow = gManage.getTable().getSelectedRow();
+			Manager manager = findManager(String.valueOf(gManage.getTable().getValueAt(selectedRow, 1)));
+			if(manager != null)
+				fillFields(manager);
 		}
 	}
 	
 	// METHODS
 	
-	// Enables TextFields depending of the current user being an Admin or a Manager
-	private void enableFields() {
-		if (currentUser instanceof Admin)
-			for (JTextField textField : gManageManagers.getTextFieldList())
-				textField.setEditable(true);
-		else if (currentUser instanceof Manager) {
-			enableTextFields(gManageManagers.getFieldBank(), gManageManagers.getFieldEmail(),
-					gManageManagers.getFieldPhone(), gManageManagers.getFieldSalary(),
-					gManageManagers.getFieldCommission());
-		}
-		
-		gManageManagers.getPanelForm().revalidate();
-		gManageManagers.getPanelForm().repaint();
+	private void handleBtnReturn() {
+		gManage.dispose();
+		if(currentUser instanceof Manager)
+			new GUIMainManager(gManage.getgLogin());
+		else if(currentUser instanceof Admin)
+			new GUIMainAdmin(gManage.getgLogin());
 	}
 
-	// Enables the JTextFields that receives through the parameter
-	private void enableTextFields(JTextField... textFields) {
-		for (JTextField field : textFields) {
-			field.setEditable(true);
+	// If the current user is an Administrator the password will not be hidden
+	private void showPassword() {
+		if(currentUser instanceof Admin) {
+			gManage.getFieldPassword().setEchoChar((char)0);
+		}
+	}
+
+	// Checks if the values from the fields are valid
+	private void checkChanges() {
+		boolean validID = FieldUtils.validateUserID(gManage.getFieldID().getText().strip(), "Managers", gManage,gManage.getFieldDNI().getText().strip());
+		boolean validDNI = FieldUtils.validateDNI(gManage.getFieldDNI().getText(), gManage);
+		boolean validName = FieldUtils.validateName(gManage.getFieldName().getText().strip().replaceAll("\\s+", " "),gManage);
+		boolean validUsername = FieldUtils.validateUsername(gManage.getFieldUsername().getText().strip(), gManage,gManage.getFieldDNI().getText().strip());
+		boolean validPassword = FieldUtils.validatePassword(gManage.getFieldPassword().getPassword(), gManage);
+		boolean validEmail = FieldUtils.validateEmail(gManage.getFieldEmail().getText().strip(), gManage,gManage.getFieldDNI().getText().strip());
+		boolean validPhone = FieldUtils.validatePhone(gManage.getFieldPhone().getText().strip(), gManage,gManage.getFieldDNI().getText().strip());
+		boolean validCommission = FieldUtils.validateComission(gManage.getFieldCommission().getText().strip(), gManage);
+		boolean validBankAccount = FieldUtils.validateBankAccount(gManage.getFieldBank().getText().strip(), gManage);
+		boolean validManagerID = FieldUtils.validateManagerID(gManage.getFieldManagerID().getText().strip(), gManage);
+		boolean validSalary = FieldUtils.validateSalary(gManage.getFieldSalary().getText().strip(), gManage);
+
+		if (validID && validDNI && validName && validUsername && validPassword && validBankAccount && validEmail
+				&& validPhone && validSalary && validCommission && validManagerID) {
+			applyChanges();
+			managerList = getManagers();
+			updateTable();
+		}
+
+	}
+
+	// Applies the changes updating the manager information searching by its DNI
+	private void applyChanges() {
+		try {
+			Connection conn = ConnectionDB.connect();
+			PreparedStatement pst = conn.prepareStatement("UPDATE inmomanager.Managers "
+														+ "SET id = ?, "
+															+ "DNI = ?, "
+															+ "fullName = ?, "
+															+ "userName = ?, "
+															+ "password = ?, "
+															+ "email = ?, "
+															+ "phoneNum = ?, "
+															+ "commission = ?, "
+															+ "bankAccountNum = ?, "
+															+ "managerID = ?, "
+															+ "salary = ?"
+														+ "WHERE DNI = ?");
+			pst.setObject(1, gManage.getFieldID().getText().strip());
+			pst.setObject(2, gManage.getFieldDNI().getText().strip());
+			pst.setObject(3, gManage.getFieldName().getText().strip());
+			pst.setObject(4, gManage.getFieldUsername().getText().strip());
+			pst.setObject(5, String.valueOf(gManage.getFieldPassword().getPassword()));
+			pst.setObject(6, gManage.getFieldEmail().getText().strip());
+			pst.setObject(7, gManage.getFieldPhone().getText().strip());
+			pst.setObject(8, gManage.getFieldCommission().getText().strip());
+			pst.setObject(9, gManage.getFieldBank().getText().strip());
+			if(gManage.getFieldManagerID().getText().strip().equals("0"))
+				pst.setObject(10, null);
+			else
+				pst.setObject(10, gManage.getFieldManagerID().getText().strip());
+			pst.setObject(11, gManage.getFieldSalary().getText().strip());
+			pst.setObject(12, gManage.getFieldDNI().getText().strip());
+			
+			int result = pst.executeUpdate();
+			
+			if(result != 0)
+				JOptionPane.showMessageDialog(gManage, "The manager data has been updated", "Manager updated",
+						JOptionPane.INFORMATION_MESSAGE);
+			else
+				JOptionPane.showMessageDialog(gManage, "There has been an unexpected error", "Error",
+						JOptionPane.ERROR_MESSAGE);
+			
+			pst.close();
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	// Search for a manager by it's DNI and returns it
+	private Manager findManager(String DNI) {
+		for(Manager m : managerList)
+			if(m.getDNI().equalsIgnoreCase(DNI))
+				return m;
+		
+		return null;
+	}
+	
+	// Fills JTextFields with the manager information
+	private void fillFields(Manager manager) {
+		gManage.getFieldID().setText(String.valueOf(manager.getID()));
+		gManage.getFieldDNI().setText(manager.getDNI());
+		gManage.getFieldName().setText(manager.getFullName());
+		gManage.getFieldUsername().setText(manager.getUserName());
+		gManage.getFieldPassword().setText(manager.getPassword());
+		gManage.getFieldEmail().setText(manager.getEmail());
+		gManage.getFieldPhone().setText(String.valueOf(manager.getPhoneNum()));
+		gManage.getFieldCommission().setText(String.valueOf(manager.getComission()));
+		gManage.getFieldBank().setText(manager.getBankAccountNum());
+		gManage.getFieldHireDate().setText(String.valueOf(manager.getHireDate()));
+		gManage.getFieldManagerID().setText(String.valueOf(manager.getManagerId()));
+		gManage.getFieldSalary().setText(String.valueOf(manager.getSalary()));
+	}
+	
+	// Enables or disables the components depending of the current user being an Admin or a Manager
+	// on -> Activates  // off -> Deactivates 
+	private void enableDisableComponents(Boolean onOff) {
+		if (currentUser instanceof Admin) {
+			for (JTextField textField : gManage.getTextFieldList()) {
+				if(textField != gManage.getFieldHireDate())
+					textField.setEditable(onOff);
+			}
+			gManage.getBtnApply().setEnabled(onOff);
+		}else if (currentUser instanceof Manager) {
+			gManage.getFieldBank().setEditable(onOff);
+			gManage.getFieldEmail().setEditable(onOff);
+			gManage.getFieldPhone().setEditable(onOff);
+			gManage.getFieldSalary().setEditable(onOff);
+			gManage.getFieldCommission().setEditable(onOff);
+			gManage.getBtnApply().setEnabled(onOff);
 		}
 	}
 
@@ -118,7 +222,9 @@ public class ControllerManageManagers {
 			}
 		};
 		JTable table = new JTable(model);
-		this.gManageManagers.setTable(table);
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		this.gManage.setTable(table);
+		this.gManage.addTableListener(new TableListener());
 	}
 
 	// Converts the List of managers into a bidimensional object array so it can be
