@@ -1,6 +1,7 @@
 package controllers;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -16,27 +17,53 @@ import models.Rentable_Property;
 import util.ManageDatabase;
 import views.GUIMainUser;
 import views.GUIPropertyFilter;
+import views.GUIUserInterested;
 import views.GUIUserView;
 
 public class ControllerUserView {
 	private GUIUserView userView;
-	private List<Property> properties;
+	private List<Property> properties, interestedProperties;
 
 	private int currentIdx = 0;
 	private Property currProperty;
 
 	public ControllerUserView(GUIUserView userView) {
 		this.userView = userView;
-		new ArrayList<>();
+		interestedProperties = new ArrayList<>();
 		this.userView.addActListeners(new ButtonListeners());
 		loadFirstProperties();
 		loadPropertyOnScreen();
 	}
 
+	public void refreshLblInterestedCount() {
+		userView.getLblInterestedCount().setText(String.valueOf(interestedProperties.size()));
+		if (interestedProperties.size() > 0) {
+			userView.getLblInterestedCount().setForeground(Color.RED);
+			userView.getLblInterestedCount().setFont(new Font("Tahoma", Font.PLAIN, 18));
+		} else {
+			userView.getLblInterestedCount().setForeground(Color.BLACK);
+			userView.getLblInterestedCount().setFont(new Font("Tahoma", Font.PLAIN, 14));
+		}
+
+	}
+
 	public void setInterested() {
-		// interestedProperties.add(currentProperty);
+		interestedProperties.add(currProperty);
+		userView.getBtnInterested().setEnabled(false);
+		userView.getBtnInterested().setText("Property added!");
 		userView.getLblInterestedCount()
 				.setText(String.valueOf(1 + Integer.parseInt(userView.getLblInterestedCount().getText())));
+		refreshLblInterestedCount();
+	}
+
+	public void checkInterested() {
+		if (interestedProperties.contains(currProperty)) {
+			userView.getBtnInterested().setEnabled(false);
+			userView.getBtnInterested().setText("Currently interested.");
+		} else {
+			userView.getBtnInterested().setEnabled(true);
+			userView.getBtnInterested().setText("Interested!");
+		}
 	}
 
 	private class ButtonListeners implements ActionListener {
@@ -57,7 +84,8 @@ public class ControllerUserView {
 			} else if (buttonPressed == userView.getBtnPrevious()) {
 				currentIdx--;
 				loadPropertyOnScreen();
-			} else if (buttonPressed == userView.getBtnInterested()) {
+			} else if (buttonPressed == userView.getBtnInterestedList()) {
+				new GUIUserInterested(userView);
 			}
 		}
 	}
@@ -150,6 +178,7 @@ public class ControllerUserView {
 	public void loadPropertyOnScreen() {
 		refreshIdx();
 		currProperty = properties.get(currentIdx);
+		checkInterested();
 		String sellOrRent = currProperty instanceof Rentable_Property ? " To Rent" : " For Purchase";
 		String priceType = currProperty instanceof Rentable_Property ? "Monthly Rent" : "Price";
 		int priceValue = currProperty instanceof Rentable_Property ? ((Rentable_Property) currProperty).getRentValue()
@@ -166,15 +195,23 @@ public class ControllerUserView {
 		userView.getLblFloors().setText(String.valueOf(currProperty.getFloors()));
 		userView.getLblPrice().setText(priceType);
 		userView.getLblPriceTag().setText(String.valueOf(priceValue));
-		userView.getLblPropertyPhoto().setIcon(new ImageIcon("files/images/properties/" + currProperty.getId() + ".png"));
-		userView.getLblPropertyMap().setIcon(new ImageIcon("files/images/properties/" + currProperty.getId() + "Map.png"));
+		userView.getLblPropertyPhoto()
+				.setIcon(new ImageIcon("files/images/properties/" + currProperty.getId() + ".png"));
+		userView.getLblPropertyMap()
+				.setIcon(new ImageIcon("files/images/properties/" + currProperty.getId() + "Map.png"));
 
 		// Let's set the tooltiptexts:
 		userView.getLblRooms().setToolTipText("Has " + userView.getLblRooms().getText() + " rooms.");
 		userView.getLblBathrooms().setToolTipText("Has " + userView.getLblBathrooms().getText() + " bathrooms.");
 		userView.getLblFloors().setToolTipText("Has " + userView.getLblFloors().getText() + " floors.");
+		userView.getLblPropertySize().setToolTipText("Property has " + userView.getLblPropertySize().getText() + " square meters.");
+		userView.getLblPriceTag().setToolTipText("The price is " + userView.getLblPriceTag().getText() + "EUR");
+		
+		userView.getLblTerrainSize().setText(String.valueOf(currProperty.getTerrainSize()));
+		userView.getLblTerrainSize().setToolTipText("Terrain has " + userView.getLblTerrainSize().getText() + " square meters.");
+		userView.getLblGarageSize().setText(String.valueOf(currProperty.getGarageSize()));
+		userView.getLblGarageSize().setToolTipText("Garage has " + userView.getLblGarageSize().getText() + " square meters.");
 		loadOptionalProperties();
-		refreshIdx();
 	}
 
 	public void resetIdx() {
@@ -201,11 +238,19 @@ public class ControllerUserView {
 			loadFirstProperties();
 			resetIdx();
 		} else {
-			userView.getControllerUserView()
-					.setProperties(properties);
+
+			setProperties(properties);
 			resetIdx();
-			userView.getControllerUserView().loadPropertyOnScreen();
+			loadPropertyOnScreen();
 		}
+	}
+
+	public List<Property> getInterestedProperties() {
+		return interestedProperties;
+	}
+
+	public void setInterestedProperties(List<Property> interestedProperties) {
+		this.interestedProperties = interestedProperties;
 	}
 
 }
