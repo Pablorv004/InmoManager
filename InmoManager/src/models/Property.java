@@ -218,22 +218,22 @@ public class Property {
 	@Override
 	public String toString() {
 		String terrainSizeString = terrainSize == 0 ? "it doesn't have a terrain size" : "it's terrain size is " + terrainSize + " square meters";
-		String garageSizeString = garageSize == 0 ? "it doesn't have a garage size." : "it's garage size is " + garageSize + " square meters";
-		String gardenString = hasGarden ? "Garden ," : "";
-		String basementString = hasBasement ? "Basement ," : "";
-		String garageString = hasGarage ? "Garage ," : "";
-		String poolString = hasPool ? "Pool ," : "";
-		String liftString = hasLift ? "Lift ," : "";
-		String terraceString = hasTerrace ? "Terrace ," : "";
+		String garageSizeString = garageSize == 0 ? "it doesn't have a garage size" : "it's garage size is " + garageSize + " square meters";
+		String gardenString = hasGarden ? "Garden, " : "";
+		String basementString = hasBasement ? "Basement, " : "";
+		String garageString = hasGarage ? "Garage," : "";
+		String poolString = hasPool ? "Pool, " : "";
+		String liftString = hasLift ? "Lift, " : "";
+		String terraceString = hasTerrace ? "Terrace, " : "";
 		String acString = hasAC ? "AC " : "";
 		String availableString = available ? "It's an available property" : "This property is not currently available";
 		
 		return getClass().getSimpleName() + " -> Adress is " + address + ", in " + city + ". It's a " + age + " year old "
 				+ type + ", with " + rooms + " room(s), " + floors + " floor(s) and " + bathrooms
-				+ " bathroom(s). It's property size is " + propertySize + " ," + terrainSizeString + " and "
+				+ " bathroom(s). \nIt's property size is " + propertySize + " ," + terrainSizeString + " and "
 				+ garageSizeString + ". List of feautres:" + gardenString + basementString + garageString
 				+ poolString + liftString + terraceString + acString
-				+ ". " + availableString + ". Additional comments: " + status;
+				+ ". " + availableString + ". \nAdditional comments: " + status;
 	}
 
 	@Override
