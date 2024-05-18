@@ -70,6 +70,7 @@ public class GUIManageManagers extends JFrame {
 	private JLabel lblSalary;
 	private JLabel lblImage;
 	private List<JTextField> textFieldList;
+	private JLabel lblManagerMessage;
 
 	public GUIManageManagers(GUILogin gLogin) {
 		super("Managers Managements");
@@ -105,7 +106,7 @@ public class GUIManageManagers extends JFrame {
 		contentPane.add(separator);
 
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 82, 682, 168);
+		scrollPane.setBounds(10, 98, 682, 152);
 		contentPane.add(scrollPane);
 
 		table = new JTable();
@@ -307,6 +308,12 @@ public class GUIManageManagers extends JFrame {
 		btnReturn.setContentAreaFilled(false);
 		btnReturn.setBorderPainted(false);
 		panelTitle.add(btnReturn);
+		
+		lblManagerMessage = new JLabel("Managers under your management:");
+		lblManagerMessage.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		lblManagerMessage.setHorizontalAlignment(SwingConstants.LEFT);
+		lblManagerMessage.setBounds(10, 76, 272, 18);
+		contentPane.add(lblManagerMessage);
 
 		new ControllerManageManagers(this);
 		fillTextFieldList();

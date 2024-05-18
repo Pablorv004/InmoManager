@@ -62,6 +62,9 @@ public class ControllerManageManagers {
 			} else if (obj == gManage.getBtnFilter()) {
 				gManage.setEnabled(false);
 				new GUIFilterManager(gManage);
+			} else if (obj == gManage.getBtnReset()) {
+				managerList = getManagers();
+				updateTable();
 			}
 		}
 	}
