@@ -23,6 +23,7 @@ import models.Manager;
 import models.User;
 import util.ConnectionDB;
 import util.FieldUtils;
+import views.GUIFilterManager;
 import views.GUIMainAdmin;
 import views.GUIMainManager;
 import views.GUIManageManagers;
@@ -31,7 +32,6 @@ public class ControllerManageManagers {
 	private GUIManageManagers gManage;
 	private List<Manager> managerList;
 	private User currentUser;
-	private int listIndex;
 
 	public ControllerManageManagers(GUIManageManagers gManageManagers) {
 		this.gManage = gManageManagers;
@@ -59,8 +59,9 @@ public class ControllerManageManagers {
 				enableDisableComponents(true);
 			} else if (obj == gManage.getBtnApply()) {
 				checkChanges();
-			} else if (obj == gManage.getBtnNext()) {
-				
+			} else if (obj == gManage.getBtnFilter()) {
+				gManage.setEnabled(false);
+				new GUIFilterManager(gManage);
 			}
 		}
 	}
