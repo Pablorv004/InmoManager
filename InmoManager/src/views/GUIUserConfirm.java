@@ -181,6 +181,7 @@ public class GUIUserConfirm extends JFrame {
 		panelDataProperty.add(lblPropertyPhoto, BorderLayout.WEST);
 		
 		txtAreaProperty = new JTextArea();
+		txtAreaProperty.setRows(5);
 		txtAreaProperty.setEditable(false);
 		
 		scrollPane = new JScrollPane(txtAreaProperty);
