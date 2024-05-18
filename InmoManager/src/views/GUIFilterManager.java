@@ -16,6 +16,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
 import controllers.ControllerFilterManager;
+import java.awt.Dimension;
 
 public class GUIFilterManager extends JFrame {
 	GUIManageManagers gManage;
@@ -45,7 +46,8 @@ public class GUIFilterManager extends JFrame {
 	public GUIFilterManager(GUIManageManagers gManage) {
 		super("Filter Managers");
 		this.gManage = gManage;
-		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+		setSize(451, 311);
+		setResizable(false);
 		setLocationRelativeTo(gManage);
 		getContentPane().setLayout(null);
 		
@@ -66,6 +68,7 @@ public class GUIFilterManager extends JFrame {
 		panelForm.add(cbxManagerID);
 		
 		fieldManagerID = new JTextField();
+		fieldManagerID.setEditable(false);
 		fieldManagerID.setColumns(10);
 		fieldManagerID.setBounds(109, 21, 48, 20);
 		panelForm.add(fieldManagerID);
@@ -85,6 +88,7 @@ public class GUIFilterManager extends JFrame {
 		panelSalary.add(lblMinSalary);
 		
 		fieldMinSalary = new JTextField();
+		fieldMinSalary.setEditable(false);
 		fieldMinSalary.setColumns(10);
 		fieldMinSalary.setBounds(43, 6, 86, 20);
 		panelSalary.add(fieldMinSalary);
@@ -94,6 +98,7 @@ public class GUIFilterManager extends JFrame {
 		panelSalary.add(lblMaxSalary);
 		
 		fieldMaxSalary = new JTextField();
+		fieldMaxSalary.setEditable(false);
 		fieldMaxSalary.setColumns(10);
 		fieldMaxSalary.setBounds(183, 6, 102, 20);
 		panelSalary.add(fieldMaxSalary);
@@ -113,6 +118,7 @@ public class GUIFilterManager extends JFrame {
 		panelCommission.add(lblMinCom);
 		
 		fieldMinCom = new JTextField();
+		fieldMinCom.setEditable(false);
 		fieldMinCom.setColumns(10);
 		fieldMinCom.setBounds(43, 6, 86, 20);
 		panelCommission.add(fieldMinCom);
@@ -122,6 +128,7 @@ public class GUIFilterManager extends JFrame {
 		panelCommission.add(lblMaxCom);
 		
 		fieldMaxCom = new JTextField();
+		fieldMaxCom.setEditable(false);
 		fieldMaxCom.setColumns(10);
 		fieldMaxCom.setBounds(183, 6, 102, 20);
 		panelCommission.add(fieldMaxCom);
@@ -131,11 +138,12 @@ public class GUIFilterManager extends JFrame {
 		getContentPane().add(separator);
 		
 		cbxDNI = new JCheckBox("Filter by DNI");
-		cbxDNI.setBounds(9, 41, 104, 23);
+		cbxDNI.setBounds(17, 41, 100, 23);
 		getContentPane().add(cbxDNI);
 		
 		fieldDNI = new JTextField();
-		fieldDNI.setBounds(119, 40, 160, 20);
+		fieldDNI.setEditable(false);
+		fieldDNI.setBounds(123, 42, 160, 20);
 		getContentPane().add(fieldDNI);
 		fieldDNI.setColumns(10);
 		
