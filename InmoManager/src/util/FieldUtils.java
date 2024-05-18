@@ -16,11 +16,11 @@ public class FieldUtils {
 
 	// Checks ID field format and if it exists in the table provided in the
 	// paramether
-	public static boolean validateUserID(String ID, String table, JFrame frame) {
+	public static boolean validateUserID(String ID, String table, JFrame frame, String DNI) {
 		if (!ID.matches("\\d+")) {
 			JOptionPane.showMessageDialog(frame, "The ID doesn't have a valid format (Only numbers allowed)");
 			return false;
-		} else if (findCoincidence(ID, "id", table)) {
+		} else if (findCoincidence(ID, "id", table, DNI)) {
 			JOptionPane.showMessageDialog(frame, "There's already an user with that ID", "Error",
 					JOptionPane.ERROR_MESSAGE);
 			return false;
@@ -34,7 +34,7 @@ public class FieldUtils {
 		if (!DNI.matches("[0-9]{8}[A-Z]")) {
 			JOptionPane.showMessageDialog(frame, "The DNI doesn't have a valid format [00000000A]");
 			return false;
-		} else if (findCoincidenceOnUsers(DNI, "dni")) {
+		} else if (findCoincidenceOnUsers(DNI, "dni", DNI)) {
 			JOptionPane.showMessageDialog(frame, "That DNI is already registered");
 			return false;
 		}
@@ -53,12 +53,12 @@ public class FieldUtils {
 	}
 
 	// Checks username field format and checks if it already exists in the database
-	public static boolean validateUsername(String username, JFrame frame) {
+	public static boolean validateUsername(String username, JFrame frame, String DNI) {
 		if (!username.matches("[A-Za-z0-9]{0,36}")) {
 			JOptionPane.showMessageDialog(frame, "The username doesn't have a valid format", "Format error",
 					JOptionPane.ERROR_MESSAGE);
 			return false;
-		} else if (findCoincidenceOnUsers(username, "userName")) {
+		} else if (findCoincidenceOnUsers(username, "userName", DNI)) {
 			JOptionPane.showMessageDialog(frame, "That Username is already registered");
 			return false;
 		}
@@ -122,7 +122,7 @@ public class FieldUtils {
 	}
 
 	// Checks email field format and checks if it already exists in the database
-	public static boolean validateEmail(String email, JFrame frame) {
+	public static boolean validateEmail(String email, JFrame frame, String DNI) {
 		if (!email.matches("[a-zA-Z0-9_\\-\\.]+@[a-zA-Z0-9\\-]+\\.[a-zA-Z]{2,}")) {
 			if (email.length() > 80) {
 				JOptionPane.showMessageDialog(frame, "The email is too long (Max: 80 characters)", "Format error",
@@ -132,7 +132,7 @@ public class FieldUtils {
 						JOptionPane.ERROR_MESSAGE);
 			}
 			return false;
-		} else if (findCoincidenceOnUsers(email, "email")) {
+		} else if (findCoincidenceOnUsers(email, "email", DNI)) {
 			JOptionPane.showMessageDialog(frame, "That email is already registered");
 			return false;
 		}
@@ -140,12 +140,12 @@ public class FieldUtils {
 	}
 
 	// Checks phone field format and checks if it already exists in the database
-	public static boolean validatePhone(String phoneNum, JFrame frame) {
+	public static boolean validatePhone(String phoneNum, JFrame frame, String DNI) {
 		if (!phoneNum.matches("([0-9]+){9,12}")) {
 			JOptionPane.showMessageDialog(frame, "The phone number doesn't have a valid format", "Format error",
 					JOptionPane.ERROR_MESSAGE);
 			return false;
-		} else if (findCoincidenceOnUsers(Integer.parseInt(phoneNum), "phoneNum")) {
+		} else if (findCoincidenceOnUsers(Integer.parseInt(phoneNum), "phoneNum", DNI)) {
 			JOptionPane.showMessageDialog(frame, "That phone number is already registered");
 			return false;
 		}
@@ -193,53 +193,7 @@ public class FieldUtils {
 		}
 		return true;
 	}
-
-	// BETTER HANDLE HIRE DATE FORMAT BY GUI
-
-//	// Checks hire date field format
-//	// The paramether "hireDate" MUST be passed to this method after a .strip() and a .replaceAll("\\s+"," ")
-//	public static boolean validateHireDate(String hireDate, JFrame frame) {
-//		String[] dateTime = hireDate.split(" ");
-//
-//		if (dateTime.length != 2) {
-//			JOptionPane.showMessageDialog(frame, "Invalid hire date format\nValid format: YYYY-MM-DD HH:MM:SS", "Format error", JOptionPane.ERROR_MESSAGE);
-//			return false;
-//		}
-//
-//		String[] dateArray = dateTime[0].split("-");
-//		String[] timeArray = dateTime[1].split(":");
-//
-//		if (!checkDateArray(dateArray) || !checkTimeArray(timeArray))
-//			return false;
-//
-//		return true;
-//	}
-//
-//	private static boolean checkDateArray(String[] dateArray) {
-//		int year = Integer.parseInt(dateArray[0]);
-//		int month = Integer.parseInt(dateArray[1]);
-//		int day = Integer.parseInt(dateArray[2]);
-//
-//		if(month == 2 || day > 29)
-//			return false;
-//		
-//		if (year < 1900 || year > 2200 || month < 1 || month > 12 || day < 1 || day > 31)
-//			return false;
-//
-//		return true;
-//	}
-//
-//	private static boolean checkTimeArray(String[] timeArray) {
-//		int hour = Integer.parseInt(timeArray[0]);
-//		int minute = Integer.parseInt(timeArray[1]);
-//		int second = Integer.parseInt(timeArray[2]);
-//
-//		if (hour < 0 || hour > 23 || minute < 0 || minute > 59 || second < 0 || second > 59)
-//			return false;
-//
-//		return true;
-//	}
-
+	
 	// Checks manager ID field format and if it exists
 	public static boolean validateManagerID(String managerID, JFrame frame) {
 		if (managerID.isEmpty()) {
@@ -255,6 +209,10 @@ public class FieldUtils {
 					"Format error", JOptionPane.ERROR_MESSAGE);
 			return false;
 		} else {
+			// ManagerID 0 is allowed because of super managers
+			if(managerID.equals("0"))
+				return true;
+			
 			// The new manager ID must be a existent one
 			try {
 				Connection conn = ConnectionDB.connect();
@@ -265,7 +223,9 @@ public class FieldUtils {
 					JOptionPane.showMessageDialog(frame, "There's no manager with this ID number", "Error",
 							JOptionPane.ERROR_MESSAGE);
 					return false;
-				}
+				} else if (rs.getInt(1) == 0)
+					return true;
+					
 			} catch (ClassNotFoundException | SQLException e) {
 				e.printStackTrace();
 			}
@@ -288,27 +248,25 @@ public class FieldUtils {
 
 	// Checks if the value exists in the respective table
 	// Returns TRUE if it found at least one result or FALSE if it doesn't
-	public static <T> boolean findCoincidence(T input, String field, String table) {
+	public static <T> boolean findCoincidence(T input, String field, String table, String DNI) {
 		boolean found = true;
 		try {
-			String statement = "SELECT " + field + " FROM inmomanager." + table + " WHERE " + field + " = ";
-
-			if (input instanceof String) {
-				statement += "'" + input + "'";
-			} else {
-				statement += input;
-			}
+			String statement = "SELECT " + field + " FROM inmomanager." + table + " WHERE " + field + " = ? AND DNI <> ?";
 
 			Connection conn = ConnectionDB.connect();
-			Statement stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery(statement);
+			PreparedStatement pst = conn.prepareStatement(statement);
+			
+			pst.setObject(1, input);
+			pst.setObject(2, DNI);
+			
+			ResultSet rs = pst.executeQuery();
 
 			if (!rs.next()) {
 				found = false;
 			}
 
 			rs.close();
-			stmt.close();
+			pst.close();
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
@@ -317,34 +275,32 @@ public class FieldUtils {
 
 	// Checks if the value exists in the tables: Admins, Managers and Clients
 	// Returns TRUE if it found at least one result or FALSE if it doesn't
-	public static <T> boolean findCoincidenceOnUsers(T input, String field) {
+	public static <T> boolean findCoincidenceOnUsers(T input, String field, String DNI) {
 		boolean found = true;
 		try {
-	    String query = 
-	        "SELECT " + field + " FROM (" +
-	        "    SELECT " + field + " FROM inmomanager.Managers " +
-	        "    UNION " +
-	        "    SELECT " + field + " FROM inmomanager.Clients " +
-	        "    UNION " +
-	        "    SELECT " + field + " FROM inmomanager.Administrators " +
-	        ") AS AllData " +
-	        "WHERE " + field + " = ";
-	    
-		    if (input instanceof String) {
-		        query += "'" + input + "'";
-		    } else if (input instanceof Integer) {
-		        query += input;
-		    }
+			String query = "SELECT " + field + ", 'Managers' AS source FROM inmomanager.Managers WHERE " + field + " = ? AND DNI <> ? " +
+                    		"UNION " +
+                    		"SELECT " + field + ", 'Clients' AS source FROM inmomanager.Clients WHERE " + field + " = ? AND DNI <> ? " +
+                    		"UNION " +
+                    		"SELECT " + field + ", 'Admins' AS source FROM inmomanager.Administrators WHERE " + field + " = ? AND DNI <> ?";
 	    
 	    	Connection conn = ConnectionDB.connect();
-	        Statement st = conn.createStatement();
-	        ResultSet rs = st.executeQuery(query);
+	        PreparedStatement pst = conn.prepareStatement(query);
+	        
+	        pst.setObject(1, input);
+            pst.setObject(2, DNI);
+            pst.setObject(3, input);
+            pst.setObject(4, DNI);
+            pst.setObject(5, input);
+            pst.setObject(6, DNI);
+            
+	        ResultSet rs = pst.executeQuery();
 	        
 	        if(!rs.next())
 	        	found = false;
 
 	        rs.close();
-	        st.close();
+	        pst.close();
 	    } catch (ClassNotFoundException | SQLException e) {
 	        e.printStackTrace();
 	    }

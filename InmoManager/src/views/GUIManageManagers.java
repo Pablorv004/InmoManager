@@ -26,7 +26,7 @@ import util.GlobalResources;
 public class GUIManageManagers extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-	private GUIMainManager gManager;
+	private GUILogin gLogin;
 	private JScrollPane scrollPane;
 	private JPanel contentPane;
 	private JPanel panelTitle;
@@ -71,13 +71,13 @@ public class GUIManageManagers extends JFrame {
 	private JLabel lblSalary;
 	private List<JTextField> textFieldList;
 
-	public GUIManageManagers(GUIMainManager gManager) {
+	public GUIManageManagers(GUILogin gLogin) {
 		super("Managers Managements");
-		this.gManager = gManager;
+		this.gLogin = gLogin;
 		this.textFieldList = new ArrayList<>();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 716, 630);
-		setLocationRelativeTo(gManager);
+		setLocationRelativeTo(gLogin);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -158,6 +158,7 @@ public class GUIManageManagers extends JFrame {
 		panelEdit.setLayout(null);
 
 		btnEdit = new JButton("Edit");
+		btnEdit.setEnabled(false);
 		btnEdit.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		btnEdit.setBounds(4, 6, 60, 23);
 		panelEdit.add(btnEdit);
@@ -302,10 +303,12 @@ public class GUIManageManagers extends JFrame {
 		panelImage.add(lblImage_1);
 
 		btnNext = new JButton("Next");
+		btnNext.setEnabled(false);
 		btnNext.setBounds(6, 178, 77, 23);
 		panelImage.add(btnNext);
 
 		btnPrevious = new JButton("Previous");
+		btnPrevious.setEnabled(false);
 		btnPrevious.setBounds(89, 178, 89, 23);
 		panelImage.add(btnPrevious);
 
@@ -353,12 +356,12 @@ public class GUIManageManagers extends JFrame {
 
 	// GETTERS AND SETTERS
 
-	public GUIMainManager getgManager() {
-		return gManager;
+	public GUILogin getgLogin() {
+		return gLogin;
 	}
 
-	public void setgManager(GUIMainManager gManager) {
-		this.gManager = gManager;
+	public void setgLogin(GUILogin gLogin) {
+		this.gLogin = gLogin;
 	}
 
 	public JTable getTable() {
@@ -368,8 +371,6 @@ public class GUIManageManagers extends JFrame {
 	public void setTable(JTable table) {
 		this.table = table;
 		scrollPane.setViewportView(table);
-		scrollPane.revalidate();
-		scrollPane.repaint();
 	}
 
 	public JButton getBtnReset() {
