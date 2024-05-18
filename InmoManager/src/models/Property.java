@@ -1,5 +1,7 @@
 package models;
 
+import java.util.Objects;
+
 public class Property {
 	private String address;
 	private String city;
@@ -22,9 +24,8 @@ public class Property {
 	private String status;
 	private int id;
 
+	public Property() {
 
-	public Property(){
-		
 	}
 
 	public Property(int id, String address, String city, String type, int age, int rooms, int floors, int bathrooms,
@@ -53,7 +54,7 @@ public class Property {
 		this.available = available;
 		this.status = status;
 	}
-	
+
 	public int getId() {
 		return id;
 	}
@@ -61,7 +62,7 @@ public class Property {
 	public void setId(int id) {
 		this.id = id;
 	}
-	
+
 	public String getAddress() {
 		return address;
 	}
@@ -216,12 +217,41 @@ public class Property {
 
 	@Override
 	public String toString() {
-		return getClass().getSimpleName() + " -> address=" + address + ", city=" + city + ", type=" + type + ", age=" + age
-				+ ", rooms=" + rooms + ", floors=" + floors + ", bathrooms=" + bathrooms + ", propertySize="
-				+ propertySize + ", terrainSize=" + terrainSize + ", garageSize=" + garageSize + ", hasGarden="
-				+ hasGarden + ", hasBasement=" + hasBasement + ", hasGarage=" + hasGarage + ", hasPool=" + hasPool
-				+ ", hasLift=" + hasLift + ", hasTerrace=" + hasTerrace + ", hasAC=" + hasAC + ", available="
-				+ available + ", status=" + status;
+		String terrainSizeString = terrainSize == 0 ? "it doesn't have a terrain size" : "it's terrain size is " + terrainSize + " square meters";
+		String garageSizeString = garageSize == 0 ? "it doesn't have a garage size." : "it's garage size is " + garageSize + " square meters";
+		String gardenString = hasGarden ? "Garden ," : "";
+		String basementString = hasBasement ? "Basement ," : "";
+		String garageString = hasGarage ? "Garage ," : "";
+		String poolString = hasPool ? "Pool ," : "";
+		String liftString = hasLift ? "Lift ," : "";
+		String terraceString = hasTerrace ? "Terrace ," : "";
+		String acString = hasAC ? "AC " : "";
+		String availableString = available ? "It's an available property" : "This property is not currently available";
+		
+		return getClass().getSimpleName() + " -> Adress is " + address + ", in " + city + ". It's a " + age + " year old "
+				+ type + ", with " + rooms + " room(s), " + floors + " floor(s) and " + bathrooms
+				+ " bathroom(s). It's property size is " + propertySize + " ," + terrainSizeString + " and "
+				+ garageSizeString + ". List of feautres:" + gardenString + basementString + garageString
+				+ poolString + liftString + terraceString + acString
+				+ ". " + availableString + ". Additional comments: " + status;
 	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(address);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Property other = (Property) obj;
+		return Objects.equals(address, other.address);
+	}
+	
 
 }

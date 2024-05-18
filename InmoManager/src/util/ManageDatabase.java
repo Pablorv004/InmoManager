@@ -5,18 +5,104 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.sql.Types;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.swing.JOptionPane;
 
+import models.Client;
+import models.Manager;
 import models.Property;
 import models.Purchasable_Property;
 import models.Rentable_Property;
 
 public class ManageDatabase {
+
+    public static void setPropertyAvailability(boolean state, Property property) {
+        try {
+            int availability = state ? 1 : 0;
+            Connection conn = ConnectionDB.connect();
+            Statement statement = conn.createStatement();
+            String sql;
+            if (property instanceof Rentable_Property)
+                sql = "UPDATE inmomanager.Rentable_Properties SET available = " + availability + " WHERE id = "
+                        + property.getId();
+            else
+                sql = "UPDATE inmomanager.Purchasable_Properties SET available = " + availability + " WHERE id = "
+                        + property.getId();
+            statement.executeUpdate(sql);
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static Manager retrieveRandomManager() {
+        try {
+            Connection conn = ConnectionDB.connect();
+            Statement statement = conn.createStatement();
+            String sql = "SELECT * FROM inmomanager.Managers ORDER BY RAND() LIMIT 1";
+            ResultSet rs = statement.executeQuery(sql);
+            Manager manager = new Manager();
+            while (rs.next()) {
+                manager.setID(rs.getInt("id"));
+                manager.setFullName(rs.getString("fullName"));
+                manager.setUserName(rs.getString("userName"));
+                manager.setPassword(rs.getString("password"));
+                manager.setEmail(rs.getString("email"));
+                manager.setPhoneNum(rs.getInt("phoneNum"));
+                manager.setComission(rs.getDouble("commission"));
+                manager.setBankAccountNum(rs.getString("bankAccountNum"));
+                manager.setHireDate(rs.getTimestamp("hireDate").toLocalDateTime());
+                manager.setManagerId(rs.getInt("managerId"));
+                manager.setSalary(rs.getDouble("salary"));
+            }
+            return manager;
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static void updateClientBankInfo(Client client, String newBankInfo) {
+        try {
+            Connection conn = ConnectionDB.connect();
+            Statement statement = conn.createStatement();
+            String sql = "UPDATE inmomanager.Clients SET bankAccountNum = '" + newBankInfo + "' WHERE id = "
+                    + client.getID() + ";";
+            statement.executeUpdate(sql);
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public static void insertPurchase(Property property, Client client, Manager manager) {
+        try {
+            Connection conn = ConnectionDB.connect();
+            String sql = "INSERT INTO inmomanager.";
+            if (property instanceof Rentable_Property)
+                sql += "Rents VALUES (?,?,?,?,?,?);";
+            else
+                sql += "Purchases VALUES (?,?,?,?);";
+            PreparedStatement preparedStatement = conn.prepareStatement(sql);
+            preparedStatement.setInt(1, property.getId());
+            preparedStatement.setInt(2, client.getID());
+            preparedStatement.setInt(3, manager.getID());
+            preparedStatement.setTimestamp(4, Timestamp.valueOf(LocalDateTime.now()));
+            if (property instanceof Rentable_Property) {
+                preparedStatement.setNull(5, Types.TIMESTAMP);
+                preparedStatement.setInt(6, 1);
+            }
+            preparedStatement.executeUpdate();
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
 
     public static Map<String, Integer> getCityCountMap(boolean searchRentable, boolean searchPurchasable) {
         Map<String, Integer> cityCountMap = new LinkedHashMap<>();
@@ -60,24 +146,26 @@ public class ManageDatabase {
         return sortedMap;
     }
 
-    public static boolean propertyExists(boolean searchRentable, boolean searchPurchasable, Property property){
-		try{
-			Connection conn = ConnectionDB.connect();
+    public static boolean propertyExists(boolean searchRentable, boolean searchPurchasable, Property property) {
+        try {
+            Connection conn = ConnectionDB.connect();
             String query;
             Statement statement = conn.createStatement();
-            if (searchRentable){
-                query = "SELECT id FROM inmomanager.Rentable_Properties WHERE address = '" + property.getAddress() + "'";
+            if (searchRentable) {
+                query = "SELECT id FROM inmomanager.Rentable_Properties WHERE address = '" + property.getAddress()
+                        + "'";
                 return statement.executeQuery(query).next();
             }
-            if (searchPurchasable){
-                query = "SELECT id FROM inmomanager.Purchasable_Properties WHERE address = '" + property.getAddress() + "'";
-              return statement.executeQuery(query).next();
+            if (searchPurchasable) {
+                query = "SELECT id FROM inmomanager.Purchasable_Properties WHERE address = '" + property.getAddress()
+                        + "'";
+                return statement.executeQuery(query).next();
             }
-		} catch(ClassNotFoundException | SQLException e){
+        } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
         return false;
-	}
+    }
 
     public static List<Property> getProperties(boolean searchRentables, boolean searchPurchasable, String... filters) {
         List<Property> properties = new ArrayList<Property>();
