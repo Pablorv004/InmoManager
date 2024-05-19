@@ -26,7 +26,7 @@ public class Purchasable_Property extends Property {
 
 	@Override
 	public String toString() {
-		return super.toString() + ", totalValue=" + totalValue;
+		return super.toString() + " Total value: " + totalValue + "EUR";
 	}
 
 }

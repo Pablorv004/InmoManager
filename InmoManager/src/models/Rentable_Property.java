@@ -26,7 +26,7 @@ public class Rentable_Property extends Property {
 
 	@Override
 	public String toString() {
-		return super.toString() + ", rentValue=" + rentValue;
+		return super.toString() + " Value per month: " + rentValue + "EUR";
 	}
 
 }
