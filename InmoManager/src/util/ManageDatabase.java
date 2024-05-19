@@ -23,6 +23,65 @@ import models.Rentable_Property;
 
 public class ManageDatabase {
 
+    public static List<Property> getUserHomes(String DNI) {
+        List<Property> properties = new ArrayList<Property>();
+        try {
+            Connection conn = ConnectionDB.connect();
+            String queryR = "SELECT p.* FROM inmomanager.Rents r JOIN inmomanager.Rentable_Properties p ON " +
+                    "r.propertyID = p.id WHERE clientID = (SELECT id FROM inmomanager.Clients WHERE DNI = '"
+                    + DNI + "')";
+            String queryP = "SELECT p.* FROM inmomanager.Purchases r JOIN inmomanager.Purchasable_Properties p ON " +
+                    "r.propertyID = p.id WHERE clientID = (SELECT id FROM inmomanager.Clients WHERE DNI = '" + DNI +
+                    "')";
+            Statement statement = conn.createStatement();
+            ResultSet resultR = statement.executeQuery(queryR);
+            while(resultR.next()){
+                properties.add(getRentableProperty(resultR));
+            }
+            ResultSet resultP = statement.executeQuery(queryP);
+           
+            while(resultP.next()){
+                properties.add(getPurchasableProperty(resultP));
+            }
+            return properties;
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static void updateClient(Client client) {
+        if (client == null) {
+            System.out.println("Client is null.");
+            return;
+        }
+
+        try {
+            Connection conn = ConnectionDB.connect();
+            String query = "UPDATE inmomanager.Clients SET fullName = ?, userName = ?, password = ?, email = ?, phoneNum = ?, region = ?, bankAccountNum = ? WHERE DNI = ?";
+            try (PreparedStatement pst = conn.prepareStatement(query)) {
+                pst.setString(1, client.getFullName());
+                pst.setString(2, client.getUserName());
+                pst.setString(3, client.getPassword());
+                pst.setString(4, client.getEmail());
+                pst.setInt(5, client.getPhoneNum());
+                pst.setString(6, client.getRegion());
+                pst.setString(7, client.getBankAccountNum());
+                pst.setString(8, client.getDNI());
+
+                int rowsUpdated = pst.executeUpdate();
+                if (rowsUpdated > 0) {
+                    System.out.println("Client successfully updated!");
+                } else {
+                    System.out.println("No client was updated. Check if the DNI exists.");
+                }
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            JOptionPane.showMessageDialog(null, "Error updating client");
+            e.printStackTrace();
+        }
+    }
+
     public static void setPropertyAvailability(boolean state, Property property) {
         try {
             int availability = state ? 1 : 0;
@@ -39,6 +98,7 @@ public class ManageDatabase {
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
+        System.out.println("Property state changed.");
     }
 
     public static Manager retrieveRandomManager() {
@@ -78,7 +138,7 @@ public class ManageDatabase {
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
-
+        System.out.println("Updated client bank information.");
     }
 
     public static void insertPurchase(Property property, Client client, Manager manager) {

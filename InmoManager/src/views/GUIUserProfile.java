@@ -17,6 +17,7 @@ import javax.swing.border.EmptyBorder;
 
 import controllers.ControllerUserProfile;
 import util.GlobalResources;
+import javax.swing.JPasswordField;
 
 public class GUIUserProfile extends JFrame {
 
@@ -51,6 +52,8 @@ public class GUIUserProfile extends JFrame {
 	private JLabel lblCreation;
 	private JTextField txtCreation;
 	private GUIMainUser mainUser;
+	private JLabel lblPassword;
+	private JPasswordField passwordField;
 
 	/**
 	 * Create the frame.
@@ -58,7 +61,7 @@ public class GUIUserProfile extends JFrame {
 	public GUIUserProfile(GUIMainUser mainUser) {
 		setTitle("Profile");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 563, 367);
+		setBounds(100, 100, 597, 368);
 		setLocationRelativeTo(mainUser);
 		this.mainUser = mainUser;
 		contentPane = new JPanel();
@@ -100,7 +103,7 @@ public class GUIUserProfile extends JFrame {
 
 		panelData = new JPanel();
 		contentPane.add(panelData, BorderLayout.CENTER);
-		panelData.setLayout(new GridLayout(7, 2, 0, 0));
+		panelData.setLayout(new GridLayout(8, 2, 0, 0));
 
 		lblName = new JLabel("Name");
 		panelData.add(lblName);
@@ -133,6 +136,13 @@ public class GUIUserProfile extends JFrame {
 		txtEmail.setEditable(false);
 		panelData.add(txtEmail);
 		txtEmail.setColumns(10);
+		
+		lblPassword = new JLabel("Password");
+		panelData.add(lblPassword);
+		
+		passwordField = new JPasswordField();
+		passwordField.setEditable(false);
+		panelData.add(passwordField);
 
 		lblPhoneNum = new JLabel("Phone Number");
 		panelData.add(lblPhoneNum);
@@ -413,6 +423,22 @@ public class GUIUserProfile extends JFrame {
 
 	public void setTxtCreation(JTextField txtCreation) {
 		this.txtCreation = txtCreation;
+	}
+
+	public JLabel getLblPassword() {
+		return lblPassword;
+	}
+
+	public void setLblPassword(JLabel lblPassword) {
+		this.lblPassword = lblPassword;
+	}
+
+	public JPasswordField getPasswordField() {
+		return passwordField;
+	}
+
+	public void setPasswordField(JPasswordField passwordField) {
+		this.passwordField = passwordField;
 	}
 
 }
