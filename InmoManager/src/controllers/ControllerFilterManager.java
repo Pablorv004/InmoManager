@@ -6,6 +6,8 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -14,6 +16,7 @@ import javax.swing.JOptionPane;
 import models.Admin;
 import models.Manager;
 import util.ConnectionDB;
+import util.FieldUtils;
 import views.GUIFilterManager;
 
 public class ControllerFilterManager {
@@ -27,7 +30,7 @@ public class ControllerFilterManager {
 		// Enable gManage when "X" window button is clicked
 		gFilter.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
-				gFilter.getgManage().setEnabled(true);
+				gFilter.getgManageController().getgManage().setEnabled(true);
 			}
 		});
 
@@ -41,14 +44,38 @@ public class ControllerFilterManager {
 			JButton btn = (JButton) e.getSource();
 
 			if (btn == gFilter.getBtnCancel()) {
-				gFilter.getgManage().setEnabled(true);
+				gFilter.getgManageController().getgManage().setEnabled(true);
 				gFilter.dispose();
 			} else if (btn == gFilter.getBtnApply()) {
-
+				checkSelected();
 			} else if (btn == gFilter.getBtnReset()) {
-				int option = JOptionPane.showConfirmDialog(gFilter, "Are you sure you want to reset all?","Warning",JOptionPane.INFORMATION_MESSAGE);
-				if(option == JOptionPane.OK_OPTION)
+				int option = JOptionPane.showConfirmDialog(gFilter, "Are you sure you want to reset all?", "Warning",
+						JOptionPane.INFORMATION_MESSAGE);
+				if (option == JOptionPane.OK_OPTION)
 					resetAll();
+			}
+		}
+
+		private void checkSelected() {
+			if (gFilter.getCbxDNI().isSelected()) {
+				filterByDNI();
+			} else {
+				boolean managerIDSelected = gFilter.getCbxManagerID().isSelected();
+				boolean salarySelected = gFilter.getCbxSalary().isSelected();
+				boolean commissionSelected = gFilter.getCbxCommission().isSelected();
+			}
+		}
+
+		private void filterByDNI() {
+			String DNI = gFilter.getFieldDNI().getText().strip();
+			if (FieldUtils.validateDNI(DNI, gFilter)) {
+				List<Manager> filteredList = new ArrayList<>();
+				for (Manager m : gFilter.getgManageController().getManagerList()) {
+					if (m.getDNI().equalsIgnoreCase(DNI))
+						filteredList.add(m);
+				}
+				gFilter.getgManageController().setManagerList(filteredList);
+				gFilter.getgManageController().updateTable();
 			}
 		}
 	}
@@ -62,12 +89,12 @@ public class ControllerFilterManager {
 				if (gFilter.getCbxDNI().isSelected()) {
 					toggleComponents(cbx, false);
 					gFilter.getFieldDNI().setEditable(true);
-					if(ConnectionDB.getCurrentUser() instanceof Admin) {
+					if (ConnectionDB.getCurrentUser() instanceof Admin) {
 						gFilter.getCbxManagerID().setSelected(false);
 					}
 					gFilter.getCbxSalary().setSelected(false);
 					gFilter.getCbxCommission().setSelected(false);
-				}else {
+				} else {
 					toggleComponents(cbx, true);
 					gFilter.getFieldDNI().setEditable(false);
 				}
@@ -98,7 +125,7 @@ public class ControllerFilterManager {
 
 	private void toggleComponents(JCheckBox cbx, boolean onOff) {
 		if (cbx == gFilter.getCbxDNI()) {
-			if(ConnectionDB.getCurrentUser() instanceof Admin)
+			if (ConnectionDB.getCurrentUser() instanceof Admin)
 				gFilter.getCbxManagerID().setEnabled(onOff);
 			gFilter.getCbxSalary().setEnabled(onOff);
 			gFilter.getCbxCommission().setEnabled(onOff);
@@ -112,7 +139,7 @@ public class ControllerFilterManager {
 			gFilter.getFieldMaxCom().setEditable(onOff);
 		}
 	}
-	
+
 	private void resetAll() {
 		gFilter.getCbxDNI().setSelected(false);
 		gFilter.getFieldDNI().setText("");

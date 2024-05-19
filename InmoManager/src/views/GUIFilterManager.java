@@ -16,11 +16,10 @@ import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
 import controllers.ControllerFilterManager;
-import java.awt.Dimension;
-import java.awt.event.ActionEvent;
+import controllers.ControllerManageManagers;
 
 public class GUIFilterManager extends JFrame {
-	GUIManageManagers gManage;
+	ControllerManageManagers gManageController;
 	private JLabel lblTitle;
 	private JPanel panelForm;
 	private JSeparator separator;
@@ -45,12 +44,12 @@ public class GUIFilterManager extends JFrame {
 	private JTextField fieldMaxCom;
 	private JButton btnReset;
 
-	public GUIFilterManager(GUIManageManagers gManage) {
+	public GUIFilterManager(ControllerManageManagers gManageController) {
 		super("Filter Managers");
-		this.gManage = gManage;
+		this.gManageController = gManageController;
 		setSize(451, 311);
 		setResizable(false);
-		setLocationRelativeTo(gManage);
+		setLocationRelativeTo(gManageController.getgManage());
 		getContentPane().setLayout(null);
 
 		lblTitle = new JLabel("Manager Filters");
@@ -184,8 +183,10 @@ public class GUIFilterManager extends JFrame {
 		this.cbxCommission.addItemListener(listener);
 	}
 
-	public GUIManageManagers getgManage() {
-		return gManage;
+	
+
+	public ControllerManageManagers getgManageController() {
+		return gManageController;
 	}
 
 	public JPanel getPanelForm() {
@@ -258,10 +259,6 @@ public class GUIFilterManager extends JFrame {
 
 	public JTextField getFieldMaxCom() {
 		return fieldMaxCom;
-	}
-
-	public void setgManage(GUIManageManagers gManage) {
-		this.gManage = gManage;
 	}
 
 	public void setPanelForm(JPanel panelForm) {
