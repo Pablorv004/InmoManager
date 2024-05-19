@@ -17,6 +17,7 @@ import javax.swing.border.LineBorder;
 
 import controllers.ControllerFilterManager;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
 
 public class GUIFilterManager extends JFrame {
 	GUIManageManagers gManage;
@@ -42,7 +43,8 @@ public class GUIFilterManager extends JFrame {
 	private JTextField fieldMinCom;
 	private JLabel lblMaxCom;
 	private JTextField fieldMaxCom;
-	
+	private JButton btnReset;
+
 	public GUIFilterManager(GUIManageManagers gManage) {
 		super("Filter Managers");
 		this.gManage = gManage;
@@ -50,127 +52,132 @@ public class GUIFilterManager extends JFrame {
 		setResizable(false);
 		setLocationRelativeTo(gManage);
 		getContentPane().setLayout(null);
-		
+
 		lblTitle = new JLabel("Manager Filters");
 		lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTitle.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lblTitle.setBounds(137, 5, 160, 19);
 		getContentPane().add(lblTitle);
-		
+
 		panelForm = new JPanel();
 		panelForm.setBorder(new LineBorder(new Color(105, 105, 105)));
 		panelForm.setBounds(10, 71, 414, 151);
 		getContentPane().add(panelForm);
 		panelForm.setLayout(null);
-		
+
 		cbxManagerID = new JCheckBox("Manager ID");
 		cbxManagerID.setBounds(6, 20, 97, 23);
 		panelForm.add(cbxManagerID);
-		
+
 		fieldManagerID = new JTextField();
 		fieldManagerID.setEditable(false);
 		fieldManagerID.setColumns(10);
 		fieldManagerID.setBounds(109, 21, 48, 20);
 		panelForm.add(fieldManagerID);
-		
+
 		cbxSalary = new JCheckBox("Salary");
 		cbxSalary.setBounds(6, 63, 97, 23);
 		panelForm.add(cbxSalary);
-		
+
 		panelSalary = new JPanel();
 		panelSalary.setBorder(new LineBorder(new Color(192, 192, 192)));
-		panelSalary.setBounds(109, 57, 295, 32);
+		panelSalary.setBounds(116, 57, 288, 32);
 		panelForm.add(panelSalary);
 		panelSalary.setLayout(null);
-		
+
 		lblMinSalary = new JLabel("Min:");
 		lblMinSalary.setBounds(10, 9, 34, 14);
 		panelSalary.add(lblMinSalary);
-		
+
 		fieldMinSalary = new JTextField();
 		fieldMinSalary.setEditable(false);
 		fieldMinSalary.setColumns(10);
 		fieldMinSalary.setBounds(43, 6, 86, 20);
 		panelSalary.add(fieldMinSalary);
-		
+
 		lblMaxSalary = new JLabel("Max:");
 		lblMaxSalary.setBounds(139, 9, 41, 14);
 		panelSalary.add(lblMaxSalary);
-		
+
 		fieldMaxSalary = new JTextField();
 		fieldMaxSalary.setEditable(false);
 		fieldMaxSalary.setColumns(10);
 		fieldMaxSalary.setBounds(183, 6, 102, 20);
 		panelSalary.add(fieldMaxSalary);
-		
-		cbxCommission = new JCheckBox("Commission");
-		cbxCommission.setBounds(6, 106, 97, 23);
-		panelForm.add(cbxCommission);
-		
+
 		panelCommission = new JPanel();
 		panelCommission.setLayout(null);
 		panelCommission.setBorder(new LineBorder(new Color(192, 192, 192)));
-		panelCommission.setBounds(109, 100, 295, 32);
+		panelCommission.setBounds(116, 100, 288, 32);
 		panelForm.add(panelCommission);
-		
+
 		lblMinCom = new JLabel("Min:");
 		lblMinCom.setBounds(10, 9, 34, 14);
 		panelCommission.add(lblMinCom);
-		
+
 		fieldMinCom = new JTextField();
 		fieldMinCom.setEditable(false);
 		fieldMinCom.setColumns(10);
 		fieldMinCom.setBounds(43, 6, 86, 20);
 		panelCommission.add(fieldMinCom);
-		
+
 		lblMaxCom = new JLabel("Max:");
 		lblMaxCom.setBounds(139, 9, 41, 14);
 		panelCommission.add(lblMaxCom);
-		
+
 		fieldMaxCom = new JTextField();
 		fieldMaxCom.setEditable(false);
 		fieldMaxCom.setColumns(10);
 		fieldMaxCom.setBounds(183, 6, 102, 20);
 		panelCommission.add(fieldMaxCom);
-		
+
+		cbxCommission = new JCheckBox("Commission");
+		cbxCommission.setBounds(6, 106, 106, 23);
+		panelForm.add(cbxCommission);
+
 		separator = new JSeparator();
 		separator.setBounds(0, 28, 434, 8);
 		getContentPane().add(separator);
-		
-		cbxDNI = new JCheckBox("Filter by DNI");
-		cbxDNI.setBounds(17, 41, 100, 23);
-		getContentPane().add(cbxDNI);
-		
+
 		fieldDNI = new JTextField();
 		fieldDNI.setEditable(false);
-		fieldDNI.setBounds(123, 42, 160, 20);
+		fieldDNI.setBounds(137, 42, 160, 20);
 		getContentPane().add(fieldDNI);
 		fieldDNI.setColumns(10);
-		
+
 		panelButton = new JPanel();
 		panelButton.setBounds(10, 226, 414, 38);
 		getContentPane().add(panelButton);
 		panelButton.setLayout(null);
-		
+
 		btnApply = new JButton("Apply Filters");
-		btnApply.setBounds(58, 7, 120, 23);
+		btnApply.setBounds(13, 7, 120, 23);
 		panelButton.add(btnApply);
-		
+
 		btnCancel = new JButton("Cancel");
-		btnCancel.setBounds(236, 7, 120, 23);
+		btnCancel.setBounds(279, 7, 120, 23);
 		panelButton.add(btnCancel);
-		
+
+		btnReset = new JButton("Reset");
+		btnReset.setBounds(146, 8, 120, 23);
+		panelButton.add(btnReset);
+
+		cbxDNI = new JCheckBox("Search by DNI");
+		cbxDNI.setBounds(17, 41, 114, 23);
+		getContentPane().add(cbxDNI);
+
 		new ControllerFilterManager(this);
-		
+
 		setVisible(true);
 	}
-	
-	public void addActListener (ActionListener listener) {
+
+	public void addActListener(ActionListener listener) {
 		this.btnApply.addActionListener(listener);
 		this.btnCancel.addActionListener(listener);
+		this.btnReset.addActionListener(listener);
 	}
-	
-	public void addItmListener (ItemListener listener) {
+
+	public void addItmListener(ItemListener listener) {
 		this.cbxDNI.addItemListener(listener);
 		this.cbxManagerID.addItemListener(listener);
 		this.cbxSalary.addItemListener(listener);
@@ -203,6 +210,14 @@ public class GUIFilterManager extends JFrame {
 
 	public JButton getBtnCancel() {
 		return btnCancel;
+	}
+
+	public JButton getBtnReset() {
+		return btnReset;
+	}
+
+	public void setBtnReset(JButton btnReset) {
+		this.btnReset = btnReset;
 	}
 
 	public JCheckBox getCbxManagerID() {
@@ -312,6 +327,5 @@ public class GUIFilterManager extends JFrame {
 	public void setFieldMaxCom(JTextField fieldMaxCom) {
 		this.fieldMaxCom = fieldMaxCom;
 	}
-	
-	
+
 }
