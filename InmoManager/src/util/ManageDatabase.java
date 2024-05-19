@@ -255,6 +255,7 @@ public class ManageDatabase {
                         queryPropertiesP += filters[i] + ";";
                     }
                 }
+            }
                 Statement search = conn.createStatement();
                 ResultSet rs;
                 if (searchRentables) {
@@ -270,7 +271,7 @@ public class ManageDatabase {
                     }
                 }
                 return properties;
-            }
+            
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }

@@ -31,12 +31,14 @@ public class GUIManageProperties extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private GUILogin gLogin;
-	private JScrollPane scrollPane;
+	private JScrollPane scrollTable;
+	private JScrollPane scrollStatus;
 	private JPanel contentPane;
 	private JPanel panelTitle;
 	private JPanel panelEdit;
 	private JPanel panelExtras;
 	private JPanel panelImage;
+	private JPanel panelForm;
 	private JTable table;
 	private JButton btnReset;
 	private JButton btnFilter;
@@ -48,8 +50,15 @@ public class GUIManageProperties extends JFrame {
 	private JTextField fieldRooms;
 	private JTextField fieldPropertySize;
 	private JTextField fieldAddress;
+	private JTextField fieldType;
+	private JTextField fieldAge;
+	private JTextField fieldFloors;
+	private JTextField fieldBathrooms;
+	private JTextField fieldTerrainSize;
+	private JTextField fieldGarageSize;
+	private JTextField fieldPrice;
+	private JTextArea fieldStatus;
 	private JLabel lblLogo;
-	private JPanel panelForm;
 	private JLabel lblID;
 	private JLabel lblCity;
 	private JLabel lblRooms;
@@ -57,22 +66,14 @@ public class GUIManageProperties extends JFrame {
 	private JLabel lblPropertySize;
 	private JLabel lblAddress;
 	private JLabel lblImage;
-	private List<JTextField> textFieldList;
 	private JLabel lblType;
-	private JTextField fieldType;
 	private JLabel lblAge;
-	private JTextField fieldAge;
 	private JLabel lblFloors;
-	private JTextField fieldFloors;
 	private JLabel lblBathrooms;
-	private JTextField fieldBathrooms;
 	private JLabel lblTerrainSize;
-	private JTextField fieldTerrainSize;
 	private JLabel lblGarageSize;
-	private JTextField fieldGarageSize;
-	private JTextArea fieldStatus;
-	private JScrollPane scrollPane_1;
 	private JLabel lblStatus;
+	private JLabel lblPrice;
 	private JCheckBox cbxGarden;
 	private JCheckBox cbxBasement;
 	private JCheckBox cbxGarage;
@@ -80,13 +81,11 @@ public class GUIManageProperties extends JFrame {
 	private JCheckBox cbxLift;
 	private JCheckBox cbxTerrace;
 	private JCheckBox cbxAC;
-	private JLabel lblPrice;
-	private JTextField fieldPrice;
+	private JCheckBox cbxAvailable;
 
 	public GUIManageProperties(GUILogin gLogin) {
 		super("Managers Managements");
 		this.gLogin = gLogin;
-		this.textFieldList = new ArrayList<>();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 716, 656);
 		setResizable(false);
@@ -120,12 +119,12 @@ public class GUIManageProperties extends JFrame {
 		separator.setBounds(0, 71, 714, 8);
 		contentPane.add(separator);
 
-		scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 82, 682, 168);
-		contentPane.add(scrollPane);
+		scrollTable = new JScrollPane();
+		scrollTable.setBounds(10, 82, 682, 168);
+		contentPane.add(scrollTable);
 
 		table = new JTable();
-		scrollPane.setViewportView(table);
+		scrollTable.setViewportView(table);
 
 		JSeparator separator_1 = new JSeparator();
 		separator_1.setBounds(0, 283, 714, 8);
@@ -236,17 +235,17 @@ public class GUIManageProperties extends JFrame {
 		
 		cbxPool = new JCheckBox("Pool");
 		cbxPool.setEnabled(false);
-		cbxPool.setBounds(96, 4, 79, 23);
+		cbxPool.setBounds(102, 4, 79, 23);
 		panelExtras.add(cbxPool);
 		
 		cbxLift = new JCheckBox("Lift");
 		cbxLift.setEnabled(false);
-		cbxLift.setBounds(96, 31, 79, 23);
+		cbxLift.setBounds(102, 31, 79, 23);
 		panelExtras.add(cbxLift);
 		
 		cbxTerrace = new JCheckBox("Terrace");
 		cbxTerrace.setEnabled(false);
-		cbxTerrace.setBounds(96, 58, 79, 23);
+		cbxTerrace.setBounds(102, 58, 79, 23);
 		panelExtras.add(cbxTerrace);
 		
 		cbxAC = new JCheckBox("Air-Conditioner");
@@ -347,13 +346,13 @@ public class GUIManageProperties extends JFrame {
 		fieldGarageSize.setBounds(397, 113, 43, 20);
 		panelForm.add(fieldGarageSize);
 		
-		scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(10, 166, 226, 57);
-		panelForm.add(scrollPane_1);
+		scrollStatus = new JScrollPane();
+		scrollStatus.setBounds(10, 166, 226, 57);
+		panelForm.add(scrollStatus);
 		
 		fieldStatus = new JTextArea();
 		fieldStatus.setEnabled(false);
-		scrollPane_1.setViewportView(fieldStatus);
+		scrollStatus.setViewportView(fieldStatus);
 		fieldStatus.setLineWrap(true);
 		fieldStatus.setEditable(false);
 		
@@ -371,9 +370,14 @@ public class GUIManageProperties extends JFrame {
 		fieldPrice.setColumns(10);
 		fieldPrice.setBounds(52, 231, 68, 20);
 		panelForm.add(fieldPrice);
+		
+		cbxAvailable = new JCheckBox("Available");
+		cbxAvailable.setEnabled(false);
+		cbxAvailable.setBounds(139, 230, 97, 23);
+		panelForm.add(cbxAvailable);
 
 		new ControllerManageProperties(this);
-		fillTextFieldList();
+		
 		setVisible(true);
 	}
 
@@ -388,14 +392,233 @@ public class GUIManageProperties extends JFrame {
 	public void addTableListener(ListSelectionListener listener) {
 		this.table.getSelectionModel().addListSelectionListener(listener);
 	}
+	
+	// GETTERS AND SETTERS
 
-	// Fills the JTextField list with all JTextFields of the view
-	private void fillTextFieldList() {
-		textFieldList.add(fieldID);
-		textFieldList.add(fieldCity);
-		textFieldList.add(fieldRooms);
-		textFieldList.add(fieldPropertySize);
-		textFieldList.add(fieldAddress);
+	public GUILogin getgLogin() {
+		return gLogin;
 	}
+
+	public JTable getTable() {
+		return table;
+	}
+
+	public JButton getBtnReset() {
+		return btnReset;
+	}
+
+	public JButton getBtnFilter() {
+		return btnFilter;
+	}
+
+	public JButton getBtnEdit() {
+		return btnEdit;
+	}
+
+	public JButton getBtnApply() {
+		return btnApply;
+	}
+
+	public JButton getBtnReturn() {
+		return btnReturn;
+	}
+
+	public JTextField getFieldID() {
+		return fieldID;
+	}
+
+	public JTextField getFieldCity() {
+		return fieldCity;
+	}
+
+	public JTextField getFieldRooms() {
+		return fieldRooms;
+	}
+
+	public JTextField getFieldPropertySize() {
+		return fieldPropertySize;
+	}
+
+	public JTextField getFieldAddress() {
+		return fieldAddress;
+	}
+
+	public JTextField getFieldType() {
+		return fieldType;
+	}
+
+	public JTextField getFieldAge() {
+		return fieldAge;
+	}
+
+	public JTextField getFieldFloors() {
+		return fieldFloors;
+	}
+
+	public JTextField getFieldBathrooms() {
+		return fieldBathrooms;
+	}
+
+	public JTextField getFieldTerrainSize() {
+		return fieldTerrainSize;
+	}
+
+	public JTextField getFieldGarageSize() {
+		return fieldGarageSize;
+	}
+
+	public JTextField getFieldPrice() {
+		return fieldPrice;
+	}
+
+	public JTextArea getFieldStatus() {
+		return fieldStatus;
+	}
+
+	public JCheckBox getCbxGarden() {
+		return cbxGarden;
+	}
+
+	public JCheckBox getCbxBasement() {
+		return cbxBasement;
+	}
+
+	public JCheckBox getCbxGarage() {
+		return cbxGarage;
+	}
+
+	public JCheckBox getCbxPool() {
+		return cbxPool;
+	}
+
+	public JCheckBox getCbxLift() {
+		return cbxLift;
+	}
+
+	public JCheckBox getCbxTerrace() {
+		return cbxTerrace;
+	}
+
+	public JCheckBox getCbxAC() {
+		return cbxAC;
+	}
+
+	public JCheckBox getCbxAvailable() {
+		return cbxAvailable;
+	}
+
+	public void setgLogin(GUILogin gLogin) {
+		this.gLogin = gLogin;
+	}
+
+	public void setTable(JTable table) {
+		this.table = table;
+		scrollTable.setViewportView(table);
+	}
+
+	public void setBtnReset(JButton btnReset) {
+		this.btnReset = btnReset;
+	}
+
+	public void setBtnFilter(JButton btnFilter) {
+		this.btnFilter = btnFilter;
+	}
+
+	public void setBtnEdit(JButton btnEdit) {
+		this.btnEdit = btnEdit;
+	}
+
+	public void setBtnApply(JButton btnApply) {
+		this.btnApply = btnApply;
+	}
+
+	public void setBtnReturn(JButton btnReturn) {
+		this.btnReturn = btnReturn;
+	}
+
+	public void setFieldID(JTextField fieldID) {
+		this.fieldID = fieldID;
+	}
+
+	public void setFieldCity(JTextField fieldCity) {
+		this.fieldCity = fieldCity;
+	}
+
+	public void setFieldRooms(JTextField fieldRooms) {
+		this.fieldRooms = fieldRooms;
+	}
+
+	public void setFieldPropertySize(JTextField fieldPropertySize) {
+		this.fieldPropertySize = fieldPropertySize;
+	}
+
+	public void setFieldAddress(JTextField fieldAddress) {
+		this.fieldAddress = fieldAddress;
+	}
+
+	public void setFieldType(JTextField fieldType) {
+		this.fieldType = fieldType;
+	}
+
+	public void setFieldAge(JTextField fieldAge) {
+		this.fieldAge = fieldAge;
+	}
+
+	public void setFieldFloors(JTextField fieldFloors) {
+		this.fieldFloors = fieldFloors;
+	}
+
+	public void setFieldBathrooms(JTextField fieldBathrooms) {
+		this.fieldBathrooms = fieldBathrooms;
+	}
+
+	public void setFieldTerrainSize(JTextField fieldTerrainSize) {
+		this.fieldTerrainSize = fieldTerrainSize;
+	}
+
+	public void setFieldGarageSize(JTextField fieldGarageSize) {
+		this.fieldGarageSize = fieldGarageSize;
+	}
+
+	public void setFieldPrice(JTextField fieldPrice) {
+		this.fieldPrice = fieldPrice;
+	}
+
+	public void setFieldStatus(JTextArea fieldStatus) {
+		this.fieldStatus = fieldStatus;
+	}
+
+	public void setCbxGarden(JCheckBox cbxGarden) {
+		this.cbxGarden = cbxGarden;
+	}
+
+	public void setCbxBasement(JCheckBox cbxBasement) {
+		this.cbxBasement = cbxBasement;
+	}
+
+	public void setCbxGarage(JCheckBox cbxGarage) {
+		this.cbxGarage = cbxGarage;
+	}
+
+	public void setCbxPool(JCheckBox cbxPool) {
+		this.cbxPool = cbxPool;
+	}
+
+	public void setCbxLift(JCheckBox cbxLift) {
+		this.cbxLift = cbxLift;
+	}
+
+	public void setCbxTerrace(JCheckBox cbxTerrace) {
+		this.cbxTerrace = cbxTerrace;
+	}
+
+	public void setCbxAC(JCheckBox cbxAC) {
+		this.cbxAC = cbxAC;
+	}
+
+	public void setCbxAvailable(JCheckBox cbxAvailable) {
+		this.cbxAvailable = cbxAvailable;
+	}
+	
 }
 
