@@ -78,6 +78,7 @@ public class GUIManageManagers extends JFrame {
 		this.textFieldList = new ArrayList<>();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 716, 630);
+		setResizable(false);
 		setLocationRelativeTo(gLogin);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

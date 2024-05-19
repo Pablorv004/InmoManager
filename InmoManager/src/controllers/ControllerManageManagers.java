@@ -61,7 +61,7 @@ public class ControllerManageManagers {
 				checkChanges();
 			} else if (obj == gManage.getBtnFilter()) {
 				gManage.setEnabled(false);
-				new GUIFilterManager(gManage);
+				new GUIFilterManager(ControllerManageManagers.this);
 			} else if (obj == gManage.getBtnReset()) {
 				managerList = getManagers();
 				updateTable();
@@ -216,7 +216,7 @@ public class ControllerManageManagers {
 
 	// Updates table with the information about the managers that the current
 	// manager has under it's orders
-	private void updateTable() {
+	public void updateTable() {
 		String[] headers = { "ID", "DNI", "Name", "Email", "Phone Number", "hireDate", "Manager ID", "Salary" };
 		DefaultTableModel model = new DefaultTableModel(toDataList(), headers) {
 			@Override
@@ -309,4 +309,22 @@ public class ControllerManageManagers {
 		}
 		return bankAccount;
 	}
+
+	public GUIManageManagers getgManage() {
+		return gManage;
+	}
+
+	public List<Manager> getManagerList() {
+		return managerList;
+	}
+
+	public void setgManage(GUIManageManagers gManage) {
+		this.gManage = gManage;
+	}
+
+	public void setManagerList(List<Manager> managerList) {
+		this.managerList = managerList;
+	}
+	
+	
 }
