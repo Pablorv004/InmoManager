@@ -70,6 +70,7 @@ public class GUIUserConfirm extends JFrame {
 	 * Create the frame.
 	 */
 	public GUIUserConfirm(GUIUserInterested userInterested) {
+		setTitle("Confirm");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 826, 509);
 		this.setUserInterested(userInterested);
