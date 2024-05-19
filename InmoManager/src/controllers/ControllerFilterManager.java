@@ -9,6 +9,7 @@ import java.awt.event.WindowEvent;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JOptionPane;
 
 import models.Admin;
 import models.Manager;
@@ -44,6 +45,10 @@ public class ControllerFilterManager {
 				gFilter.dispose();
 			} else if (btn == gFilter.getBtnApply()) {
 
+			} else if (btn == gFilter.getBtnReset()) {
+				int option = JOptionPane.showConfirmDialog(gFilter, "Are you sure you want to reset all?","Warning",JOptionPane.INFORMATION_MESSAGE);
+				if(option == JOptionPane.OK_OPTION)
+					resetAll();
 			}
 		}
 	}
@@ -57,6 +62,11 @@ public class ControllerFilterManager {
 				if (gFilter.getCbxDNI().isSelected()) {
 					toggleComponents(cbx, false);
 					gFilter.getFieldDNI().setEditable(true);
+					if(ConnectionDB.getCurrentUser() instanceof Admin) {
+						gFilter.getCbxManagerID().setSelected(false);
+					}
+					gFilter.getCbxSalary().setSelected(false);
+					gFilter.getCbxCommission().setSelected(false);
 				}else {
 					toggleComponents(cbx, true);
 					gFilter.getFieldDNI().setEditable(false);
@@ -101,5 +111,18 @@ public class ControllerFilterManager {
 			gFilter.getFieldMinCom().setEditable(onOff);
 			gFilter.getFieldMaxCom().setEditable(onOff);
 		}
+	}
+	
+	private void resetAll() {
+		gFilter.getCbxDNI().setSelected(false);
+		gFilter.getFieldDNI().setText("");
+		gFilter.getCbxManagerID().setSelected(false);
+		gFilter.getFieldManagerID().setText("");
+		gFilter.getCbxSalary().setSelected(false);
+		gFilter.getFieldMinSalary().setText("");
+		gFilter.getFieldMaxSalary().setText("");
+		gFilter.getCbxCommission().setSelected(false);
+		gFilter.getFieldMinCom().setText("");
+		gFilter.getFieldMaxCom().setText("");
 	}
 }
