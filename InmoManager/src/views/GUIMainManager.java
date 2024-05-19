@@ -31,6 +31,9 @@ public class GUIMainManager extends JFrame {
 		setResizable(false);
 		getContentPane().setLayout(null);
 		setLocationRelativeTo(gLogin);
+		
+		GlobalResources.setFrameIcon(this);
+		
 		titlePanel = new JPanel();
 		titlePanel.setBounds(80, 6, 228, 50);
 		getContentPane().add(titlePanel);

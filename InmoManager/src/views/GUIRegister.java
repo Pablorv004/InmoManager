@@ -13,6 +13,8 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import controllers.ControllerRegister;
+import util.GlobalResources;
+
 import javax.swing.border.LineBorder;
 
 public class GUIRegister extends JFrame {
@@ -50,6 +52,8 @@ public class GUIRegister extends JFrame {
 		setLocationRelativeTo(gLogin);
 		setResizable(false);
 		getContentPane().setLayout(null);
+		
+		GlobalResources.setFrameIcon(this);
 
 		formPanel = new JPanel();
 		formPanel.setBounds(19, 49, 283, 392);

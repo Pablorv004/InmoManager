@@ -75,6 +75,9 @@ public class GUIUserConfirm extends JFrame {
 		setBounds(100, 100, 826, 509);
 		this.setUserInterested(userInterested);
 		setLocationRelativeTo(userInterested);
+		
+		GlobalResources.setFrameIcon(this);
+		
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 

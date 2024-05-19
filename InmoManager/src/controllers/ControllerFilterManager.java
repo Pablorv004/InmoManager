@@ -57,13 +57,156 @@ public class ControllerFilterManager {
 		}
 
 		private void checkSelected() {
-			if (gFilter.getCbxDNI().isSelected()) {
-				filterByDNI();
-			} else {
-				boolean managerIDSelected = gFilter.getCbxManagerID().isSelected();
-				boolean salarySelected = gFilter.getCbxSalary().isSelected();
-				boolean commissionSelected = gFilter.getCbxCommission().isSelected();
+		    if (gFilter.getCbxDNI().isSelected()) {
+		        filterByDNI();
+		    } else {
+		        boolean managerIDSelected = gFilter.getCbxManagerID().isSelected();
+		        boolean salarySelected = gFilter.getCbxSalary().isSelected();
+		        boolean commissionSelected = gFilter.getCbxCommission().isSelected();
+		        
+		        String managerID = gFilter.getFieldManagerID().getText().strip();
+		        String minSalary = gFilter.getFieldMinSalary().getText().strip();
+		        String maxSalary = gFilter.getFieldMaxSalary().getText().strip();
+		        String minCom = gFilter.getFieldMinCom().getText().strip();
+		        String maxCom = gFilter.getFieldMaxCom().getText().strip();
+
+		        boolean isManagerIDValid = managerIDSelected && FieldUtils.validateManagerID(managerID, gFilter);
+		        boolean isMinSalaryValid = salarySelected && validateMinSalary(minSalary);
+		        boolean isMaxSalaryValid = salarySelected && validateMaxSalary(maxSalary);
+		        boolean isMinComValid = commissionSelected && validateMinCommission(minCom);
+		        boolean isMaxComValid = commissionSelected && validateMaxCommission(maxCom);
+
+		        if (isManagerIDValid && !salarySelected && !commissionSelected) {
+		            filterByManagerID();
+		        } else if (isManagerIDValid && isMinSalaryValid && isMaxSalaryValid && !commissionSelected) {
+		            filterBySalaryManagerID(minSalary, maxSalary, managerID);
+		        } else if (isManagerIDValid && isMinSalaryValid && isMaxSalaryValid && isMinComValid && isMaxComValid) {
+		            filterBySalaryManagerIDCommission(minSalary, maxSalary, minCom, maxCom, managerID);
+		        } else if (!managerIDSelected && isMinSalaryValid && isMaxSalaryValid && isMinComValid && isMaxComValid) {
+		            filterBySalaryCommission(minSalary, maxSalary, minCom, maxCom);
+		        } else if (!managerIDSelected && !salarySelected && isMinComValid && isMaxComValid) {
+		            filterByCommission(minCom, maxCom);
+		        } else if (!managerIDSelected && isMinSalaryValid && isMaxSalaryValid && !commissionSelected) {
+		            filterBySalary(minSalary, maxSalary);
+		        }
+		    }
+		}
+
+		
+		
+		private void filterBySalary(String mSalary, String mxSalary) {
+		    List<Manager> filteredList = new ArrayList<>();
+		    double minSalary = mSalary.isBlank() ? 0 : Double.parseDouble(mSalary);
+		    double maxSalary = mxSalary.isBlank() ? Double.MAX_VALUE : Double.parseDouble(mxSalary);
+		    
+		    for (Manager m : gFilter.getgManageController().getManagerList()) {
+		        if (matchesSalary(m, minSalary, maxSalary)) {
+		            filteredList.add(m);
+		        }
+		    }
+		    
+		    gFilter.getgManageController().setManagerList(filteredList);
+		    gFilter.getgManageController().updateTable();
+		}
+
+		private boolean matchesSalary(Manager manager, double minSalary, double maxSalary) {
+		    return manager.getSalary() >= minSalary && manager.getSalary() <= maxSalary;
+		}
+
+		private void filterByCommission(String mCom, String mxCom) {
+		    List<Manager> filteredList = new ArrayList<>();
+		    double minCom = mCom.isBlank() ? 0 : Double.parseDouble(mCom);
+		    double maxCom = mxCom.isBlank() ? Double.MAX_VALUE : Double.parseDouble(mxCom);
+		    
+		    for (Manager m : gFilter.getgManageController().getManagerList()) {
+		        if (matchesCommission(m, minCom, maxCom)) {
+		            filteredList.add(m);
+		        }
+		    }
+		    
+		    gFilter.getgManageController().setManagerList(filteredList);
+		    gFilter.getgManageController().updateTable();
+		}
+
+		private boolean matchesCommission(Manager manager, double minCom, double maxCom) {
+		    return manager.getComission() >= minCom && manager.getComission() <= maxCom;
+		}
+
+		private void filterBySalaryCommission(String mSalary, String mxSalary, String mCom, String mxCom) {
+		    List<Manager> filteredList = new ArrayList<>();
+		    double minSalary = mSalary.isBlank() ? 0 : Double.parseDouble(mSalary);
+		    double maxSalary = mxSalary.isBlank() ? Double.MAX_VALUE : Double.parseDouble(mxSalary);
+		    double minCom = mCom.isBlank() ? 0 : Double.parseDouble(mCom);
+		    double maxCom = mxCom.isBlank() ? Double.MAX_VALUE : Double.parseDouble(mxCom);
+		    
+		    for (Manager m : gFilter.getgManageController().getManagerList()) {
+		        if (matchesSalaryCommission(m, minSalary, maxSalary, minCom, maxCom)) {
+		            filteredList.add(m);
+		        }
+		    }
+		    
+		    gFilter.getgManageController().setManagerList(filteredList);
+		    gFilter.getgManageController().updateTable();
+		}
+
+		private boolean matchesSalaryCommission(Manager manager, double minSalary, double maxSalary, double minCom, double maxCom) {
+		    return manager.getSalary() >= minSalary && manager.getSalary() <= maxSalary &&
+		           manager.getComission() >= minCom && manager.getComission() <= maxCom;
+		}
+
+		private void filterBySalaryManagerIDCommission(String mSalary, String mxSalary, String mCom, String mxCom, String manID) {
+		    List<Manager> filteredList = new ArrayList<>();
+		    int managerID = Integer.parseInt(manID);
+		    double minSalary = mSalary.isBlank() ? 0 : Double.parseDouble(mSalary);
+		    double maxSalary = mxSalary.isBlank() ? Double.MAX_VALUE : Double.parseDouble(mxSalary);
+		    double minCom = mCom.isBlank() ? 0 : Double.parseDouble(mCom);
+		    double maxCom = mxCom.isBlank() ? Double.MAX_VALUE : Double.parseDouble(mxCom);
+		    
+		    for (Manager m : gFilter.getgManageController().getManagerList()) {
+		        if (matchesSalaryManagerIDCommission(m, managerID, minSalary, maxSalary, minCom, maxCom)) {
+		            filteredList.add(m);
+		        }
+		    }
+		    
+		    gFilter.getgManageController().setManagerList(filteredList);
+		    gFilter.getgManageController().updateTable();
+		}
+
+		private boolean matchesSalaryManagerIDCommission(Manager manager, int managerID, double minSalary, double maxSalary, double minCom, double maxCom) {
+		    return manager.getManagerId() == managerID && 
+		           manager.getSalary() >= minSalary && manager.getSalary() <= maxSalary &&
+		           manager.getComission() >= minCom && manager.getComission() <= maxCom;
+		}
+
+		private void filterBySalaryManagerID(String mSalary, String mxSalary, String manID) {
+		    List<Manager> filteredList = new ArrayList<>();
+		    double minSalary = mSalary.isBlank() ? 0 : Double.parseDouble(mSalary);
+		    double maxSalary = mxSalary.isBlank() ? Double.MAX_VALUE : Double.parseDouble(mxSalary);
+		    int managerID = Integer.parseInt(manID);
+		    
+		    for (Manager m : gFilter.getgManageController().getManagerList()) {
+		        if (matchesSalaryManagerID(m, managerID, minSalary, maxSalary)) {
+		            filteredList.add(m);
+		        }
+		    }
+		    
+		    gFilter.getgManageController().setManagerList(filteredList);
+		    gFilter.getgManageController().updateTable();
+		}
+
+		private boolean matchesSalaryManagerID(Manager manager, int managerID, double minSalary, double maxSalary) {
+		    return manager.getManagerId() == managerID && manager.getSalary() >= minSalary && manager.getSalary() <= maxSalary;
+		}
+
+		private void filterByManagerID() {
+			int managerID = Integer.parseInt(gFilter.getFieldManagerID().getText().strip());
+			List<Manager> filteredList = new ArrayList<>();
+			for(Manager m : gFilter.getgManageController().getManagerList()) {
+				if(m.getManagerId() == managerID)
+					filteredList.add(m);
 			}
+			gFilter.getgManageController().setManagerList(filteredList);
+			gFilter.getgManageController().updateTable();
 		}
 
 		private void filterByDNI() {
@@ -77,6 +220,34 @@ public class ControllerFilterManager {
 				gFilter.getgManageController().setManagerList(filteredList);
 				gFilter.getgManageController().updateTable();
 			}
+		}
+		
+		private boolean validateMinSalary(String minSalary) {
+			if(minSalary.matches("\\d{1,4}(\\.\\d{2})?") || minSalary.isBlank())
+				return true;
+			
+			return false;
+		}
+		
+		private boolean validateMaxSalary(String maxSalary) {
+			if(maxSalary.matches("\\d{1,4}(\\.\\d{2})?") || maxSalary.isBlank())
+				return true;
+			
+			return false;
+		}
+		
+		private boolean validateMinCommission(String minCommission) {
+			if(minCommission.matches("\\d{1,2}\\.\\d{1,2}") || minCommission.isBlank())
+				return true;
+			
+			return false;
+		}
+		
+		private boolean validateMaxCommission(String minCommission) {
+			if(minCommission.matches("\\d{1,2}\\.\\d{1,2}") || minCommission.isBlank())
+				return true;
+			
+			return false;
 		}
 	}
 

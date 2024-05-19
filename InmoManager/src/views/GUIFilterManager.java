@@ -17,6 +17,9 @@ import javax.swing.border.LineBorder;
 
 import controllers.ControllerFilterManager;
 import controllers.ControllerManageManagers;
+import util.GlobalResources;
+
+import javax.swing.border.BevelBorder;
 
 public class GUIFilterManager extends JFrame {
 	ControllerManageManagers gManageController;
@@ -43,14 +46,19 @@ public class GUIFilterManager extends JFrame {
 	private JLabel lblMaxCom;
 	private JTextField fieldMaxCom;
 	private JButton btnReset;
+	private JPanel panelWarnings;
+	private JLabel lblWarning;
+	private JLabel lblThisMeansThat;
 
 	public GUIFilterManager(ControllerManageManagers gManageController) {
 		super("Filter Managers");
 		this.gManageController = gManageController;
-		setSize(451, 311);
+		setSize(451, 338);
 		setResizable(false);
 		setLocationRelativeTo(gManageController.getgManage());
 		getContentPane().setLayout(null);
+		
+		GlobalResources.setFrameIcon(this);
 
 		lblTitle = new JLabel("Manager Filters");
 		lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
@@ -60,7 +68,7 @@ public class GUIFilterManager extends JFrame {
 
 		panelForm = new JPanel();
 		panelForm.setBorder(new LineBorder(new Color(105, 105, 105)));
-		panelForm.setBounds(10, 71, 414, 151);
+		panelForm.setBounds(10, 104, 414, 151);
 		getContentPane().add(panelForm);
 		panelForm.setLayout(null);
 
@@ -140,12 +148,12 @@ public class GUIFilterManager extends JFrame {
 
 		fieldDNI = new JTextField();
 		fieldDNI.setEditable(false);
-		fieldDNI.setBounds(137, 42, 160, 20);
+		fieldDNI.setBounds(136, 79, 160, 20);
 		getContentPane().add(fieldDNI);
 		fieldDNI.setColumns(10);
 
 		panelButton = new JPanel();
-		panelButton.setBounds(10, 226, 414, 38);
+		panelButton.setBounds(10, 256, 414, 38);
 		getContentPane().add(panelButton);
 		panelButton.setLayout(null);
 
@@ -162,8 +170,18 @@ public class GUIFilterManager extends JFrame {
 		panelButton.add(btnReset);
 
 		cbxDNI = new JCheckBox("Search by DNI");
-		cbxDNI.setBounds(17, 41, 114, 23);
+		cbxDNI.setBounds(16, 78, 114, 23);
 		getContentPane().add(cbxDNI);
+		
+		panelWarnings = new JPanel();
+		panelWarnings.setBounds(10, 32, 415, 40);
+		getContentPane().add(panelWarnings);
+		
+		lblWarning = new JLabel("¡The filter will be applied to the current managers shown in the table!");
+		panelWarnings.add(lblWarning);
+		
+		lblThisMeansThat = new JLabel("This means that you can accumulate filters on top of another");
+		panelWarnings.add(lblThisMeansThat);
 
 		new ControllerFilterManager(this);
 
@@ -324,5 +342,4 @@ public class GUIFilterManager extends JFrame {
 	public void setFieldMaxCom(JTextField fieldMaxCom) {
 		this.fieldMaxCom = fieldMaxCom;
 	}
-
 }
