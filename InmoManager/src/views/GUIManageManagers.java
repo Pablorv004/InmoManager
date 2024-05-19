@@ -80,6 +80,9 @@ public class GUIManageManagers extends JFrame {
 		setBounds(100, 100, 716, 630);
 		setResizable(false);
 		setLocationRelativeTo(gLogin);
+		
+		GlobalResources.setFrameIcon(this);
+		
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 

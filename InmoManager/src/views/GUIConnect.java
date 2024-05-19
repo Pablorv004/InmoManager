@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import controllers.ControllerConnect;
+import util.GlobalResources;
 
 public class GUIConnect extends JFrame {
 
@@ -29,6 +30,8 @@ public class GUIConnect extends JFrame {
 		setLocationRelativeTo(null);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		
+		GlobalResources.setFrameIcon(this);
 
 		setContentPane(contentPane);
 		contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));

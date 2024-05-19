@@ -1,7 +1,11 @@
 package util;
 
+import java.awt.Image;
+import java.awt.Toolkit;
+
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 
 public class GlobalResources {
 	private static Icon iconSmall;
@@ -20,7 +24,7 @@ public class GlobalResources {
 	private static Icon iconFloors;
 	private static Icon iconRooms;
 	private static Icon iconBathrooms;
-	
+
 	public GlobalResources() {
 		iconSmall = new ImageIcon("files/images/InmoManagerSmol64.png");
 		iconReturn = new ImageIcon("files/images/Return25.png");
@@ -40,6 +44,11 @@ public class GlobalResources {
 		iconBasement = new ImageIcon("files/Images/basement40.png");
 	}
 
+	public static void setFrameIcon(JFrame frame) {
+		ImageIcon icon = new ImageIcon("files/images/InmoManager32-32.png");
+		frame.setIconImage(icon.getImage());
+	}
+
 	public static Icon getIconReturn() {
 		return iconReturn;
 	}
@@ -55,8 +64,6 @@ public class GlobalResources {
 	public static void setIconSmall(Icon iconSmall) {
 		GlobalResources.iconSmall = iconSmall;
 	}
-
-	
 
 	public static Icon getIconGarage() {
 		return iconGarage;
@@ -161,6 +168,5 @@ public class GlobalResources {
 	public static void setIconBathrooms(Icon iconBathrooms) {
 		GlobalResources.iconBathrooms = iconBathrooms;
 	}
-
 
 }

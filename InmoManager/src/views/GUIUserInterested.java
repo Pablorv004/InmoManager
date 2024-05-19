@@ -48,6 +48,9 @@ public class GUIUserInterested extends JFrame {
 		setBounds(100, 100, 565, 299);
 		setLocationRelativeTo(userView);
 		this.userView = userView;
+		
+		GlobalResources.setFrameIcon(this);
+		
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 

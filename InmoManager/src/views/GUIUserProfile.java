@@ -64,6 +64,9 @@ public class GUIUserProfile extends JFrame {
 		setBounds(100, 100, 597, 368);
 		setLocationRelativeTo(mainUser);
 		this.mainUser = mainUser;
+		
+		GlobalResources.setFrameIcon(this);
+		
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 

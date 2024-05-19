@@ -80,6 +80,9 @@ public class GUIUserAdd extends JFrame {
 		setBounds(100, 100, 597, 728);
 		setTitle("Add Property");
 		setLocationRelativeTo(this.mainUser);
+		
+		GlobalResources.setFrameIcon(this);
+		
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 

@@ -190,11 +190,17 @@ public class ControllerManageManagers {
 		gManage.getFieldPhone().setText(String.valueOf(manager.getPhoneNum()));
 		gManage.getFieldCommission().setText(String.valueOf(manager.getComission()));
 		gManage.getFieldBank().setText(manager.getBankAccountNum());
-		gManage.getFieldHireDate().setText(String.valueOf(manager.getHireDate()));
+		gManage.getFieldHireDate().setText(getDate(manager));
 		gManage.getFieldManagerID().setText(String.valueOf(manager.getManagerId()));
 		gManage.getFieldSalary().setText(String.valueOf(manager.getSalary()));
 	}
 	
+	// Gets only the date from timestamp
+	private String getDate(Manager manager) {
+		String [] timestampArray = String.valueOf(manager.getHireDate()).split("T");
+		return timestampArray[0];
+	}
+
 	// Enables or disables the components depending of the current user being an Admin or a Manager
 	// on -> Activates  // off -> Deactivates 
 	private void enableDisableComponents(Boolean onOff) {
