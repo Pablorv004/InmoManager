@@ -18,6 +18,7 @@ import javax.swing.JOptionPane;
 
 import util.ConversionMethods;
 import util.ManageDatabase;
+import views.GUIManageProperties;
 import views.GUIPropertyFilter;
 import views.GUIUserView;
 
@@ -70,6 +71,8 @@ public class ControllerPropertyFilter {
             String... filters) {
         if (frame instanceof GUIUserView) {
             ((GUIUserView) frame).getControllerUserView().applyFilters(checkRentable, checkPurchasable, filters);
+        } else if(frame instanceof GUIManageProperties) {
+        	((GUIManageProperties)frame).getController().applyFilters(checkRentable, checkPurchasable, filters);
         }
     }
 

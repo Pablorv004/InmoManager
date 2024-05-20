@@ -45,12 +45,12 @@ public class GUIMainManager extends JFrame {
 		lblTitle.setBounds(22, 13, 184, 28);
 		titlePanel.add(lblTitle);
 
-		btnManageProperties = new JButton("Manage Properties");
+		btnManageProperties = new JButton("View Properties");
 		btnManageProperties.setFont(new Font("SansSerif", Font.PLAIN, 13));
 		btnManageProperties.setBounds(29, 80, 150, 30);
 		getContentPane().add(btnManageProperties);
 
-		btnManageManagers = new JButton("Manage Managers");
+		btnManageManagers = new JButton("View Managers");
 		btnManageManagers.setFont(new Font("SansSerif", Font.PLAIN, 13));
 		btnManageManagers.setBounds(208, 80, 150, 30);
 		getContentPane().add(btnManageManagers);

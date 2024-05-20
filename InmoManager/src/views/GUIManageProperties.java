@@ -4,18 +4,17 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
@@ -24,8 +23,6 @@ import javax.swing.event.ListSelectionListener;
 
 import controllers.ControllerManageProperties;
 import util.GlobalResources;
-import javax.swing.JTextArea;
-import javax.swing.JCheckBox;
 
 public class GUIManageProperties extends JFrame {
 
@@ -39,6 +36,7 @@ public class GUIManageProperties extends JFrame {
 	private JPanel panelExtras;
 	private JPanel panelImage;
 	private JPanel panelForm;
+	private JPanel panelType;
 	private JTable table;
 	private JButton btnReset;
 	private JButton btnFilter;
@@ -80,14 +78,17 @@ public class GUIManageProperties extends JFrame {
 	private JCheckBox cbxPool;
 	private JCheckBox cbxLift;
 	private JCheckBox cbxTerrace;
-	private JCheckBox cbxAC;
 	private JCheckBox cbxAvailable;
+	private JCheckBox cbxAC;
+	private JCheckBox cbxRentable;
+	private JCheckBox cbxPurchasable;
+	private ControllerManageProperties controller;
 
 	public GUIManageProperties(GUILogin gLogin) {
 		super("Managers Managements");
 		this.gLogin = gLogin;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 716, 656);
+		setBounds(100, 100, 716, 691);
 		setResizable(false);
 		setLocationRelativeTo(gLogin);
 
@@ -139,7 +140,7 @@ public class GUIManageProperties extends JFrame {
 		contentPane.add(btnReset);
 
 		panelImage = new JPanel();
-		panelImage.setBounds(506, 349, 186, 210);
+		panelImage.setBounds(502, 348, 186, 210);
 		contentPane.add(panelImage);
 		panelImage.setLayout(new BorderLayout(0, 0));
 
@@ -157,18 +158,19 @@ public class GUIManageProperties extends JFrame {
 
 		panelForm = new JPanel();
 		panelForm.setBorder(new LineBorder(new Color(192, 192, 192)));
-		panelForm.setBounds(10, 302, 479, 304);
+		panelForm.setBounds(10, 302, 479, 339);
 		contentPane.add(panelForm);
 		panelForm.setLayout(null);
 
 		lblID = new JLabel("ID");
-		lblID.setBounds(413, 11, 25, 20);
+		lblID.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblID.setBounds(385, 11, 25, 20);
 		panelForm.add(lblID);
 
 		fieldID = new JTextField();
 		fieldID.setEditable(false);
 		fieldID.setHorizontalAlignment(SwingConstants.LEFT);
-		fieldID.setBounds(434, 11, 35, 20);
+		fieldID.setBounds(420, 11, 49, 20);
 		panelForm.add(fieldID);
 		fieldID.setColumns(10);
 
@@ -180,12 +182,12 @@ public class GUIManageProperties extends JFrame {
 		fieldCity.setEditable(false);
 		fieldCity.setHorizontalAlignment(SwingConstants.LEFT);
 		fieldCity.setColumns(10);
-		fieldCity.setBounds(52, 45, 106, 20);
+		fieldCity.setBounds(62, 45, 106, 20);
 		panelForm.add(fieldCity);
 
 		panelEdit = new JPanel();
 		panelEdit.setBorder(new LineBorder(new Color(192, 192, 192)));
-		panelEdit.setBounds(10, 258, 189, 35);
+		panelEdit.setBounds(10, 293, 189, 35);
 		panelForm.add(panelEdit);
 		panelEdit.setLayout(null);
 
@@ -214,7 +216,7 @@ public class GUIManageProperties extends JFrame {
 
 		panelExtras = new JPanel();
 		panelExtras.setBorder(new LineBorder(new Color(192, 192, 192)));
-		panelExtras.setBounds(280, 177, 189, 116);
+		panelExtras.setBounds(280, 166, 189, 116);
 		panelForm.add(panelExtras);
 		panelExtras.setLayout(null);
 		
@@ -255,7 +257,7 @@ public class GUIManageProperties extends JFrame {
 
 		lblExtras = new JLabel("Extras");
 		lblExtras.setHorizontalAlignment(SwingConstants.CENTER);
-		lblExtras.setBounds(332, 158, 75, 14);
+		lblExtras.setBounds(335, 149, 75, 14);
 		panelForm.add(lblExtras);
 
 		lblPropertySize = new JLabel("Property Size");
@@ -277,11 +279,12 @@ public class GUIManageProperties extends JFrame {
 		fieldAddress.setHorizontalAlignment(SwingConstants.LEFT);
 		fieldAddress.setEditable(false);
 		fieldAddress.setColumns(10);
-		fieldAddress.setBounds(88, 11, 315, 20);
+		fieldAddress.setBounds(88, 11, 253, 20);
 		panelForm.add(fieldAddress);
 
 		lblType = new JLabel("Type");
-		lblType.setBounds(193, 45, 43, 20);
+		lblType.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblType.setBounds(182, 45, 43, 20);
 		panelForm.add(lblType);
 
 		fieldType = new JTextField();
@@ -292,6 +295,7 @@ public class GUIManageProperties extends JFrame {
 		panelForm.add(fieldType);
 
 		lblAge = new JLabel("Age");
+		lblAge.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblAge.setBounds(385, 45, 25, 20);
 		panelForm.add(lblAge);
 
@@ -299,55 +303,59 @@ public class GUIManageProperties extends JFrame {
 		fieldAge.setHorizontalAlignment(SwingConstants.LEFT);
 		fieldAge.setEditable(false);
 		fieldAge.setColumns(10);
-		fieldAge.setBounds(423, 45, 35, 20);
+		fieldAge.setBounds(420, 45, 49, 20);
 		panelForm.add(fieldAge);
 
 		lblFloors = new JLabel("Floors");
-		lblFloors.setBounds(110, 79, 43, 20);
+		lblFloors.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblFloors.setBounds(182, 79, 43, 20);
 		panelForm.add(lblFloors);
 
 		fieldFloors = new JTextField();
 		fieldFloors.setHorizontalAlignment(SwingConstants.LEFT);
 		fieldFloors.setEditable(false);
 		fieldFloors.setColumns(10);
-		fieldFloors.setBounds(152, 79, 36, 20);
+		fieldFloors.setBounds(236, 79, 36, 20);
 		panelForm.add(fieldFloors);
 
 		lblBathrooms = new JLabel("Bathrooms");
-		lblBathrooms.setBounds(215, 79, 68, 20);
+		lblBathrooms.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblBathrooms.setBounds(342, 79, 68, 20);
 		panelForm.add(lblBathrooms);
 
 		fieldBathrooms = new JTextField();
 		fieldBathrooms.setHorizontalAlignment(SwingConstants.LEFT);
 		fieldBathrooms.setEditable(false);
 		fieldBathrooms.setColumns(10);
-		fieldBathrooms.setBounds(287, 79, 36, 20);
+		fieldBathrooms.setBounds(420, 79, 49, 20);
 		panelForm.add(fieldBathrooms);
 
 		lblTerrainSize = new JLabel("Terrain Size");
-		lblTerrainSize.setBounds(162, 113, 85, 20);
+		lblTerrainSize.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblTerrainSize.setBounds(144, 113, 81, 20);
 		panelForm.add(lblTerrainSize);
 
 		fieldTerrainSize = new JTextField();
 		fieldTerrainSize.setHorizontalAlignment(SwingConstants.LEFT);
 		fieldTerrainSize.setEditable(false);
 		fieldTerrainSize.setColumns(10);
-		fieldTerrainSize.setBounds(240, 113, 43, 20);
+		fieldTerrainSize.setBounds(235, 113, 43, 20);
 		panelForm.add(fieldTerrainSize);
 
 		lblGarageSize = new JLabel("Garage Size");
-		lblGarageSize.setBounds(319, 113, 85, 20);
+		lblGarageSize.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblGarageSize.setBounds(333, 113, 77, 20);
 		panelForm.add(lblGarageSize);
 
 		fieldGarageSize = new JTextField();
 		fieldGarageSize.setHorizontalAlignment(SwingConstants.LEFT);
 		fieldGarageSize.setEditable(false);
 		fieldGarageSize.setColumns(10);
-		fieldGarageSize.setBounds(397, 113, 43, 20);
+		fieldGarageSize.setBounds(420, 113, 49, 20);
 		panelForm.add(fieldGarageSize);
 		
 		scrollStatus = new JScrollPane();
-		scrollStatus.setBounds(10, 166, 226, 57);
+		scrollStatus.setBounds(10, 209, 226, 57);
 		panelForm.add(scrollStatus);
 		
 		fieldStatus = new JTextArea();
@@ -357,26 +365,42 @@ public class GUIManageProperties extends JFrame {
 		fieldStatus.setEditable(false);
 		
 		lblStatus = new JLabel("Property Status");
-		lblStatus.setBounds(10, 146, 121, 20);
+		lblStatus.setBounds(10, 189, 121, 20);
 		panelForm.add(lblStatus);
 		
 		lblPrice = new JLabel("Price");
-		lblPrice.setBounds(10, 231, 43, 20);
+		lblPrice.setBounds(10, 156, 43, 20);
 		panelForm.add(lblPrice);
 		
 		fieldPrice = new JTextField();
 		fieldPrice.setHorizontalAlignment(SwingConstants.LEFT);
 		fieldPrice.setEditable(false);
 		fieldPrice.setColumns(10);
-		fieldPrice.setBounds(52, 231, 68, 20);
+		fieldPrice.setBounds(52, 156, 68, 20);
 		panelForm.add(fieldPrice);
 		
 		cbxAvailable = new JCheckBox("Available");
 		cbxAvailable.setEnabled(false);
-		cbxAvailable.setBounds(139, 230, 97, 23);
+		cbxAvailable.setBounds(7, 269, 85, 23);
 		panelForm.add(cbxAvailable);
+		
+		panelType = new JPanel();
+		panelType.setBorder(new LineBorder(new Color(192, 192, 192)));
+		panelType.setBounds(280, 293, 189, 35);
+		panelForm.add(panelType);
+		panelType.setLayout(null);
+		
+		cbxRentable = new JCheckBox("Rentable");
+		cbxRentable.setEnabled(false);
+		cbxRentable.setBounds(6, 6, 85, 23);
+		panelType.add(cbxRentable);
+		
+		cbxPurchasable = new JCheckBox("Purchasable");
+		cbxPurchasable.setEnabled(false);
+		cbxPurchasable.setBounds(91, 6, 97, 23);
+		panelType.add(cbxPurchasable);
 
-		new ControllerManageProperties(this);
+		controller = new ControllerManageProperties(this);
 		
 		setVisible(true);
 	}
@@ -395,8 +419,34 @@ public class GUIManageProperties extends JFrame {
 	
 	// GETTERS AND SETTERS
 
+	
+	
 	public GUILogin getgLogin() {
 		return gLogin;
+	}
+
+	public ControllerManageProperties getController() {
+		return controller;
+	}
+
+	public void setController(ControllerManageProperties controller) {
+		this.controller = controller;
+	}
+
+	public JCheckBox getCbxRentable() {
+		return cbxRentable;
+	}
+
+	public JCheckBox getCbxPurchasable() {
+		return cbxPurchasable;
+	}
+
+	public void setCbxRentable(JCheckBox cbxRentable) {
+		this.cbxRentable = cbxRentable;
+	}
+
+	public void setCbxPurchasable(JCheckBox cbxPurchasable) {
+		this.cbxPurchasable = cbxPurchasable;
 	}
 
 	public JTable getTable() {
@@ -619,6 +669,5 @@ public class GUIManageProperties extends JFrame {
 	public void setCbxAvailable(JCheckBox cbxAvailable) {
 		this.cbxAvailable = cbxAvailable;
 	}
-	
 }
 
