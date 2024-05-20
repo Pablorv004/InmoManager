@@ -253,5 +253,8 @@ public class Property {
 		return Objects.equals(address, other.address);
 	}
 	
-
+	public Object[] toArray() {
+		Object [] array = {address,city,type,age,rooms,floors};
+		return array;
+	}
 }
