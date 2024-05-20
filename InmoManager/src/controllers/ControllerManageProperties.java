@@ -1,11 +1,17 @@
 package controllers;
 
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JCheckBox;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
@@ -25,6 +31,7 @@ import views.GUIMainAdmin;
 import views.GUIMainManager;
 import views.GUIManageProperties;
 import views.GUIPropertyFilter;
+import views.GUIAddProperty;
 
 public class ControllerManageProperties {
 	private GUIManageProperties gProperties;
@@ -38,6 +45,10 @@ public class ControllerManageProperties {
 		this.propertyList = ManageDatabase.getProperties(true, true, new String[] {});
 		this.extraList = getExtraCheckboxes();
 		updateTable();
+		
+		if(currentUser instanceof Admin)
+			gProperties.getBtnEdit().setEnabled(true);
+		
 
 		gProperties.addActListener(new ActListener());
 	}
@@ -50,15 +61,54 @@ public class ControllerManageProperties {
 			if (obj == gProperties.getBtnReturn()) {
 				handleBtnReturn();
 			} else if (obj == gProperties.getBtnEdit()) {
-
+				handleEditBtn();
 			} else if (obj == gProperties.getBtnApply()) {
 
 			} else if (obj == gProperties.getBtnFilter()) {
+				gProperties.setEnabled(false);
+				gProperties.getBtnDelete().setEnabled(false);
 				new GUIPropertyFilter(gProperties);
 			} else if (obj == gProperties.getBtnReset()) {
 				propertyList = ManageDatabase.getProperties(true, true, new String[] {});
 				updateTable();
+			} else if (obj == gProperties.getBtnAdd()) {
+				new GUIAddProperty(gProperties);
+			} else if (obj == gProperties.getBtnDelete()) {
+				handleDeleteBtn();
 			}
+		}
+
+		private void handleEditBtn() {
+			if(gProperties.getTable().getSelectedRow() != -1) {
+				setEnabledAll(gProperties.getPanelForm(), true);
+				gProperties.getBtnApply().setEnabled(true);
+			}else
+				JOptionPane.showMessageDialog(gProperties, "There's no property selected","Error",JOptionPane.ERROR_MESSAGE);
+				
+			gProperties.getBtnDelete().setEnabled(false);
+		}
+
+		private void handleDeleteBtn() {
+			int selectedRow = gProperties.getTable().getSelectedRow();
+			if (selectedRow != -1) {
+				int election = JOptionPane.showConfirmDialog(gProperties,
+						"Are you sure you want to delete this property? (Address: "
+								+ gProperties.getTable().getValueAt(selectedRow, 0) + ")",
+						"Confirmation", JOptionPane.INFORMATION_MESSAGE);
+				if (election == JOptionPane.OK_OPTION) {
+					deleteProperty();
+				}
+			} else
+				JOptionPane.showMessageDialog(gProperties, "There's no property selected", "Error",
+						JOptionPane.ERROR_MESSAGE);
+		}
+		
+		private void handleBtnReturn() {
+			gProperties.dispose();
+			if (currentUser instanceof Manager)
+				new GUIMainManager(gProperties.getgLogin());
+			else if (currentUser instanceof Admin)
+				new GUIMainAdmin(gProperties.getgLogin());
 		}
 	}
 
@@ -66,7 +116,9 @@ public class ControllerManageProperties {
 		@Override
 		public void valueChanged(ListSelectionEvent e) {
 			// Disables editable components each time a row is clicked
-			enableDisableComponents(false);
+			setEnabledAll(gProperties.getPanelForm(), false);
+			
+			gProperties.getBtnDelete().setEnabled(true);
 			
 			gProperties.getBtnEdit().setEnabled(true);
 			int selectedRow = gProperties.getTable().getSelectedRow();
@@ -87,18 +139,40 @@ public class ControllerManageProperties {
 
 	// METHODS
 	
-	public void applyFilters(boolean checkRentable, boolean checkPurchasable, String... filters) {
-		propertyList = ManageDatabase.getProperties(checkRentable,
-				checkPurchasable, filters);
+	private void deleteProperty() {
+		Property property = propertyList.get(gProperties.getTable().getSelectedRow());
+		gProperties.getBtnDelete().setEnabled(false);
+		
+		try {
+			String statement = "DELETE FROM ";
+			if(property instanceof Purchasable_Property)
+				statement += "inmomanager.Purchasable_Properties WHERE id = ? AND address = ?";
+			else if (property instanceof Rentable_Property)
+				statement += "inmomanager.Rentable_Properties WHERE id = ? AND address = ?";
+			
+			Connection conn = ConnectionDB.connect();
+			PreparedStatement pst = conn.prepareStatement(statement);
+			pst.setInt(1, property.getId());
+			pst.setString(2, property.getAddress());
+			int modified = pst.executeUpdate();
+			
+			if(modified != 0)
+				JOptionPane.showMessageDialog(gProperties, "The property was deleted from the system","Delete sucessful",JOptionPane.INFORMATION_MESSAGE);
+			else
+				JOptionPane.showMessageDialog(gProperties, "There were no properties found","Delete failure",JOptionPane.ERROR_MESSAGE);
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		
+		propertyList = ManageDatabase.getProperties(true, true, new String[] {});
 		updateTable();
 	}
 
-	private void handleBtnReturn() {
-		gProperties.dispose();
-		if (currentUser instanceof Manager)
-			new GUIMainManager(gProperties.getgLogin());
-		else if (currentUser instanceof Admin)
-			new GUIMainAdmin(gProperties.getgLogin());
+	public void applyFilters(boolean checkRentable, boolean checkPurchasable, String... filters) {
+		propertyList = ManageDatabase.getProperties(checkRentable,
+				checkPurchasable, filters);
+		gProperties.setEnabled(true);
+		updateTable();
 	}
 
 	// Updates table with the information about the properties
@@ -125,14 +199,29 @@ public class ControllerManageProperties {
 	}
 
 	// Enables / Disables components depending of the current user
-	private void enableDisableComponents(boolean onOff) {
+	private void setEnabledAll(Container container, boolean onOff) {
 		if (currentUser instanceof Admin) {
-//			for (JTextField textField : gProperties.getTextFieldList()) {
-//				
-//			}
-		}else if (currentUser instanceof Manager) {
-			
+			Component[] components = container.getComponents();
+	        for (Component component : components) {
+	            component.setEnabled(onOff);
+	            if(component instanceof JTextField)
+	            	((JTextField) component).setEditable(onOff);
+	            if (component instanceof Container) {
+	            	if(component != gProperties.getPanelEdit())
+	            		setEnabledAll((Container) component, onOff);
+	            }
+	        }
 		}
+	}
+	
+	//// ----
+	private List<JTextField> getTextFields(){
+		List<JTextField> fields = new ArrayList<>();
+		fields.add(gProperties.getFieldID());
+		fields.add(gProperties.getFieldAddress());
+		fields.add(gProperties.getFieldCity());
+		
+		return fields;
 	}
 
 	// Fills JTextFields with the property information

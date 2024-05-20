@@ -20,10 +20,10 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeListener;
 
-import controllers.ControllerUserAdd;
+import controllers.ControllerAddProperty;
 import util.GlobalResources;
 
-public class GUIUserAdd extends JFrame {
+public class GUIAddProperty extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -70,16 +70,24 @@ public class GUIUserAdd extends JFrame {
 	private JTextField txtStatus;
 	private JLabel lblValue;
 	private JTextField txtValue;
-	private GUIMainUser mainUser;
 	private JLabel lblAge;
 	private JTextField txtAge;
+	private GUIMainUser mainUser;
+	private GUIManageProperties gProperties;
 	
-	public GUIUserAdd(GUIMainUser mainUser) {
-		this.mainUser = mainUser;
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 597, 728);
+	public GUIAddProperty(JFrame frame) {
 		setTitle("Add Property");
-		setLocationRelativeTo(this.mainUser);
+		setBounds(100, 100, 597, 728);
+		
+		if(frame instanceof GUIMainUser) {
+			this.mainUser = (GUIMainUser) frame;
+			setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			setLocationRelativeTo(mainUser);
+		}else {
+			this.gProperties = (GUIManageProperties) frame;
+			setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+			setLocationRelativeTo(gProperties);
+		}
 		
 		GlobalResources.setFrameIcon(this);
 		
@@ -255,7 +263,7 @@ public class GUIUserAdd extends JFrame {
 		btnCancel.setFont(new Font("Yu Gothic UI", Font.PLAIN, 15));
 		panelButtons.add(btnCancel);
 		//Add the controller
-		new ControllerUserAdd(this);
+		new ControllerAddProperty(this);
 		setVisible(true);
 	}
 	
@@ -579,5 +587,13 @@ public class GUIUserAdd extends JFrame {
 
 	public void setTxtValue(JTextField txtValue) {
 		this.txtValue = txtValue;
+	}
+
+	public GUIManageProperties getgProperties() {
+		return gProperties;
+	}
+
+	public void setgProperties(GUIManageProperties gProperties) {
+		this.gProperties = gProperties;
 	}
 }

@@ -8,7 +8,7 @@ import javax.swing.JOptionPane;
 
 import views.GUILogin;
 import views.GUIMainUser;
-import views.GUIUserAdd;
+import views.GUIAddProperty;
 import views.GUIUserProfile;
 import views.GUIUserView;
 
@@ -39,7 +39,7 @@ public class ControllerMainUser {
 				new GUIUserProfile(mainUser);
 			} else if(buttonPressed == mainUser.getBtnAdd()) {
 				mainUser.dispose();
-				new GUIUserAdd(mainUser);
+				new GUIAddProperty(mainUser);
 			} else if(buttonPressed == mainUser.getBtnView()) {
 				mainUser.dispose();
 				new GUIUserView(mainUser);

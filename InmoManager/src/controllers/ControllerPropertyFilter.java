@@ -4,6 +4,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -32,6 +34,9 @@ public class ControllerPropertyFilter {
         this.parentFrame = parentFrame;
         initializeListCities();
         initializeCBCounts();
+        distinguishFrame();
+        
+        
         this.propertyFilter.addActListeners(new ButtonListeners());
         this.propertyFilter.addItemListeners(new ItemListeners());
     }
@@ -41,24 +46,30 @@ public class ControllerPropertyFilter {
         @Override
         public void actionPerformed(ActionEvent e) {
             JButton buttonPressed = (JButton) e.getSource();
-            if (buttonPressed == propertyFilter.getBtnReturn())
+            if (buttonPressed == propertyFilter.getBtnReturn()) {
+            	parentFrame.setEnabled(true);
                 propertyFilter.dispose();
+            }
+            
             if (buttonPressed == propertyFilter.getBtnReset())
                 resetFilters();
+            
             if (buttonPressed == propertyFilter.getBtnApply()) {
                 String[] filters = null;
+                
                 try {
                     filters = getFilters();
                 } catch (NumberFormatException e1) {
                     JOptionPane.showMessageDialog(propertyFilter, "Insert valid numbers!", "Error",
                             JOptionPane.ERROR_MESSAGE);
                 }
+                
                 if (filters != null) {
+                	parentFrame.setEnabled(true);
                     propertyFilter.dispose();
                     applyFilters(parentFrame, propertyFilter.getCbxRent().isSelected(),
                             propertyFilter.getCbxSale().isSelected(), filters);
                 }
-
             }
         }
     }
@@ -105,7 +116,19 @@ public class ControllerPropertyFilter {
         }
 
     }
-    /**
+    
+    private void distinguishFrame() {
+		if(parentFrame instanceof GUIManageProperties) {
+	    	// Enable GUIManageProperties when "X" window button is clicked
+			propertyFilter.addWindowListener(new WindowAdapter() {
+				public void windowClosing(WindowEvent e) {
+					parentFrame.setEnabled(true);
+				}
+			});
+	    }
+	}
+
+	/**
      * Gets all the filters.
      * @return String[] filters to apply to the properties.
      */
