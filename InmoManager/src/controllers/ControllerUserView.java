@@ -195,22 +195,32 @@ public class ControllerUserView {
 		userView.getLblFloors().setText(String.valueOf(currProperty.getFloors()));
 		userView.getLblPrice().setText(priceType);
 		userView.getLblPriceTag().setText(String.valueOf(priceValue));
-		userView.getLblPropertyPhoto()
-				.setIcon(new ImageIcon("files/images/properties/" + currProperty.getId() + ".png"));
-		userView.getLblPropertyMap()
-				.setIcon(new ImageIcon("files/images/properties/" + currProperty.getId() + "Map.png"));
+		if (currProperty instanceof Rentable_Property) {
+			userView.getLblPropertyPhoto()
+					.setIcon(new ImageIcon("files/images/rentable_properties/" + currProperty.getId() + ".png"));
+			userView.getLblPropertyMap()
+					.setIcon(new ImageIcon("files/images/rentable_properties/" + currProperty.getId() + "_128.png"));
+		} else {
+			userView.getLblPropertyPhoto()
+					.setIcon(new ImageIcon("files/images/purchasable_properties/" + currProperty.getId() + ".png"));
+			userView.getLblPropertyMap()
+					.setIcon(new ImageIcon("files/images/purchasable_properties/" + currProperty.getId() + "_128.png"));
+		}
 
 		// Let's set the tooltiptexts:
 		userView.getLblRooms().setToolTipText("Has " + userView.getLblRooms().getText() + " rooms.");
 		userView.getLblBathrooms().setToolTipText("Has " + userView.getLblBathrooms().getText() + " bathrooms.");
 		userView.getLblFloors().setToolTipText("Has " + userView.getLblFloors().getText() + " floors.");
-		userView.getLblPropertySize().setToolTipText("Property has " + userView.getLblPropertySize().getText() + " square meters.");
+		userView.getLblPropertySize()
+				.setToolTipText("Property has " + userView.getLblPropertySize().getText() + " square meters.");
 		userView.getLblPriceTag().setToolTipText("The price is " + userView.getLblPriceTag().getText() + "EUR");
-		
+
 		userView.getLblTerrainSize().setText(String.valueOf(currProperty.getTerrainSize()));
-		userView.getLblTerrainSize().setToolTipText("Terrain has " + userView.getLblTerrainSize().getText() + " square meters.");
+		userView.getLblTerrainSize()
+				.setToolTipText("Terrain has " + userView.getLblTerrainSize().getText() + " square meters.");
 		userView.getLblGarageSize().setText(String.valueOf(currProperty.getGarageSize()));
-		userView.getLblGarageSize().setToolTipText("Garage has " + userView.getLblGarageSize().getText() + " square meters.");
+		userView.getLblGarageSize()
+				.setToolTipText("Garage has " + userView.getLblGarageSize().getText() + " square meters.");
 		loadOptionalProperties();
 	}
 

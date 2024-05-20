@@ -153,12 +153,12 @@ public class GUIUserView extends JFrame {
 		panelPictureMap.add(panelPictures, BorderLayout.CENTER);
 		panelPictures.setLayout(new BoxLayout(panelPictures, BoxLayout.Y_AXIS));
 		
-		lblPropertyPhoto = new JLabel("");
-		panelPictures.add(lblPropertyPhoto);
-		
 		lblIndex = new JLabel("0/0");
 		panelPictures.add(lblIndex);
 		lblIndex.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		
+		lblPropertyPhoto = new JLabel("");
+		panelPictures.add(lblPropertyPhoto);
 		
 		lblPropertyMap = new JLabel("");
 		panelPictures.add(lblPropertyMap);
