@@ -83,9 +83,11 @@ public class GUIManageProperties extends JFrame {
 	private JCheckBox cbxRentable;
 	private JCheckBox cbxPurchasable;
 	private ControllerManageProperties controller;
+	private JButton btnAdd;
+	private JButton btnDelete;
 
 	public GUIManageProperties(GUILogin gLogin) {
-		super("Managers Managements");
+		super("Property Management");
 		this.gLogin = gLogin;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 716, 691);
@@ -399,6 +401,15 @@ public class GUIManageProperties extends JFrame {
 		cbxPurchasable.setEnabled(false);
 		cbxPurchasable.setBounds(91, 6, 97, 23);
 		panelType.add(cbxPurchasable);
+		
+		btnAdd = new JButton("Add");
+		btnAdd.setBounds(10, 254, 88, 23);
+		contentPane.add(btnAdd);
+		
+		btnDelete = new JButton("Delete");
+		btnDelete.setEnabled(false);
+		btnDelete.setBounds(105, 254, 88, 23);
+		contentPane.add(btnDelete);
 
 		controller = new ControllerManageProperties(this);
 		
@@ -411,6 +422,8 @@ public class GUIManageProperties extends JFrame {
 		this.btnReset.addActionListener(listener);
 		this.btnReturn.addActionListener(listener);
 		this.btnFilter.addActionListener(listener);
+		this.btnAdd.addActionListener(listener);
+		this.btnDelete.addActionListener(listener);
 	}
 
 	public void addTableListener(ListSelectionListener listener) {
@@ -669,5 +682,39 @@ public class GUIManageProperties extends JFrame {
 	public void setCbxAvailable(JCheckBox cbxAvailable) {
 		this.cbxAvailable = cbxAvailable;
 	}
+
+	public JPanel getPanelForm() {
+		return panelForm;
+	}
+
+	public void setPanelForm(JPanel panelForm) {
+		this.panelForm = panelForm;
+	}
+
+	public JPanel getPanelEdit() {
+		return panelEdit;
+	}
+
+	public void setPanelEdit(JPanel panelEdit) {
+		this.panelEdit = panelEdit;
+	}
+
+	public JButton getBtnAdd() {
+		return btnAdd;
+	}
+
+	public JButton getBtnDelete() {
+		return btnDelete;
+	}
+
+	public void setBtnAdd(JButton btnAdd) {
+		this.btnAdd = btnAdd;
+	}
+
+	public void setBtnDelete(JButton btnDelete) {
+		this.btnDelete = btnDelete;
+	}
+	
+	
 }
 

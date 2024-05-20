@@ -73,7 +73,7 @@ public class GUIManageManagers extends JFrame {
 	private JLabel lblManagerMessage;
 
 	public GUIManageManagers(GUILogin gLogin) {
-		super("Managers Managements");
+		super("Managers Management");
 		this.gLogin = gLogin;
 		this.textFieldList = new ArrayList<>();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
