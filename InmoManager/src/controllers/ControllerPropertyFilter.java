@@ -83,21 +83,21 @@ public class ControllerPropertyFilter {
             else if (checkboxSelected == propertyFilter.getCbxGarage()) {
                 if (checkboxSelected.isSelected()) {
                     checkboxSelected.setIcon(new ImageIcon(
-                            "files/images/" + checkboxSelected.getToolTipText().toLowerCase() + "40S.png"));
+                            "files/images/userIcons/" + checkboxSelected.getToolTipText().toLowerCase() + "40S.png"));
                     propertyFilter.getTxtGarageInit().setEnabled(true);
                     propertyFilter.getTxtGarageFinal().setEnabled(true);
                 } else {
                     checkboxSelected.setIcon(new ImageIcon(
-                            "files/images/" + checkboxSelected.getToolTipText().toLowerCase() + "40.png"));
+                            "files/images/userIcons/" + checkboxSelected.getToolTipText().toLowerCase() + "40.png"));
                     propertyFilter.getTxtGarageInit().setEnabled(false);
                     propertyFilter.getTxtGarageFinal().setEnabled(false);
                 }
             } else if (checkboxSelected.isSelected())
                 checkboxSelected.setIcon(new ImageIcon(
-                        "files/images/" + checkboxSelected.getToolTipText().toLowerCase() + "40S.png"));
+                        "files/images/userIcons/" + checkboxSelected.getToolTipText().toLowerCase() + "40S.png"));
             else
                 checkboxSelected.setIcon(new ImageIcon(
-                        "files/images/" + checkboxSelected.getToolTipText().toLowerCase() + "40.png"));
+                        "files/images/userIcons/" + checkboxSelected.getToolTipText().toLowerCase() + "40.png"));
 
         }
 

@@ -4,7 +4,10 @@ package views;
 
 import java.awt.Component;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionListener;
+
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -43,14 +46,17 @@ public class GUIMainUser extends JFrame {
 		contentPane.setLayout(null);
 		
 		panelButtons = new JPanel();
-		panelButtons.setBounds(38, 100, 389, 135);
+		panelButtons.setBounds(10, 76, 460, 177);
 		contentPane.add(panelButtons);
+		panelButtons.setLayout(new GridLayout(0, 2, 0, 0));
 		
-		btnView = new JButton("View");
+		btnView = new JButton("");
+		btnView.setIcon(new ImageIcon("files/images/userIcons/home128.png"));
 		btnView.setFont(new Font("Yu Gothic UI", Font.PLAIN, 20));
 		panelButtons.add(btnView);
 		
-		btnAdd = new JButton("Add");
+		btnAdd = new JButton("");
+		btnAdd.setIcon(new ImageIcon("files/images/userIcons/plus128.png"));
 		btnAdd.setFont(new Font("Yu Gothic UI", Font.PLAIN, 20));
 		panelButtons.add(btnAdd);
 		

@@ -29,19 +29,19 @@ public class GlobalResources {
 		iconSmall = new ImageIcon("files/images/InmoManagerSmol64.png");
 		iconReturn = new ImageIcon("files/images/Return25.png");
 		iconUser = new ImageIcon("files/images/user.png");
-		iconPropertySize = new ImageIcon("files/images/propertySize40.png");
-		iconGarage = new ImageIcon("files/images/garage40.png");
-		iconTerrainSize = new ImageIcon("files/images/terrainSize40.png");
-		iconGarageSize = new ImageIcon("files/images/garageSize40.png");
-		iconFloors = new ImageIcon("files/images/floors40.png");
-		iconRooms = new ImageIcon("files/images/rooms40.png");
-		iconBathrooms = new ImageIcon("files/images/bathrooms40.png");
-		iconLift = new ImageIcon("files/images/lift40.png");
-		iconAC = new ImageIcon("files/Images/ac40.png");
-		iconGarden = new ImageIcon("files/Images/garden40.png");
-		iconTerrace = new ImageIcon("files/Images/terrace40.png");
-		iconPool = new ImageIcon("files/Images/pool40.png");
-		iconBasement = new ImageIcon("files/Images/basement40.png");
+		iconPropertySize = new ImageIcon("files/images/userIcons/propertySize40.png");
+		iconGarage = new ImageIcon("files/images/userIcons/garage40.png");
+		iconTerrainSize = new ImageIcon("files/images/userIcons/terrainSize40.png");
+		iconGarageSize = new ImageIcon("files/images/userIcons/garageSize40.png");
+		iconFloors = new ImageIcon("files/images/userIcons/floors40.png");
+		iconRooms = new ImageIcon("files/images/userIcons/rooms40.png");
+		iconBathrooms = new ImageIcon("files/images/userIcons/bathrooms40.png");
+		iconLift = new ImageIcon("files/images/userIcons/lift40.png");
+		iconAC = new ImageIcon("files/Images/userIcons/ac40.png");
+		iconGarden = new ImageIcon("files/Images/userIcons/garden40.png");
+		iconTerrace = new ImageIcon("files/Images/userIcons/terrace40.png");
+		iconPool = new ImageIcon("files/Images/userIcons/pool40.png");
+		iconBasement = new ImageIcon("files/Images/userIcons/basement40.png");
 	}
 
 	public static void setFrameIcon(JFrame frame) {
