@@ -136,6 +136,7 @@ public class ControllerUserAdd {
 								userAdd.getRdBtnSell().isSelected(), getPropertyData())) {
 							ManageDatabase.addPropertyToDatabase(getPropertyData());
 							new GUIMainUser(null);
+							userAdd.dispose();
 						}
 
 						else
@@ -147,7 +148,7 @@ public class ControllerUserAdd {
 						JOptionPane.showMessageDialog(null, "Input a valid number!", "Error",
 								JOptionPane.ERROR_MESSAGE);
 					}
-					userAdd.dispose();
+					
 				}
 			}
 		}
