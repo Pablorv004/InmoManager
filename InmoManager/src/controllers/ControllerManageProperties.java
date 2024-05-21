@@ -1,7 +1,16 @@
 package controllers;
 
-import java.awt.Component;
-import java.awt.Container;
+import models.*;
+import util.ConnectionDB;
+import util.FieldUtils;
+import util.ManageDatabase;
+import views.*;
+
+import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
@@ -10,34 +19,24 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JCheckBox;
-import javax.swing.JOptionPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.ListSelectionModel;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import javax.swing.table.DefaultTableModel;
-
-import models.Admin;
-import models.Manager;
-import models.Property;
-import models.Purchasable_Property;
-import models.Rentable_Property;
-import models.User;
-import util.ConnectionDB;
-import util.ManageDatabase;
-import views.GUIMainAdmin;
-import views.GUIMainManager;
-import views.GUIManageProperties;
-import views.GUIPropertyFilter;
-import views.GUIAddProperty;
-
 public class ControllerManageProperties {
 	private GUIManageProperties gProperties;
 	private User currentUser;
 	private List<Property> propertyList;
 	private List<JCheckBox> extraList;
+	private String ID;
+	private String address;
+	private String city;
+	private String type;
+	private String rooms;
+	private String floors;
+	private String bathrooms;
+	private String propertySize;
+	private String terrainSize;
+	private String garageSize;
+	private String age;
+	private String price;
+	private String status;
 
 	public ControllerManageProperties(GUIManageProperties gProperties) {
 		this.gProperties = gProperties;
@@ -45,6 +44,7 @@ public class ControllerManageProperties {
 		this.propertyList = ManageDatabase.getProperties(true, true, new String[] {});
 		this.extraList = getExtraCheckboxes();
 		updateTable();
+		fillComboType();
 		
 		if(currentUser instanceof Admin)
 			gProperties.getBtnEdit().setEnabled(true);
@@ -63,19 +63,28 @@ public class ControllerManageProperties {
 			} else if (obj == gProperties.getBtnEdit()) {
 				handleEditBtn();
 			} else if (obj == gProperties.getBtnApply()) {
-
+				handleApplyBtn();
 			} else if (obj == gProperties.getBtnFilter()) {
 				gProperties.setEnabled(false);
+				setEnabledAll(gProperties.getPanelForm(),false);
 				gProperties.getBtnDelete().setEnabled(false);
 				new GUIPropertyFilter(gProperties);
 			} else if (obj == gProperties.getBtnReset()) {
+				setEnabledAll(gProperties.getPanelForm(),false);
 				propertyList = ManageDatabase.getProperties(true, true, new String[] {});
 				updateTable();
 			} else if (obj == gProperties.getBtnAdd()) {
+				setEnabledAll(gProperties.getPanelForm(),false);
 				new GUIAddProperty(gProperties);
 			} else if (obj == gProperties.getBtnDelete()) {
+				setEnabledAll(gProperties.getPanelForm(),false);
 				handleDeleteBtn();
 			}
+		}
+
+		private void handleApplyBtn() {
+			if(checkFields())
+				applyChanges();
 		}
 
 		private void handleEditBtn() {
@@ -97,6 +106,7 @@ public class ControllerManageProperties {
 						"Confirmation", JOptionPane.INFORMATION_MESSAGE);
 				if (election == JOptionPane.OK_OPTION) {
 					deleteProperty();
+					gProperties.getBtnDelete().setEnabled(false);
 				}
 			} else
 				JOptionPane.showMessageDialog(gProperties, "There's no property selected", "Error",
@@ -127,21 +137,103 @@ public class ControllerManageProperties {
 				fillFields(property);
 		}
 
-		private Property findProperty(String address) {
-			for (Property p : propertyList)
-				if (p.getAddress().equalsIgnoreCase(address))
-					return p;
-
-			return null;
-		}
-
 	}
 
 	// METHODS
-	
+
+	private Property findProperty(String address) {
+		for (Property p : propertyList)
+			if (p.getAddress().equalsIgnoreCase(address))
+				return p;
+
+		return null;
+	}
+	private void applyChanges() {
+		boolean hasGarden = gProperties.getCbxGarden().isSelected();
+		boolean hasBasement = gProperties.getCbxBasement().isSelected();
+		boolean hasGarage = gProperties.getCbxGarage().isSelected();
+		boolean hasPool = gProperties.getCbxPool().isSelected();
+		boolean hasLift = gProperties.getCbxLift().isSelected();
+		boolean hasTerrace = gProperties.getCbxTerrace().isSelected();
+		boolean hasAC = gProperties.getCbxAC().isSelected();
+		boolean isAvailable = gProperties.getCbxAvailable().isSelected();
+		boolean isPurchasable = gProperties.getCbxPurchasable().isSelected();
+		boolean isRentable = gProperties.getCbxRentable().isSelected();
+		int selectedRow = gProperties.getTable().getSelectedRow();
+
+		// Old property obtained from the list to know whìch type of property class it is
+		Property oldProperty = findProperty(String.valueOf(gProperties.getTable().getValueAt(selectedRow,0)));
+
+		if(isPurchasable && oldProperty instanceof Purchasable_Property){
+			Property newPurchasableProperty = new Purchasable_Property(Integer.parseInt(ID), address, city, type, Integer.parseInt(age), Integer.parseInt(rooms), Integer.parseInt(floors), Integer.parseInt(bathrooms), Integer.parseInt(propertySize), Integer.parseInt(terrainSize), Integer.parseInt(garageSize), hasGarden, hasBasement, hasGarage, hasPool, hasLift, hasTerrace, hasAC, isAvailable, status, Integer.parseInt(price));
+			ManageDatabase.updateProperty(oldProperty, newPurchasableProperty, gProperties);
+		} else if(isPurchasable && oldProperty instanceof Rentable_Property) {
+			Property newPurchasableProperty = new Purchasable_Property(Integer.parseInt(ID), address, city, type, Integer.parseInt(age), Integer.parseInt(rooms), Integer.parseInt(floors), Integer.parseInt(bathrooms), Integer.parseInt(propertySize), Integer.parseInt(terrainSize), Integer.parseInt(garageSize), hasGarden, hasBasement, hasGarage, hasPool, hasLift, hasTerrace, hasAC, isAvailable, status, Integer.parseInt(price));
+			deleteProperty();
+			ManageDatabase.addPropertyToDatabase(newPurchasableProperty);
+			// If it was a Purchasable_Property and it changes to a Rentable_Property
+		}else if(isRentable && oldProperty instanceof Purchasable_Property) {
+			Property newRentableProperty = new Rentable_Property(Integer.parseInt(ID), address, city, type, Integer.parseInt(age), Integer.parseInt(rooms), Integer.parseInt(floors), Integer.parseInt(bathrooms), Integer.parseInt(propertySize), Integer.parseInt(terrainSize), Integer.parseInt(garageSize), hasGarden, hasBasement, hasGarage, hasPool, hasLift, hasTerrace, hasAC, isAvailable, status, Integer.parseInt(price));
+			deleteProperty();
+			ManageDatabase.addPropertyToDatabase(newRentableProperty);
+		// If it was a Rentable_Property
+		} else if(isRentable && oldProperty instanceof Rentable_Property) {
+			Property newRentableProperty = new Rentable_Property(Integer.parseInt(ID), address, city, type, Integer.parseInt(age), Integer.parseInt(rooms), Integer.parseInt(floors), Integer.parseInt(bathrooms), Integer.parseInt(propertySize), Integer.parseInt(terrainSize), Integer.parseInt(garageSize), hasGarden, hasBasement, hasGarage, hasPool, hasLift, hasTerrace, hasAC, isAvailable, status, Integer.parseInt(price));
+			ManageDatabase.updateProperty(oldProperty, newRentableProperty, gProperties);
+		}
+	}
+
+	private void updateToRentable(Property rentableProperty) {
+
+	}
+
+	private void updateToPurchasable(Property purchasableProperty) {
+
+	}
+
+	private boolean checkFields() {
+		// Property values
+		ID = gProperties.getFieldID().getText().strip();
+		address = gProperties.getFieldAddress().getText().strip().replaceAll("\\s+"," ");
+		city = gProperties.getFieldCity().getText().strip().replaceAll("\\s+"," ");
+		type = gProperties.getComboType().getSelectedItem().toString();
+		rooms = gProperties.getFieldRooms().getText().strip();
+		floors = gProperties.getFieldFloors().getText().strip();
+		bathrooms = gProperties.getFieldBathrooms().getText().strip();
+		propertySize = gProperties.getFieldPropertySize().getText().strip();
+		terrainSize = gProperties.getFieldTerrainSize().getText().strip();
+		garageSize = gProperties.getFieldGarageSize().getText().strip();
+		age = gProperties.getFieldAge().getText().strip();
+		price = gProperties.getFieldPrice().getText().strip();
+		status = gProperties.getFieldStatus().getText().strip().replaceAll("\\s+"," ");
+		int hasGarage = gProperties.getCbxGarage().isSelected()? 1 : 0 ;
+
+		// Validations
+		boolean validID = FieldUtils.validatePropertyID(ID,gProperties,address);
+		boolean validAddress = FieldUtils.validateAddress(address,gProperties,ID);
+		boolean validCity = FieldUtils.validateCity(city,gProperties);
+		boolean validAge = FieldUtils.validateAge(age,gProperties);
+		boolean validRooms = FieldUtils.validateRooms(rooms,gProperties);
+		boolean validFloors = FieldUtils.validateFloors(floors,gProperties);
+		boolean validBathrooms = FieldUtils.validateBathrooms(bathrooms,gProperties);
+		boolean validPSize = FieldUtils.validatePropertySize(propertySize,gProperties);
+		boolean validTSize = FieldUtils.validateTerrainSize(terrainSize,gProperties,type);
+		boolean validGSize = FieldUtils.validateGarageSize(garageSize,gProperties,hasGarage);
+		boolean validPrice = FieldUtils.validatePrice(price,gProperties);
+
+		if(validID && validAddress && validCity && validAge && validRooms && validFloors && validBathrooms && validPSize && validTSize && validGSize && validPrice)
+			return true;
+
+		return false;
+	}
+	private void fillComboType() {
+		gProperties.getComboType().addItem("Flat");
+		gProperties.getComboType().addItem("Department");
+		gProperties.getComboType().addItem("Detached House");
+	}
+
 	private void deleteProperty() {
 		Property property = propertyList.get(gProperties.getTable().getSelectedRow());
-		gProperties.getBtnDelete().setEnabled(false);
 		
 		try {
 			String statement = "DELETE FROM ";
@@ -156,9 +248,7 @@ public class ControllerManageProperties {
 			pst.setString(2, property.getAddress());
 			int modified = pst.executeUpdate();
 			
-			if(modified != 0)
-				JOptionPane.showMessageDialog(gProperties, "The property was deleted from the system","Delete sucessful",JOptionPane.INFORMATION_MESSAGE);
-			else
+			if(modified == 0)
 				JOptionPane.showMessageDialog(gProperties, "There were no properties found","Delete failure",JOptionPane.ERROR_MESSAGE);
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
@@ -204,34 +294,22 @@ public class ControllerManageProperties {
 			Component[] components = container.getComponents();
 	        for (Component component : components) {
 	            component.setEnabled(onOff);
-	            if(component instanceof JTextField)
-	            	((JTextField) component).setEditable(onOff);
-	            if (component instanceof Container) {
-	            	if(component != gProperties.getPanelEdit())
-	            		setEnabledAll((Container) component, onOff);
-	            }
+	            if(component instanceof JTextField) {
+					if(component != gProperties.getFieldID())
+						((JTextField) component).setEditable(onOff);
+				}if (component instanceof Container)
+	            	setEnabledAll((Container) component, onOff);
 	        }
 		}
 	}
-	
-	//// ----
-	private List<JTextField> getTextFields(){
-		List<JTextField> fields = new ArrayList<>();
-		fields.add(gProperties.getFieldID());
-		fields.add(gProperties.getFieldAddress());
-		fields.add(gProperties.getFieldCity());
-		
-		return fields;
-	}
+
 
 	// Fills JTextFields with the property information
 	private void fillFields(Property property) {
-		
-		
 		gProperties.getFieldID().setText(String.valueOf(property.getId()));
 		gProperties.getFieldAddress().setText(property.getAddress());
 		gProperties.getFieldCity().setText(property.getCity());
-		gProperties.getFieldType().setText(property.getType());
+		gProperties.getComboType().setSelectedItem(property.getType());
 		gProperties.getFieldAge().setText(String.valueOf(property.getAge()));
 		gProperties.getFieldRooms().setText(String.valueOf(property.getRooms()));
 		gProperties.getFieldFloors().setText(String.valueOf(property.getFloors()));
