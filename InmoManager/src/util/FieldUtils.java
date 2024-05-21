@@ -323,7 +323,7 @@ public class FieldUtils {
 	}
 
 	public static boolean validateAddress(String address, JFrame frame, String ID) {
-		if (!address.matches("[A-Za-z0-9\\/\\, ]{0,50}")) {
+		if (address.length() > 50) {
 			JOptionPane.showMessageDialog(frame, "The address doesn't have a valid format", "Format error",
 					JOptionPane.ERROR_MESSAGE);
 			return false;
@@ -385,7 +385,7 @@ public class FieldUtils {
 			JOptionPane.showMessageDialog(frame, "Terrain size doesn't have a valid format", "Format error",
 					JOptionPane.ERROR_MESSAGE);
 			return false;
-		} else if (type.equalsIgnoreCase("Detached House")){
+		} else if (!type.equalsIgnoreCase("Detached House") && Integer.parseInt(size) > 0){
 			JOptionPane.showMessageDialog(frame, "This property is not a detached house, so it can not\nhave a terrain size value", "Error",
 					JOptionPane.ERROR_MESSAGE);
 			return false;

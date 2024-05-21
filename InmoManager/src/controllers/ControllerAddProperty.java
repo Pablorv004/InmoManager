@@ -16,8 +16,8 @@ import models.Property;
 import models.Purchasable_Property;
 import models.Rentable_Property;
 import util.ManageDatabase;
-import views.GUIMainUser;
 import views.GUIAddProperty;
+import views.GUIMainUser;
 
 public class ControllerAddProperty {
 	private GUIAddProperty addProperty;
