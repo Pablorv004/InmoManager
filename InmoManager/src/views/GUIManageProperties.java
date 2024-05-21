@@ -1,28 +1,14 @@
 package views;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.event.ActionListener;
+import controllers.ControllerManageProperties;
+import util.GlobalResources;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
-import javax.swing.JTable;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.event.ListSelectionListener;
-
-import controllers.ControllerManageProperties;
-import util.GlobalResources;
+import java.awt.*;
+import java.awt.event.ActionListener;
 
 public class GUIManageProperties extends JFrame {
 
@@ -32,7 +18,6 @@ public class GUIManageProperties extends JFrame {
 	private JScrollPane scrollStatus;
 	private JPanel contentPane;
 	private JPanel panelTitle;
-	private JPanel panelEdit;
 	private JPanel panelExtras;
 	private JPanel panelImage;
 	private JPanel panelForm;
@@ -48,7 +33,6 @@ public class GUIManageProperties extends JFrame {
 	private JTextField fieldRooms;
 	private JTextField fieldPropertySize;
 	private JTextField fieldAddress;
-	private JTextField fieldType;
 	private JTextField fieldAge;
 	private JTextField fieldFloors;
 	private JTextField fieldBathrooms;
@@ -80,11 +64,12 @@ public class GUIManageProperties extends JFrame {
 	private JCheckBox cbxTerrace;
 	private JCheckBox cbxAvailable;
 	private JCheckBox cbxAC;
-	private JCheckBox cbxRentable;
-	private JCheckBox cbxPurchasable;
+	private JRadioButton cbxRentable;
+	private JRadioButton cbxPurchasable;
 	private ControllerManageProperties controller;
 	private JButton btnAdd;
 	private JButton btnDelete;
+	private JComboBox comboType;
 
 	public GUIManageProperties(GUILogin gLogin) {
 		super("Property Management");
@@ -187,24 +172,6 @@ public class GUIManageProperties extends JFrame {
 		fieldCity.setBounds(62, 45, 106, 20);
 		panelForm.add(fieldCity);
 
-		panelEdit = new JPanel();
-		panelEdit.setBorder(new LineBorder(new Color(192, 192, 192)));
-		panelEdit.setBounds(10, 293, 189, 35);
-		panelForm.add(panelEdit);
-		panelEdit.setLayout(null);
-
-		btnEdit = new JButton("Edit");
-		btnEdit.setEnabled(false);
-		btnEdit.setFont(new Font("Tahoma", Font.PLAIN, 10));
-		btnEdit.setBounds(4, 6, 60, 23);
-		panelEdit.add(btnEdit);
-
-		btnApply = new JButton("Apply Changes");
-		btnApply.setFont(new Font("Tahoma", Font.PLAIN, 10));
-		btnApply.setEnabled(false);
-		btnApply.setBounds(68, 6, 117, 23);
-		panelEdit.add(btnApply);
-
 		lblRooms = new JLabel("Rooms");
 		lblRooms.setBounds(10, 79, 43, 20);
 		panelForm.add(lblRooms);
@@ -289,13 +256,6 @@ public class GUIManageProperties extends JFrame {
 		lblType.setBounds(182, 45, 43, 20);
 		panelForm.add(lblType);
 
-		fieldType = new JTextField();
-		fieldType.setHorizontalAlignment(SwingConstants.LEFT);
-		fieldType.setEditable(false);
-		fieldType.setColumns(10);
-		fieldType.setBounds(235, 45, 106, 20);
-		panelForm.add(fieldType);
-
 		lblAge = new JLabel("Age");
 		lblAge.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblAge.setBounds(385, 45, 25, 20);
@@ -370,15 +330,15 @@ public class GUIManageProperties extends JFrame {
 		lblStatus.setBounds(10, 189, 121, 20);
 		panelForm.add(lblStatus);
 		
-		lblPrice = new JLabel("Price");
-		lblPrice.setBounds(10, 156, 43, 20);
+		lblPrice = new JLabel("Total price / Monthly rent:");
+		lblPrice.setBounds(10, 156, 158, 20);
 		panelForm.add(lblPrice);
 		
 		fieldPrice = new JTextField();
 		fieldPrice.setHorizontalAlignment(SwingConstants.LEFT);
 		fieldPrice.setEditable(false);
 		fieldPrice.setColumns(10);
-		fieldPrice.setBounds(52, 156, 68, 20);
+		fieldPrice.setBounds(168, 156, 68, 20);
 		panelForm.add(fieldPrice);
 		
 		cbxAvailable = new JCheckBox("Available");
@@ -392,15 +352,36 @@ public class GUIManageProperties extends JFrame {
 		panelForm.add(panelType);
 		panelType.setLayout(null);
 		
-		cbxRentable = new JCheckBox("Rentable");
+		cbxRentable = new JRadioButton("Rentable");
 		cbxRentable.setEnabled(false);
 		cbxRentable.setBounds(6, 6, 85, 23);
 		panelType.add(cbxRentable);
-		
-		cbxPurchasable = new JCheckBox("Purchasable");
+
+		cbxPurchasable = new JRadioButton("Purchasable");
 		cbxPurchasable.setEnabled(false);
 		cbxPurchasable.setBounds(91, 6, 97, 23);
 		panelType.add(cbxPurchasable);
+
+		ButtonGroup group = new ButtonGroup();
+		group.add(cbxPurchasable);
+		group.add(cbxRentable);
+
+		btnEdit = new JButton("Edit");
+		btnEdit.setBounds(10, 305, 60, 23);
+		panelForm.add(btnEdit);
+		btnEdit.setEnabled(false);
+		btnEdit.setFont(new Font("Tahoma", Font.PLAIN, 10));
+
+		btnApply = new JButton("Apply Changes");
+		btnApply.setBounds(88, 305, 117, 23);
+		panelForm.add(btnApply);
+		btnApply.setFont(new Font("Tahoma", Font.PLAIN, 10));
+		btnApply.setEnabled(false);
+
+		comboType = new JComboBox();
+		comboType.setEnabled(false);
+		comboType.setBounds(235, 44, 127, 22);
+		panelForm.add(comboType);
 		
 		btnAdd = new JButton("Add");
 		btnAdd.setBounds(10, 254, 88, 23);
@@ -446,19 +427,19 @@ public class GUIManageProperties extends JFrame {
 		this.controller = controller;
 	}
 
-	public JCheckBox getCbxRentable() {
+	public JRadioButton getCbxRentable() {
 		return cbxRentable;
 	}
 
-	public JCheckBox getCbxPurchasable() {
+	public JRadioButton getCbxPurchasable() {
 		return cbxPurchasable;
 	}
 
-	public void setCbxRentable(JCheckBox cbxRentable) {
+	public void setCbxRentable(JRadioButton cbxRentable) {
 		this.cbxRentable = cbxRentable;
 	}
 
-	public void setCbxPurchasable(JCheckBox cbxPurchasable) {
+	public void setCbxPurchasable(JRadioButton cbxPurchasable) {
 		this.cbxPurchasable = cbxPurchasable;
 	}
 
@@ -504,10 +485,6 @@ public class GUIManageProperties extends JFrame {
 
 	public JTextField getFieldAddress() {
 		return fieldAddress;
-	}
-
-	public JTextField getFieldType() {
-		return fieldType;
 	}
 
 	public JTextField getFieldAge() {
@@ -619,10 +596,6 @@ public class GUIManageProperties extends JFrame {
 		this.fieldAddress = fieldAddress;
 	}
 
-	public void setFieldType(JTextField fieldType) {
-		this.fieldType = fieldType;
-	}
-
 	public void setFieldAge(JTextField fieldAge) {
 		this.fieldAge = fieldAge;
 	}
@@ -691,14 +664,6 @@ public class GUIManageProperties extends JFrame {
 		this.panelForm = panelForm;
 	}
 
-	public JPanel getPanelEdit() {
-		return panelEdit;
-	}
-
-	public void setPanelEdit(JPanel panelEdit) {
-		this.panelEdit = panelEdit;
-	}
-
 	public JButton getBtnAdd() {
 		return btnAdd;
 	}
@@ -714,7 +679,13 @@ public class GUIManageProperties extends JFrame {
 	public void setBtnDelete(JButton btnDelete) {
 		this.btnDelete = btnDelete;
 	}
-	
-	
+
+	public JComboBox getComboType() {
+		return comboType;
+	}
+
+	public void setComboType(JComboBox comboType) {
+		this.comboType = comboType;
+	}
 }
 

@@ -72,37 +72,37 @@ public class GUIRegister extends JFrame {
 
 		lblDNI = new JLabel("DNI: ");
 		lblDNI.setFont(fontRegister);
-		lblDNI.setBounds(21, 11, 46, 14);
+		lblDNI.setBounds(21, 11, 81, 14);
 		formPanel.add(lblDNI);
 
 		lblName = new JLabel("Name:");
 		lblName.setFont(fontRegister);
-		lblName.setBounds(21, 58, 46, 14);
+		lblName.setBounds(21, 58, 81, 14);
 		formPanel.add(lblName);
 
 		lblUsername = new JLabel("Username:");
 		lblUsername.setFont(fontRegister);
-		lblUsername.setBounds(21, 105, 81, 14);
+		lblUsername.setBounds(21, 105, 134, 14);
 		formPanel.add(lblUsername);
 
 		lblPassword = new JLabel("Password:");
 		lblPassword.setFont(fontRegister);
-		lblPassword.setBounds(21, 152, 81, 14);
+		lblPassword.setBounds(21, 152, 134, 14);
 		formPanel.add(lblPassword);
 
 		lblRepeatPassword = new JLabel("Repeat Password:");
 		lblRepeatPassword.setFont(fontRegister);
-		lblRepeatPassword.setBounds(21, 198, 113, 14);
+		lblRepeatPassword.setBounds(21, 198, 205, 14);
 		formPanel.add(lblRepeatPassword);
 
 		lblEmail = new JLabel("Email Address:");
 		lblEmail.setFont(fontRegister);
-		lblEmail.setBounds(21, 245, 113, 18);
+		lblEmail.setBounds(21, 245, 155, 18);
 		formPanel.add(lblEmail);
 
 		lblPhoneNumber = new JLabel("Phone Number:");
 		lblPhoneNumber.setFont(fontRegister);
-		lblPhoneNumber.setBounds(21, 291, 113, 14);
+		lblPhoneNumber.setBounds(21, 291, 155, 14);
 		formPanel.add(lblPhoneNumber);
 
 		lblRegion = new JLabel("Region:");
