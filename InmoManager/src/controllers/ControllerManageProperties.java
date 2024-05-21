@@ -1,16 +1,7 @@
 package controllers;
 
-import models.*;
-import util.ConnectionDB;
-import util.FieldUtils;
-import util.ManageDatabase;
-import views.*;
-
-import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import javax.swing.table.DefaultTableModel;
-import java.awt.*;
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
@@ -18,6 +9,30 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.JCheckBox;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
+
+import models.Admin;
+import models.Manager;
+import models.Property;
+import models.Purchasable_Property;
+import models.Rentable_Property;
+import models.User;
+import util.ConnectionDB;
+import util.FieldUtils;
+import util.ManageDatabase;
+import views.GUIAddProperty;
+import views.GUIMainAdmin;
+import views.GUIMainManager;
+import views.GUIManageProperties;
+import views.GUIPropertyFilter;
 
 public class ControllerManageProperties {
 	private GUIManageProperties gProperties;
@@ -171,16 +186,18 @@ public class ControllerManageProperties {
 			Property newPurchasableProperty = new Purchasable_Property(Integer.parseInt(ID), address, city, type, Integer.parseInt(age), Integer.parseInt(rooms), Integer.parseInt(floors), Integer.parseInt(bathrooms), Integer.parseInt(propertySize), Integer.parseInt(terrainSize), Integer.parseInt(garageSize), hasGarden, hasBasement, hasGarage, hasPool, hasLift, hasTerrace, hasAC, isAvailable, status, Integer.parseInt(price));
 			deleteProperty();
 			ManageDatabase.addPropertyToDatabase(newPurchasableProperty);
-			// If it was a Purchasable_Property and it changes to a Rentable_Property
 		}else if(isRentable && oldProperty instanceof Purchasable_Property) {
 			Property newRentableProperty = new Rentable_Property(Integer.parseInt(ID), address, city, type, Integer.parseInt(age), Integer.parseInt(rooms), Integer.parseInt(floors), Integer.parseInt(bathrooms), Integer.parseInt(propertySize), Integer.parseInt(terrainSize), Integer.parseInt(garageSize), hasGarden, hasBasement, hasGarage, hasPool, hasLift, hasTerrace, hasAC, isAvailable, status, Integer.parseInt(price));
 			deleteProperty();
 			ManageDatabase.addPropertyToDatabase(newRentableProperty);
-		// If it was a Rentable_Property
 		} else if(isRentable && oldProperty instanceof Rentable_Property) {
 			Property newRentableProperty = new Rentable_Property(Integer.parseInt(ID), address, city, type, Integer.parseInt(age), Integer.parseInt(rooms), Integer.parseInt(floors), Integer.parseInt(bathrooms), Integer.parseInt(propertySize), Integer.parseInt(terrainSize), Integer.parseInt(garageSize), hasGarden, hasBasement, hasGarage, hasPool, hasLift, hasTerrace, hasAC, isAvailable, status, Integer.parseInt(price));
 			ManageDatabase.updateProperty(oldProperty, newRentableProperty, gProperties);
 		}
+
+		propertyList = ManageDatabase.getProperties(true,true,new String[]{});
+		updateTable();
+		setEnabledAll(gProperties.getPanelForm(), false);
 	}
 
 	private void updateToRentable(Property rentableProperty) {

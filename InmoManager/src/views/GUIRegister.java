@@ -11,11 +11,10 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.border.LineBorder;
 
 import controllers.ControllerRegister;
 import util.GlobalResources;
-
-import javax.swing.border.LineBorder;
 
 public class GUIRegister extends JFrame {
 	private static final long serialVersionUID = 1L;

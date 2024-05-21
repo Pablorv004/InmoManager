@@ -6,10 +6,10 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
+import views.GUIAddProperty;
 import views.GUILogin;
 import views.GUIMainUser;
 import views.GUIStopRent;
-import views.GUIAddProperty;
 import views.GUIUserProfile;
 import views.GUIUserView;
 

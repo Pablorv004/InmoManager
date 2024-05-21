@@ -1,6 +1,7 @@
 package views;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -18,7 +19,6 @@ import javax.swing.border.EmptyBorder;
 
 import controllers.ControllerUserView;
 import util.GlobalResources;
-import java.awt.Color;
 
 public class GUIUserView extends JFrame {
 

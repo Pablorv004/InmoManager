@@ -11,13 +11,13 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import controllers.ControllerUserProfile;
 import util.GlobalResources;
-import javax.swing.JPasswordField;
 
 public class GUIUserProfile extends JFrame {
 
