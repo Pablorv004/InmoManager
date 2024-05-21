@@ -141,7 +141,6 @@ public class GUIAddProperty extends JFrame {
 		cBType.addItem("Flat");
 		cBType.addItem("Detached House");
 		cBType.addItem("Apartment");
-		cBType.addItem("House");
 		cBType.setSelectedIndex(0);
 		lblStatus = new JLabel("Describe the status of the home(*):");
 		panelData.add(lblStatus);

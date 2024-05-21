@@ -19,7 +19,7 @@ public class FieldUtils {
 		if (!ID.matches("\\d+")) {
 			JOptionPane.showMessageDialog(frame, "The ID doesn't have a valid format (Only numbers allowed)");
 			return false;
-		} else if (findCoincidence(ID, "id", table, DNI)) {
+		} else if (findUserCoincidence(ID, "id", table, DNI)) {
 			JOptionPane.showMessageDialog(frame, "There's already an user with that ID", "Error",
 					JOptionPane.ERROR_MESSAGE);
 			return false;
@@ -247,7 +247,7 @@ public class FieldUtils {
 
 	// Checks if the value exists in the respective table
 	// Returns TRUE if it found at least one result or FALSE if it doesn't
-	public static <T> boolean findCoincidence(T input, String field, String table, String DNI) {
+	public static <T> boolean findUserCoincidence(T input, String field, String table, String DNI) {
 		boolean found = true;
 		try {
 			String statement = "SELECT " + field + " FROM inmomanager." + table + " WHERE " + field + " = ? AND DNI <> ?";
@@ -304,5 +304,152 @@ public class FieldUtils {
 	        e.printStackTrace();
 	    }
 	    return found;
+	}
+
+
+	////// PROPERTIES VALIDATORS ///////
+
+	public static boolean validatePropertyID(String ID, JFrame frame, String address) {
+		if (!ID.matches("\\d+")) {
+			JOptionPane.showMessageDialog(frame, "The ID doesn't have a valid format (Only numbers allowed)");
+			return false;
+		} else if (findPropertyCoincidence(ID, "id", ID)) {
+			JOptionPane.showMessageDialog(frame, "There's already a property with that ID", "Error",
+					JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+
+		return true;
+	}
+
+	public static boolean validateAddress(String address, JFrame frame, String ID) {
+		if (!address.matches("[A-Za-z0-9\\/\\, ]{0,50}")) {
+			JOptionPane.showMessageDialog(frame, "The address doesn't have a valid format", "Format error",
+					JOptionPane.ERROR_MESSAGE);
+			return false;
+		} else if (findPropertyCoincidence(address,"address",ID)){
+			JOptionPane.showMessageDialog(frame, "There's already a property with that address", "Error",
+					JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		return true;
+	}
+
+	public static boolean validateCity(String city, JFrame frame) {
+		if (!city.matches("[A-Za-z]+( [\\-,]? [A-Za-z]+)?")) {
+			JOptionPane.showMessageDialog(frame, "Age doesn't have a valid format", "Format error",
+					JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		return true;
+	}
+
+	public static boolean validateRooms(String rooms, JFrame frame) {
+		if (!rooms.matches("\\d+")) {
+			JOptionPane.showMessageDialog(frame, "Rooms doesn't have a valid format", "Format error",
+					JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		return true;
+	}
+
+	public static boolean validateFloors(String floors, JFrame frame) {
+		if (!floors.matches("\\d+")) {
+			JOptionPane.showMessageDialog(frame, "Floors doesn't have a valid format", "Format error",
+					JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		return true;
+	}
+
+	public static boolean validateBathrooms(String bathrooms, JFrame frame) {
+		if (!bathrooms.matches("\\d+")) {
+			JOptionPane.showMessageDialog(frame, "Bathrooms doesn't have a valid format", "Format error",
+					JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		return true;
+	}
+
+	public static boolean validatePropertySize(String size, JFrame frame) {
+		if (!size.matches("\\d+")) {
+			JOptionPane.showMessageDialog(frame, "Property size doesn't have a valid format", "Format error",
+					JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		return true;
+	}
+
+	public static boolean validateTerrainSize(String size, JFrame frame, String type) {
+		if (!size.matches("\\d+")) {
+			JOptionPane.showMessageDialog(frame, "Terrain size doesn't have a valid format", "Format error",
+					JOptionPane.ERROR_MESSAGE);
+			return false;
+		} else if (type.equalsIgnoreCase("Detached House")){
+			JOptionPane.showMessageDialog(frame, "This property is not a detached house, so it can not\nhave a terrain size value", "Error",
+					JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		return true;
+	}
+
+	public static boolean validateGarageSize(String size, JFrame frame, int hasGarage) {
+		if (!size.matches("\\d+")) {
+			JOptionPane.showMessageDialog(frame, "Garage size doesn't have a valid format", "Format error",
+					JOptionPane.ERROR_MESSAGE);
+			return false;
+		} else if (hasGarage == 0 && Integer.parseInt(size) > 0){
+			JOptionPane.showMessageDialog(frame, "This house does not have a garage, please add it or\nset garage size value to 0", "Format error",
+					JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		return true;
+	}
+
+	public static boolean validatePrice(String value, JFrame frame) {
+		if (!value.matches("\\d+")) {
+			JOptionPane.showMessageDialog(frame, "Price doesn't have a valid format", "Format error",
+					JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		return true;
+	}
+
+	public static boolean validateAge(String age, JFrame frame) {
+		if (!age.matches("\\d+")) {
+			JOptionPane.showMessageDialog(frame, "The age doesn't have a valid format", "Format error",
+					JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		return true;
+	}
+
+	public static <T> boolean findPropertyCoincidence(T input, String field, String ID) {
+		boolean found = true;
+		try {
+			String statement = "SELECT " + field + " FROM inmomanager.Purchasable_Properties WHERE " + field + " = ? AND id <> ? " +
+								"UNION " +
+								"SELECT " + field + " FROM inmomanager.Rentable_Properties WHERE " + field + " = ? AND id <> ?";
+
+			Connection conn = ConnectionDB.connect();
+			PreparedStatement pst = conn.prepareStatement(statement);
+
+			pst.setObject(1, input);
+			pst.setObject(2, ID);
+			pst.setObject(3, input);
+			pst.setObject(4, ID);
+
+			ResultSet rs = pst.executeQuery();
+
+			if (!rs.next()) {
+				found = false;
+			}
+
+			rs.close();
+			pst.close();
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		return found;
 	}
 }

@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import javax.swing.JOptionPane;
+import javax.swing.*;
 
 import models.Client;
 import models.Manager;
@@ -336,6 +336,94 @@ public class ManageDatabase {
         for (Map.Entry<String, Integer> entry : mapentrylist)
             sortedMap.put(entry.getKey(), entry.getValue());
         return sortedMap;
+    }
+    public static void updateProperty(Property oldProperty, Property newProperty, JFrame frame){
+        int hasBasement = newProperty.isHasBasement() ? 1 : 0;
+        int hasGarage = newProperty.isHasGarage() ? 1 : 0;
+        int hasPool = newProperty.isHasPool() ? 1 : 0;
+        int hasAC = newProperty.isHasAC() ? 1 : 0;
+        int hasTerrace = newProperty.isHasTerrace() ? 1 : 0;
+        int hasGarden = newProperty.isHasGarden() ? 1 : 0;
+        int hasLift = newProperty.isHasLift() ? 1 : 0;
+        int isAvailable = newProperty.isAvailable()? 1 : 0;
+        String statement = "UPDATE inmomanager. ";
+        try {
+            if(newProperty instanceof Rentable_Property)
+                statement += "Rentable_Properties SET id = ?, address = ?, city = ?, type = ?, age = ?, rooms = ?, floors = ?, bathrooms = ?, propertySize = ?, terrainSize = ?, garageSize = ?, hasGarden = ?, hasBasement = ?, hasGarage = ?, hasPool = ?, hasLift = ?, hasTerrace = ?, hasAC = ?, available = ?, status = ?, rentValue = ?  WHERE id = ? AND address = ?";
+            else if(newProperty instanceof Purchasable_Property)
+                statement += "Purchasable_Properties SET id = ?, address = ?, city = ?, type = ?, age = ?, rooms = ?, floors = ?, bathrooms = ?, propertySize = ?, terrainSize = ?, garageSize = ?, hasGarden = ?, hasBasement = ?, hasGarage = ?, hasPool = ?, hasLift = ?, hasTerrace = ?, hasAC = ?, available = ?, status = ?, totalValue = ?  WHERE id = ? AND address = ?";
+
+            Connection conn = ConnectionDB.connect();
+            PreparedStatement pst = conn.prepareStatement(statement);
+            pst.setInt(1,newProperty.getId());
+            pst.setString(2, newProperty.getAddress());
+            pst.setString(3, newProperty.getCity());
+            pst.setString(4, newProperty.getType());
+            pst.setInt(5, newProperty.getAge());
+            pst.setInt(6, newProperty.getRooms());
+            pst.setInt(7, newProperty.getFloors());
+            pst.setInt(8, newProperty.getBathrooms());
+            pst.setInt(9, newProperty.getPropertySize());
+            if (newProperty.getTerrainSize() == 0)
+                pst.setNull(10, Types.INTEGER); // sets null
+            else
+                pst.setInt(10, newProperty.getTerrainSize());
+            if (newProperty.getGarageSize() == 0)
+                pst.setNull(11, Types.INTEGER); // sets null
+            else
+                pst.setDouble(11, newProperty.getGarageSize());
+            pst.setInt(12, hasGarden);
+            pst.setInt(13, hasBasement);
+            pst.setInt(14, hasGarage);
+            pst.setInt(15, hasPool);
+            pst.setInt(16, hasLift);
+            pst.setInt(17, hasTerrace);
+            pst.setInt(18, hasAC);
+            pst.setInt(19, isAvailable);
+            pst.setString(20, newProperty.getStatus());
+            if (newProperty instanceof Rentable_Property)
+                pst.setInt(21, ((Rentable_Property) newProperty).getRentValue());
+            else
+                pst.setInt(21, ((Purchasable_Property) newProperty).getTotalValue());
+            pst.setInt(22,oldProperty.getId());
+            pst.setString(23,oldProperty.getAddress());
+            int updated = pst.executeUpdate();
+
+            pst.close();
+            if(updated != 0)
+                JOptionPane.showMessageDialog(frame, "Property updated!", "Success", JOptionPane.INFORMATION_MESSAGE);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public static boolean propertyExists(Property property){
+        boolean found = false;
+        String statement = "SELECT id, address FROM inmomanager. ";
+        try {
+            if(property instanceof Rentable_Property)
+                statement += "Rentable_Properties WHERE id = ? AND address = ?";
+            else if(property instanceof Purchasable_Property)
+                statement += "Purchasable_Properties WHERE id = ? AND address = ?";
+
+            Connection conn = ConnectionDB.connect();
+            PreparedStatement pst = conn.prepareStatement(statement);
+            pst.setObject(1,property.getId());
+            pst.setObject(2,property.getAddress());
+
+            ResultSet rs = pst.executeQuery();
+            if(rs.next())
+                found = true;
+
+            pst.close();
+            rs.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        return found;
     }
 
     public static boolean propertyExists(boolean searchRentable, boolean searchPurchasable, Property property) {
