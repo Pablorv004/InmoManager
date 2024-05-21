@@ -2,6 +2,8 @@ package controllers;
 
 import java.sql.SQLException;
 
+import javax.swing.JOptionPane;
+
 import util.ConnectionDB;
 import views.GUIConnect;
 import views.GUILogin;
@@ -22,6 +24,8 @@ public class ControllerConnect {
             connect.dispose();
         } catch(ClassNotFoundException | SQLException e){
             e.printStackTrace();
+            JOptionPane.showMessageDialog(connect, "Check your connection and try again.", "Connection Error", JOptionPane.ERROR_MESSAGE);
+            System.exit(0);
         }
     }
     

@@ -8,10 +8,12 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.sql.Types;
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import javax.swing.JOptionPane;
 
@@ -35,13 +37,32 @@ public class ManageDatabase {
                     "')";
             Statement statement = conn.createStatement();
             ResultSet resultR = statement.executeQuery(queryR);
-            while(resultR.next()){
+            while (resultR.next()) {
                 properties.add(getRentableProperty(resultR));
             }
             ResultSet resultP = statement.executeQuery(queryP);
-           
-            while(resultP.next()){
+
+            while (resultP.next()) {
                 properties.add(getPurchasableProperty(resultP));
+            }
+            return properties;
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static List<Property> getUserCurrentHomes(String DNI) {
+        List<Property> properties = new ArrayList<Property>();
+        try {
+            Connection conn = ConnectionDB.connect();
+            String queryR = "SELECT p.* FROM inmomanager.Rents r JOIN inmomanager.Rentable_Properties p ON " +
+                    "r.propertyID = p.id WHERE r.ongoing = 1 AND clientID = (SELECT id FROM inmomanager.Clients WHERE DNI = '"
+                    + DNI + "')";
+            Statement statement = conn.createStatement();
+            ResultSet resultR = statement.executeQuery(queryR);
+            while (resultR.next()) {
+                properties.add(getRentableProperty(resultR));
             }
             return properties;
         } catch (SQLException | ClassNotFoundException e) {
@@ -80,6 +101,117 @@ public class ManageDatabase {
             JOptionPane.showMessageDialog(null, "Error updating client");
             e.printStackTrace();
         }
+    }
+
+    public static int[] countRentsSales() {
+        int[] result = new int[2];
+        try {
+            Connection conn = ConnectionDB.connect();
+            String query = "SELECT COUNT(*) FROM inmomanager.Rents";
+            String queryP = "SELECT COUNT(*) FROM inmomanager.Purchases";
+            Statement statement = conn.createStatement();
+            ResultSet rs;
+            rs = statement.executeQuery(query);
+            rs.next();
+            result[0] = rs.getInt("COUNT(*)");
+            rs = statement.executeQuery(queryP);
+            rs.next();
+            result[1] = rs.getInt("COUNT(*)");
+        } catch (SQLException | ClassNotFoundException e) {
+            JOptionPane.showMessageDialog(null, "Error counting rents and sales");
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    public static String getAbreviation(Month month) {
+        return switch (month) {
+            case JANUARY -> "JAN";
+            case FEBRUARY -> "FEB";
+            case MARCH -> "MAR";
+            case APRIL -> "APR";
+            case MAY -> "MAY";
+            case JUNE -> "JUN";
+            case JULY -> "JUL";
+            case AUGUST -> "AUG";
+            case SEPTEMBER -> "SEP";
+            case OCTOBER -> "OCT";
+            case NOVEMBER -> "NOV";
+            case DECEMBER -> "DEC";
+            default -> "NaN";
+        };
+    }
+
+    public static Map<String, Integer> getSalesPerMonth() {
+        Map<String, Integer> salesPerMonth = new LinkedHashMap<>();
+        for (Month m : Month.values())
+            salesPerMonth.put(getAbreviation(m), 0);
+        try {
+            Connection conn = ConnectionDB.connect();
+            String queryR = "SELECT startDate FROM inmomanager.Rents";
+            String queryP = "SELECT purchaseDate FROM inmomanager.Purchases";
+            Statement statement = conn.createStatement();
+            ResultSet resultR = statement.executeQuery(queryR);
+            while (resultR.next()) {
+                Month month = resultR.getTimestamp("startDate").toLocalDateTime().getMonth();
+                salesPerMonth.put(getAbreviation(month), 1 + salesPerMonth.get(getAbreviation(month)));
+            }
+            ResultSet resultP = statement.executeQuery(queryP);
+
+            while (resultP.next()) {
+                Month month = resultP.getTimestamp("purchaseDate").toLocalDateTime().getMonth();
+                salesPerMonth.put(getAbreviation(month), 1 + salesPerMonth.get(getAbreviation(month)));
+            }
+            return salesPerMonth;
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static void stopRent(Property property) {
+        try {
+            Connection conn = ConnectionDB.connect();
+
+            String updateRentsQuery = "UPDATE inmomanager.Rents SET endDate = ?, ongoing = 0 WHERE propertyId = ? AND ongoing = 1";
+            PreparedStatement updateRentsStmt = conn.prepareStatement(updateRentsQuery);
+            updateRentsStmt.setTimestamp(1, Timestamp.valueOf(LocalDateTime.now()));
+            updateRentsStmt.setInt(2, property.getId());
+            updateRentsStmt.executeUpdate();
+
+            String updatePropertiesQuery = "UPDATE inmomanager.Rentable_Properties SET available = 1 WHERE id = ?";
+            PreparedStatement updatePropertiesStmt = conn.prepareStatement(updatePropertiesQuery);
+            updatePropertiesStmt.setInt(1, property.getId());
+            updatePropertiesStmt.executeUpdate();
+
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static Map<Integer, Integer> getSalesPerYear() {
+        Map<Integer, Integer> salesPerYear = new TreeMap<>();
+        try {
+            Connection conn = ConnectionDB.connect();
+            String queryR = "SELECT startDate FROM inmomanager.Rents";
+            String queryP = "SELECT purchaseDate FROM inmomanager.Purchases";
+            Statement statement = conn.createStatement();
+            ResultSet resultR = statement.executeQuery(queryR);
+            while (resultR.next()) {
+                int year = resultR.getTimestamp("startDate").toLocalDateTime().getYear();
+                salesPerYear.put(year, 1 + salesPerYear.getOrDefault(year, 0));
+            }
+            ResultSet resultP = statement.executeQuery(queryP);
+
+            while (resultP.next()) {
+                int year = resultP.getTimestamp("purchaseDate").toLocalDateTime().getYear();
+                salesPerYear.put(year, 1 + salesPerYear.getOrDefault(year, 0));
+            }
+            return salesPerYear;
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public static void setPropertyAvailability(boolean state, Property property) {
@@ -144,11 +276,11 @@ public class ManageDatabase {
     public static void insertPurchase(Property property, Client client, Manager manager) {
         try {
             Connection conn = ConnectionDB.connect();
-            String sql = "INSERT INTO inmomanager.";
+            String sql;
             if (property instanceof Rentable_Property)
-                sql += "Rents VALUES (?,?,?,?,?,?);";
+                sql = "INSERT INTO inmomanager.Rents (propertyID, clientID, managerID, startDate, endDate, ongoing) VALUES (?,?,?,?,?,?);";
             else
-                sql += "Purchases VALUES (?,?,?,?);";
+                sql = "INSERT INTO inmomanager.Purchases (propertyID, clientID, managerID, purchaseDate) VALUES (?,?,?,?);";
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
             preparedStatement.setInt(1, property.getId());
             preparedStatement.setInt(2, client.getID());
@@ -256,22 +388,22 @@ public class ManageDatabase {
                     }
                 }
             }
-                Statement search = conn.createStatement();
-                ResultSet rs;
-                if (searchRentables) {
-                    rs = search.executeQuery(queryProperties);
-                    while (rs.next()) {
-                        properties.add(getRentableProperty(rs));
-                    }
+            Statement search = conn.createStatement();
+            ResultSet rs;
+            if (searchRentables) {
+                rs = search.executeQuery(queryProperties);
+                while (rs.next()) {
+                    properties.add(getRentableProperty(rs));
                 }
-                if (searchPurchasable) {
-                    rs = search.executeQuery(queryPropertiesP);
-                    while (rs.next()) {
-                        properties.add(getPurchasableProperty(rs));
-                    }
+            }
+            if (searchPurchasable) {
+                rs = search.executeQuery(queryPropertiesP);
+                while (rs.next()) {
+                    properties.add(getPurchasableProperty(rs));
                 }
-                return properties;
-            
+            }
+            return properties;
+
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }

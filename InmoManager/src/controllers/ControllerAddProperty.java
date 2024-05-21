@@ -7,7 +7,6 @@ import java.awt.event.ItemListener;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 import javax.swing.event.ChangeEvent;
@@ -18,7 +17,6 @@ import models.Purchasable_Property;
 import models.Rentable_Property;
 import util.ManageDatabase;
 import views.GUIMainUser;
-import views.GUIManageProperties;
 import views.GUIAddProperty;
 
 public class ControllerAddProperty {

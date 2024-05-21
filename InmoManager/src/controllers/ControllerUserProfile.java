@@ -20,6 +20,7 @@ public class ControllerUserProfile {
 
     private GUIUserProfile userProfile;
     private boolean editMode = false;
+    private GUIUserView userView;
 
     public ControllerUserProfile(GUIUserProfile userProfile) {
         this.userProfile = userProfile;
@@ -46,8 +47,28 @@ public class ControllerUserProfile {
                     applyChanges();
                 }
             } else if (source == userProfile.getBtnHomes()) {
-                userProfile.dispose();
-                getFilteredView();
+                
+                userView = new GUIUserView(userProfile);
+                userView.getControllerUserView()
+                        .setProperties(ManageDatabase.getUserHomes(ConnectionDB.getCurrentUser().getDNI()));
+                if (userView.getControllerUserView().getProperties().size() == 0) {
+                    JOptionPane.showMessageDialog(userProfile, "You don't have any inserted homes!");
+                    userView.dispose();
+                } else{
+                    userProfile.dispose();
+                    getFilteredView();
+                }
+            } else if (source == userProfile.getBtnRents()) {
+                userView = new GUIUserView(userProfile);
+                userView.getControllerUserView()
+                        .setProperties(ManageDatabase.getUserCurrentHomes(ConnectionDB.getCurrentUser().getDNI()));
+                if (userView.getControllerUserView().getProperties().size() == 0) {
+                    JOptionPane.showMessageDialog(userView, "You don't have any rents!");
+                    userView.dispose();
+                } else{
+                    userProfile.dispose();
+                    getFilteredView();
+                }
             }
 
         }
@@ -55,24 +76,14 @@ public class ControllerUserProfile {
     }
 
     public void getFilteredView() {
-        GUIUserView userView = new GUIUserView(userProfile);
-        userView.getControllerUserView()
-                .setProperties(ManageDatabase.getUserHomes(ConnectionDB.getCurrentUser().getDNI()));
-        if (userView.getControllerUserView().getProperties().size() == 0) {
-            JOptionPane.showMessageDialog(userProfile, "You haven't inserted any homes!");
-            userView.dispose();
-            new GUIMainUser(null);
-        } else {
-            userView.getControllerUserView().loadPropertyOnScreen();
-            userView.getControllerUserView().setResultsFound();
-            userView.getPanelPictureMap().remove(userView.getBtnInterested());
-            userView.getPanelPictureMap().remove(userView.getBtnFilter());
-            userView.getPanelInterestedCart().remove(userView.getLblInterestedCount());
-            userView.getPanelInterestedCart().remove(userView.getBtnInterestedList());
-            userView.getPanelPictureMap().revalidate();
-            userView.getPanelPictureMap().repaint();
-        }
-
+        userView.getControllerUserView().loadPropertyOnScreen();
+        userView.getControllerUserView().setResultsFound();
+        userView.getPanelPictureMap().remove(userView.getBtnInterested());
+        userView.getPanelPictureMap().remove(userView.getBtnFilter());
+        userView.getPanelInterestedCart().remove(userView.getLblInterestedCount());
+        userView.getPanelInterestedCart().remove(userView.getBtnInterestedList());
+        userView.getPanelPictureMap().revalidate();
+        userView.getPanelPictureMap().repaint();
     }
 
     public boolean applyChanges() {

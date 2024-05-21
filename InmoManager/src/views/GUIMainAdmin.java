@@ -22,6 +22,7 @@ public class GUIMainAdmin extends JFrame {
 	private JButton btnManageUsers;
 	private JButton btnReturn;
 	private JSeparator separator;
+	private JButton btnStatistics;
 	public GUIMainAdmin(GUILogin login) {
 		this.gLogin =  login;
 		setTitle("Admin View");
@@ -68,8 +69,13 @@ public class GUIMainAdmin extends JFrame {
 		
 		btnManageUsers = new JButton("Manage Users");
 		btnManageUsers.setFont(new Font("SansSerif", Font.PLAIN, 13));
-		btnManageUsers.setBounds(117, 123, 150, 30);
+		btnManageUsers.setBounds(29, 121, 150, 30);
 		getContentPane().add(btnManageUsers);
+		
+		btnStatistics = new JButton("Statistics");
+		btnStatistics.setFont(new Font("SansSerif", Font.PLAIN, 13));
+		btnStatistics.setBounds(208, 121, 150, 30);
+		getContentPane().add(btnStatistics);
 		
 		new ControllerMainAdmin(this);
 
@@ -80,7 +86,18 @@ public class GUIMainAdmin extends JFrame {
 		btnManageProperties.addActionListener(listener);
 		btnManageManagers.addActionListener(listener);
 		btnManageUsers.addActionListener(listener);
+		btnStatistics.addActionListener(listener);
 		btnReturn.addActionListener(listener);
+	}
+	
+	
+
+	public JButton getBtnStatistics() {
+		return btnStatistics;
+	}
+
+	public void setBtnStatistics(JButton btnStatistics) {
+		this.btnStatistics = btnStatistics;
 	}
 
 	public GUILogin getgLogin() {

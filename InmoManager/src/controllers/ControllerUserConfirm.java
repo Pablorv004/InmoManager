@@ -27,6 +27,7 @@ public class ControllerUserConfirm {
         this.userConfirm = userConfirm;
         currUser = (Client) ConnectionDB.getCurrentUser();
         interestedProperty = userConfirm.getUserInterested().getUserInterested().getInterestedProperty();
+        System.out.println("Property ID: " +interestedProperty.getId());
         initializeElements();
         userConfirm.addActListeners(new ButtonListeners());
     }
@@ -87,8 +88,6 @@ public class ControllerUserConfirm {
         registerPurchase();
         JOptionPane.showMessageDialog(userConfirm, "Thank you! Your designated manager will contact you shortly.",
                 "Success", JOptionPane.INFORMATION_MESSAGE);
-        userConfirm.getUserInterested().getUserView().getControllerUserView().getInterestedProperties()
-                .remove(interestedProperty);
         userConfirm.dispose();
         userConfirm.getUserInterested().dispose();
         userConfirm.getUserInterested().getUserView().dispose();

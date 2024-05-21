@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
+import views.GUIFreeChart;
 import views.GUILogin;
 import views.GUIMainAdmin;
 import views.GUIManageManagers;
@@ -43,6 +44,9 @@ public class ControllerMainAdmin {
 			} else if (btn == gAdmin.getBtnManageUsers()) {
 				gAdmin.dispose();
 				// PLACEHOLDER FOR GUIUSERMANAGEMENT VIEW
+			} else if (btn == gAdmin.getBtnStatistics()) {
+				gAdmin.dispose();
+				new GUIFreeChart(gAdmin);
 			}
 		}
 

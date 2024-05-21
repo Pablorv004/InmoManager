@@ -139,7 +139,7 @@ public class GUIUserView extends JFrame {
 		btnInterestedList = new JButton("");
 		btnInterestedList.setBorderPainted(false);
 		btnInterestedList.setContentAreaFilled(false);
-		btnInterestedList.setIcon(new ImageIcon("files/images/interested32.png"));
+		btnInterestedList.setIcon(new ImageIcon("files/images/userIcons/interested32.png"));
 		panelInterestedCart.add(btnInterestedList);
 		
 		panelPictureMap = new JPanel();

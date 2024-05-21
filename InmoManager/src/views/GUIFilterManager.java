@@ -19,8 +19,6 @@ import controllers.ControllerFilterManager;
 import controllers.ControllerManageManagers;
 import util.GlobalResources;
 
-import javax.swing.border.BevelBorder;
-
 public class GUIFilterManager extends JFrame {
 	ControllerManageManagers gManageController;
 	private JLabel lblTitle;

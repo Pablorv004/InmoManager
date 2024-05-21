@@ -54,6 +54,7 @@ public class GUIUserProfile extends JFrame {
 	private GUIMainUser mainUser;
 	private JLabel lblPassword;
 	private JPasswordField passwordField;
+	private JButton btnRents;
 
 	/**
 	 * Create the frame.
@@ -101,8 +102,11 @@ public class GUIUserProfile extends JFrame {
 		btnApply.setEnabled(false);
 		panelControls.add(btnApply);
 
-		btnHomes = new JButton("View Purchased Homes");
+		btnHomes = new JButton("View Property History");
 		panelControls.add(btnHomes);
+
+		btnRents = new JButton("View Current Rents");
+		panelControls.add(btnRents);
 
 		panelData = new JPanel();
 		contentPane.add(panelData, BorderLayout.CENTER);
@@ -194,7 +198,17 @@ public class GUIUserProfile extends JFrame {
 		btnEdit.addActionListener(listener);
 		btnApply.addActionListener(listener);
 		btnHomes.addActionListener(listener);
+		btnRents.addActionListener(listener);
 	}
+
+	public JButton getBtnRents() {
+		return btnRents;
+	}
+
+	public void setBtnRents(JButton btnRents) {
+		this.btnRents = btnRents;
+	}
+
 
 	public GUIMainUser getMainUser() {
 		return mainUser;

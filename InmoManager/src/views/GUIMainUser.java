@@ -30,12 +30,14 @@ public class GUIMainUser extends JFrame {
 	private JSeparator separator;
 	private JButton btnReturn;
 	private JButton btnUser;
+	private JButton btnStopRent;
 	public GUIMainUser(GUILogin login) {
 		this.gLogin = login;
 		setTitle("InmoManager");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 496, 303);
 		setLocationRelativeTo(gLogin);
+		setResizable(false);
 		
 		GlobalResources.setFrameIcon(this);
 		
@@ -46,19 +48,26 @@ public class GUIMainUser extends JFrame {
 		contentPane.setLayout(null);
 		
 		panelButtons = new JPanel();
-		panelButtons.setBounds(10, 76, 460, 177);
+		panelButtons.setBounds(10, 85, 460, 168);
 		contentPane.add(panelButtons);
-		panelButtons.setLayout(new GridLayout(0, 2, 0, 0));
+		panelButtons.setLayout(new GridLayout(0, 3, 0, 0));
 		
 		btnView = new JButton("");
 		btnView.setIcon(new ImageIcon("files/images/userIcons/home128.png"));
+		btnView.setToolTipText("View available properties...");
 		btnView.setFont(new Font("Yu Gothic UI", Font.PLAIN, 20));
 		panelButtons.add(btnView);
 		
 		btnAdd = new JButton("");
 		btnAdd.setIcon(new ImageIcon("files/images/userIcons/plus128.png"));
+		btnAdd.setToolTipText("Sell property...");
 		btnAdd.setFont(new Font("Yu Gothic UI", Font.PLAIN, 20));
 		panelButtons.add(btnAdd);
+		
+		btnStopRent = new JButton("");
+		btnStopRent.setToolTipText("Withdraw from rent...");
+		btnStopRent.setIcon(new ImageIcon("files/images/userIcons/stoprent128.png"));
+		panelButtons.add(btnStopRent);
 		
 		separator = new JSeparator();
 		separator.setBounds(0, 75, 482, 2);
@@ -93,6 +102,16 @@ public class GUIMainUser extends JFrame {
 		btnAdd.addActionListener(listener);
 		btnReturn.addActionListener(listener);
 		btnUser.addActionListener(listener);
+		btnStopRent.addActionListener(listener);
+	}
+	
+
+	public JButton getBtnStopRent() {
+		return btnStopRent;
+	}
+
+	public void setBtnStopRent(JButton btnStopRent) {
+		this.btnStopRent = btnStopRent;
 	}
 
 	public JButton getBtnView() {
