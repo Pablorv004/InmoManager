@@ -55,9 +55,6 @@ public class ControllerManageClients {
 				enableDisableComponents(true);
 			} else if (obj == gClients.getBtnApply()) {
 				checkChanges();
-			} else if (obj == gClients.getBtnFilter()) {
-				//gClients.setEnabled(false);
-				// new GUIFilterManager(ControllerManageClients.this);
 			} else if (obj == gClients.getBtnReset()) {
 				clientList = getClients();
 				updateTable();
@@ -176,6 +173,9 @@ public class ControllerManageClients {
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
+		
+		enableDisableComponents(false);
+		gClients.getBtnEdit().setEnabled(false);
 	}
 
 	// Search for a client by it's DNI and returns it
@@ -218,7 +218,6 @@ public class ControllerManageClients {
 		gClients.getFieldBank().setEditable(onOff);
 		gClients.getFieldEmail().setEditable(onOff);
 		gClients.getFieldPhone().setEditable(onOff);
-		gClients.getBtnApply().setEnabled(onOff);
 	}
 
 

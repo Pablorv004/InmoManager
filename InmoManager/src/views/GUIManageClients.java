@@ -37,7 +37,6 @@ public class GUIManageClients extends JFrame {
 	private JPanel panelImage;
 	private JTable table;
 	private JButton btnReset;
-	private JButton btnFilter;
 	private JButton btnEdit;
 	private JButton btnApply;
 	private JButton btnReturn;
@@ -117,12 +116,8 @@ public class GUIManageClients extends JFrame {
 		separator_1.setBounds(0, 283, 714, 8);
 		contentPane.add(separator_1);
 
-		btnFilter = new JButton("Filter");
-		btnFilter.setBounds(601, 253, 88, 23);
-		contentPane.add(btnFilter);
-
 		btnReset = new JButton("Reset");
-		btnReset.setBounds(506, 254, 88, 23);
+		btnReset.setBounds(605, 255, 88, 23);
 		contentPane.add(btnReset);
 
 		panelForm = new JPanel();
@@ -302,7 +297,6 @@ public class GUIManageClients extends JFrame {
 		this.btnEdit.addActionListener(listener);
 		this.btnReset.addActionListener(listener);
 		this.btnReturn.addActionListener(listener);
-		this.btnFilter.addActionListener(listener);
 		this.btnDelete.addActionListener(listener);
 	}
 
@@ -360,10 +354,6 @@ public class GUIManageClients extends JFrame {
 
 	public JButton getBtnReset() {
 		return btnReset;
-	}
-
-	public JButton getBtnFilter() {
-		return btnFilter;
 	}
 
 	public JButton getBtnEdit() {
@@ -456,10 +446,6 @@ public class GUIManageClients extends JFrame {
 
 	public void setBtnReset(JButton btnReset) {
 		this.btnReset = btnReset;
-	}
-
-	public void setBtnFilter(JButton btnFilter) {
-		this.btnFilter = btnFilter;
 	}
 
 	public void setBtnEdit(JButton btnEdit) {
