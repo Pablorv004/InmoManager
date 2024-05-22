@@ -142,7 +142,9 @@ public class ControllerManageProperties {
 			
 			gProperties.getBtnDelete().setEnabled(true);
 			
-			gProperties.getBtnEdit().setEnabled(true);
+			if(currentUser instanceof Admin)
+				gProperties.getBtnEdit().setEnabled(true);
+			
 			int selectedRow = gProperties.getTable().getSelectedRow();
 			Property property = findProperty(String.valueOf(gProperties.getTable().getValueAt(selectedRow, 0)));
 			if (property != null)
