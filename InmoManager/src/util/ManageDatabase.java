@@ -11,10 +11,13 @@ import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
+
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -432,6 +435,42 @@ public class ManageDatabase {
 		return false;
 	}
 
+	public static Map<String, Integer> getRentableTypeAvgMap() {
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		try {
+			Connection conn = ConnectionDB.connect();
+			String query = "SELECT type, AVG(rentValue) FROM inmomanager.Rentable_Properties GROUP BY type";
+			Statement statement = conn.createStatement();
+			ResultSet rs = statement.executeQuery(query);
+			while (rs.next()) {
+				String type = rs.getString("type");
+				int price = rs.getInt("AVG(rentValue)");
+				map.put(type, price);
+			}
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		return map;
+	}
+
+	public static Map<String, Integer> getPurchasableTypeAvgMap() {
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		try {
+			Connection conn = ConnectionDB.connect();
+			String query = "SELECT type, AVG(totalValue) FROM inmomanager.Purchasable_Properties GROUP BY type";
+			Statement statement = conn.createStatement();
+			ResultSet rs = statement.executeQuery(query);
+			while (rs.next()) {
+				String type = rs.getString("type");
+				int price = rs.getInt("AVG(totalValue)");
+				map.put(type, price);
+			}
+		} catch (SQLException | ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return map;
+	}
+
 	public static List<Property> getProperties(boolean searchRentables, boolean searchPurchasable, String... filters) {
 		List<Property> properties = new ArrayList<Property>();
 		try {
@@ -570,18 +609,18 @@ public class ManageDatabase {
 		}
 	}
 
-	public static Map<String, Integer> getAllPropertyTypesCount(){
-		Map<String, Integer> types = new HashMap<>();
+	public static Set<String> getPropertyTypes() {
+		Set<String> types = new HashSet<>();
 		try {
 			Connection conn = ConnectionDB.connect();
 			Statement st = conn.createStatement();
 			ResultSet rp = st.executeQuery("SELECT DISTINCT type FROM inmomanager.Rentable_Properties");
-			while(rp.next()){
-				types.put(rp.getString("type"), 1 + types.getOrDefault(rp.getString("type"), 0));
+			while (rp.next()) {
+				types.add(rp.getString("type"));
 			}
 			ResultSet rs = st.executeQuery("SELECT DISTINCT type FROM inmomanager.Purchasable_Properties");
-			while(rs.next()){
-				types.put(rs.getString("type"), 1 + types.getOrDefault(rs.getString("type"), 0));
+			while (rs.next()) {
+				types.add(rs.getString("type"));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

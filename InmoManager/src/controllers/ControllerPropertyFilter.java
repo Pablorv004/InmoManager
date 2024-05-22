@@ -36,13 +36,10 @@ public class ControllerPropertyFilter {
         initializeCBCounts();
         initializeCBFilter();
         distinguishFrame();
-        
-        
+
         this.propertyFilter.addActListeners(new ButtonListeners());
         this.propertyFilter.addItemListeners(new ItemListeners());
     }
-
-    
 
     private class ButtonListeners implements ActionListener {
 
@@ -50,25 +47,25 @@ public class ControllerPropertyFilter {
         public void actionPerformed(ActionEvent e) {
             JButton buttonPressed = (JButton) e.getSource();
             if (buttonPressed == propertyFilter.getBtnReturn()) {
-            	parentFrame.setEnabled(true);
+                parentFrame.setEnabled(true);
                 propertyFilter.dispose();
             }
-            
+
             if (buttonPressed == propertyFilter.getBtnReset())
                 resetFilters();
-            
+
             if (buttonPressed == propertyFilter.getBtnApply()) {
                 String[] filters = null;
-                
+
                 try {
                     filters = getFilters();
                 } catch (NumberFormatException e1) {
                     JOptionPane.showMessageDialog(propertyFilter, "Insert valid numbers!", "Error",
                             JOptionPane.ERROR_MESSAGE);
                 }
-                
+
                 if (filters != null) {
-                	parentFrame.setEnabled(true);
+                    parentFrame.setEnabled(true);
                     propertyFilter.dispose();
                     applyFilters(parentFrame, propertyFilter.getCbxRent().isSelected(),
                             propertyFilter.getCbxSale().isSelected(), filters);
@@ -85,8 +82,8 @@ public class ControllerPropertyFilter {
             String... filters) {
         if (frame instanceof GUIUserView) {
             ((GUIUserView) frame).getControllerUserView().applyFilters(checkRentable, checkPurchasable, filters);
-        } else if(frame instanceof GUIManageProperties) {
-        	((GUIManageProperties)frame).getController().applyFilters(checkRentable, checkPurchasable, filters);
+        } else if (frame instanceof GUIManageProperties) {
+            ((GUIManageProperties) frame).getController().applyFilters(checkRentable, checkPurchasable, filters);
         }
     }
 
@@ -119,20 +116,21 @@ public class ControllerPropertyFilter {
         }
 
     }
-    
-    private void distinguishFrame() {
-		if(parentFrame instanceof GUIManageProperties) {
-	    	// Enable GUIManageProperties when "X" window button is clicked
-			propertyFilter.addWindowListener(new WindowAdapter() {
-				public void windowClosing(WindowEvent e) {
-					parentFrame.setEnabled(true);
-				}
-			});
-	    }
-	}
 
-	/**
+    private void distinguishFrame() {
+        if (parentFrame instanceof GUIManageProperties) {
+            // Enable GUIManageProperties when "X" window button is clicked
+            propertyFilter.addWindowListener(new WindowAdapter() {
+                public void windowClosing(WindowEvent e) {
+                    parentFrame.setEnabled(true);
+                }
+            });
+        }
+    }
+
+    /**
      * Gets all the filters.
+     * 
      * @return String[] filters to apply to the properties.
      */
     public String[] getFilters() throws NumberFormatException {
@@ -156,7 +154,7 @@ public class ControllerPropertyFilter {
             String property = "propertySize BETWEEN " + propertyInit + " AND " + propertyFinal;
             filters.add(property);
         }
-        if(propertyFilter.getcBTypes().getSelectedIndex() != -1){
+        if (propertyFilter.getcBTypes().getSelectedIndex() != -1) {
             filters.add("type = '" + propertyFilter.getcBTypes().getSelectedItem() + "'");
         }
         String terrainTextInit = propertyFilter.getTxtTerrainInit().getText();
@@ -210,6 +208,7 @@ public class ControllerPropertyFilter {
         System.out.println(Arrays.toString(ConversionMethods.stringListToArray(filters)));
         return ConversionMethods.stringListToArray(filters);
     }
+
     /**
      * Gets the filter for the cities.
      */
@@ -224,15 +223,18 @@ public class ControllerPropertyFilter {
         }
         return cities;
     }
+
     public void initializeCBFilter() {
-        for(String type : ManageDatabase.getAllPropertyTypesCount().keySet()){
-         propertyFilter.getcBTypes().addItem(type);
+        for (String type : ManageDatabase.getPropertyTypes()) {
+            propertyFilter.getcBTypes().addItem(type);
         }
         propertyFilter.getPanelData().revalidate();
         propertyFilter.getPanelData().repaint();
-     }
+    }
+
     /**
-     * Recovers a map containing the city and the quantity of properties in it, and puts it on a DefaultListModel to then apply, revalidate and repaint.
+     * Recovers a map containing the city and the quantity of properties in it, and
+     * puts it on a DefaultListModel to then apply, revalidate and repaint.
      */
     public void initializeListCities() {
         Map<String, Integer> map = ManageDatabase.getCityCountMap(propertyFilter.getCbxRent().isSelected(),
@@ -242,10 +244,10 @@ public class ControllerPropertyFilter {
         for (Map.Entry<String, Integer> entry : map.entrySet())
             dlm.add(idx++, entry.getKey() + "(" + entry.getValue() + ")");
         propertyFilter.getListCities().setModel(dlm);
-     
 
         propertyFilter.getPanelData().repaint();
     }
+
     /**
      * Initializes all the comboboxes.
      */
@@ -259,6 +261,7 @@ public class ControllerPropertyFilter {
         propertyFilter.getCbRooms().setSelectedIndex(-1);
         propertyFilter.getCbBathrooms().setSelectedIndex(-1);
     }
+
     /**
      * Resets all JComponents to default.
      */

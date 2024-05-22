@@ -126,6 +126,8 @@ public class ControllerFreeChart {
 		graphs.add(generatePropertyTypeCountGraph());
 		graphs.add(generateSalesPerCityGraph());
 		graphs.add(generateRentsPerCityGraph());
+		graphs.add(generateRentableTypeProfitGraph());
+		graphs.add(generatePurchasableTypeProfitGraph());
 		refreshIdx();
 		loadGraph();
 	}
@@ -213,7 +215,8 @@ public class ControllerFreeChart {
 		for (Map.Entry<String, Integer> entry : salesPerCity.entrySet()) {
 			dcd.setValue(entry.getValue(), "Total", entry.getKey());
 		}
-		return ChartFactory.createBarChart("Purchases Per City Revenue", "City", "Revenue", dcd, PlotOrientation.VERTICAL, true,
+		return ChartFactory.createBarChart("Purchases Per City Revenue", "City", "Revenue", dcd,
+				PlotOrientation.VERTICAL, true,
 				true,
 				false);
 	}
@@ -224,7 +227,30 @@ public class ControllerFreeChart {
 		for (Map.Entry<String, Integer> entry : rentsPerCityAvg.entrySet()) {
 			dcd.setValue(entry.getValue(), "Total", entry.getKey());
 		}
-		return ChartFactory.createBarChart("Rents Per City Revenue", "City", "Revenue", dcd, PlotOrientation.VERTICAL, true,
+		return ChartFactory.createBarChart("Rents Per City Revenue", "City", "Revenue", dcd, PlotOrientation.VERTICAL,
+				true,
+				true, false);
+	}
+
+	public JFreeChart generateRentableTypeProfitGraph() {
+		Map<String, Integer> typeCount = ManageDatabase.getRentableTypeAvgMap();
+		DefaultCategoryDataset dcd = new DefaultCategoryDataset();
+		for (Map.Entry<String, Integer> entry : typeCount.entrySet()) {
+			dcd.setValue(entry.getValue(), "Total", entry.getKey());
+		}
+		return ChartFactory.createBarChart("Rentable Type Profit", "Type", "AVG Profit", dcd, PlotOrientation.VERTICAL,
+				true,
+				true, false);
+	}
+
+	public JFreeChart generatePurchasableTypeProfitGraph() {
+		Map<String, Integer> typeCount = ManageDatabase.getPurchasableTypeAvgMap();
+		DefaultCategoryDataset dcd = new DefaultCategoryDataset();
+		for (Map.Entry<String, Integer> entry : typeCount.entrySet()) {
+			dcd.setValue(entry.getValue(), "Total", entry.getKey());
+		}
+		return ChartFactory.createBarChart("Purchasable Type Profit", "Type", "AVG Profit", dcd, PlotOrientation.VERTICAL,
+				true,
 				true, false);
 	}
 }
