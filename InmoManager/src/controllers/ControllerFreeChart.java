@@ -71,6 +71,7 @@ public class ControllerFreeChart {
 		}
 
 	}
+
 	/**
 	 * Initializes the list on the right hand side of the UI.
 	 */
@@ -84,6 +85,7 @@ public class ControllerFreeChart {
 		freeChart.getPanelIdx().revalidate();
 		freeChart.getPanelIdx().repaint();
 	}
+
 	/**
 	 * Refreshes the idx for the whole UI to match the current index.
 	 */
@@ -104,6 +106,7 @@ public class ControllerFreeChart {
 		freeChart.getLblIndex().setText((currentIdx + 1) + "/" + graphs.size());
 		freeChart.getList().setSelectedIndex(currentIdx);
 	}
+
 	/**
 	 * Loads the graph with the current idx on the list.
 	 */
@@ -111,8 +114,10 @@ public class ControllerFreeChart {
 		freeChart.getPanelChart().removeAll();
 		setGraphPanel(graphs.get(currentIdx));
 	}
+
 	/**
 	 * Initializes and repaints the panel in which the graph will be.
+	 * 
 	 * @param graph The graph to paint on the panel.
 	 */
 	public void setGraphPanel(JFreeChart graph) {
@@ -124,6 +129,7 @@ public class ControllerFreeChart {
 		freeChart.getPanelChart().revalidate();
 		freeChart.getPanelChart().repaint();
 	}
+
 	/**
 	 * Initializes the graphs.
 	 */
@@ -142,8 +148,10 @@ public class ControllerFreeChart {
 		refreshIdx();
 		loadGraph();
 	}
+
 	/**
 	 * Creates a Sales per year column graph.
+	 * 
 	 * @return the graph.
 	 */
 	public JFreeChart generateSPYGraph() {
@@ -169,6 +177,7 @@ public class ControllerFreeChart {
 
 		return ChartFactory.createPieChart("Rents vs Purchases", dpd, true, true, false);
 	}
+	
 
 	public JFreeChart generateSPMGraph() {
 		Map<String, Integer> salesPerMonth = ManageDatabase.getSalesPerMonth();
@@ -179,7 +188,7 @@ public class ControllerFreeChart {
 		return ChartFactory.createBarChart("Sales per month", "Month", "Sales", dts, PlotOrientation.VERTICAL, true,
 				true, false);
 	}
-
+	
 	public JFreeChart generateCityCountMap() {
 		Map<String, Integer> cityCount = ManageDatabase.getCityCountMap(true, true);
 		DefaultPieDataset<String> dpd = new DefaultPieDataset<>();
@@ -189,6 +198,11 @@ public class ControllerFreeChart {
 		return ChartFactory.createPieChart("City Count", dpd, true, true, false);
 	}
 
+	/**
+	 * Creates a graph that measures the performance of the managers in the system.
+	 * 
+	 * @return A JFreeChart object.
+	 */
 	public JFreeChart generateManagerPerformanceGraph() {
 		Map<String, Integer> managerSales = ManageDatabase.managerSales();
 		Map<String, Integer> managerRents = ManageDatabase.managerRents();
@@ -204,6 +218,12 @@ public class ControllerFreeChart {
 				true, true, false);
 	}
 
+	/**
+	 * Creates a graph that shows the count for each feature.
+	 * 
+	 * @return A JFreeChart object.
+	 */
+
 	public JFreeChart generateFeatureCountGraph() {
 		Map<String, Integer> featureCount = ManageDatabase.featureCountMap();
 		DefaultCategoryDataset dcd = new DefaultCategoryDataset();
@@ -214,6 +234,12 @@ public class ControllerFreeChart {
 				true, true, false);
 	}
 
+	/**
+	 * Creates a graph that separates the types of properties there are.
+	 * 
+	 * @return A JFreeChart object.
+	 */
+
 	public JFreeChart generatePropertyTypeCountGraph() {
 		Map<String, Integer> propertyTypeCount = ManageDatabase.propertyTypeCountMap();
 		DefaultPieDataset<String> dpd = new DefaultPieDataset<>();
@@ -222,6 +248,12 @@ public class ControllerFreeChart {
 		}
 		return ChartFactory.createPieChart("Property Type Count", dpd, true, true, false);
 	}
+
+	/**
+	 * Creates a graph that measures sales per each city.
+	 * 
+	 * @return A JFreeChart object.
+	 */
 
 	public JFreeChart generateSalesPerCityGraph() {
 		Map<String, Integer> salesPerCity = ManageDatabase.salesCityCostMap();
@@ -235,6 +267,11 @@ public class ControllerFreeChart {
 				false);
 	}
 
+	/**
+	 * Creates a graph that measures rents per each city.
+	 * 
+	 * @return A JFreeChart object.
+	 */
 	public JFreeChart generateRentsPerCityGraph() {
 		Map<String, Integer> rentsPerCityAvg = ManageDatabase.rentsCityCostMap();
 		DefaultCategoryDataset dcd = new DefaultCategoryDataset();
@@ -245,6 +282,13 @@ public class ControllerFreeChart {
 				true,
 				true, false);
 	}
+
+	/**
+	 * Creates a graph that shows the profit of cash-out based on the type of
+	 * property.
+	 * 
+	 * @return A JFreeChart object.
+	 */
 
 	public JFreeChart generateRentableTypeProfitGraph() {
 		Map<String, Integer> typeCount = ManageDatabase.getRentableTypeAvgMap();
@@ -257,13 +301,20 @@ public class ControllerFreeChart {
 				true, false);
 	}
 
+	/**
+	 * Creates a graph that shows the profit of cash-out based on the type of
+	 * property.
+	 * 
+	 * @return A JFreeChart object.
+	 */
 	public JFreeChart generatePurchasableTypeProfitGraph() {
 		Map<String, Integer> typeCount = ManageDatabase.getPurchasableTypeAvgMap();
 		DefaultCategoryDataset dcd = new DefaultCategoryDataset();
 		for (Map.Entry<String, Integer> entry : typeCount.entrySet()) {
 			dcd.setValue(entry.getValue(), "Total", entry.getKey());
 		}
-		return ChartFactory.createBarChart("Purchasable Type Profit", "Type", "AVG Profit", dcd, PlotOrientation.VERTICAL,
+		return ChartFactory.createBarChart("Purchasable Type Profit", "Type", "AVG Profit", dcd,
+				PlotOrientation.VERTICAL,
 				true,
 				true, false);
 	}

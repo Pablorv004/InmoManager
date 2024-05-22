@@ -228,8 +228,7 @@ public class ControllerPropertyFilter {
         for (String type : ManageDatabase.getPropertyTypes()) {
             propertyFilter.getcBTypes().addItem(type);
         }
-        propertyFilter.getPanelData().revalidate();
-        propertyFilter.getPanelData().repaint();
+        propertyFilter.getcBTypes().setSelectedIndex(-1);
     }
 
     /**
@@ -281,6 +280,7 @@ public class ControllerPropertyFilter {
         propertyFilter.getCbFloors().setSelectedIndex(-1);
         propertyFilter.getCbRooms().setSelectedIndex(-1);
         propertyFilter.getCbBathrooms().setSelectedIndex(-1);
+        propertyFilter.getcBTypes().setSelectedIndex(-1);
         propertyFilter.getCbxGarden().setSelected(false);
         propertyFilter.getCbxLift().setSelected(false);
         propertyFilter.getCbxAC().setSelected(false);

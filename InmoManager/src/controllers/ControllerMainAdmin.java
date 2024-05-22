@@ -13,6 +13,7 @@ import views.GUIManageClients;
 import views.GUIManageManagers;
 import views.GUIManageProperties;
 
+// Class to handle actions in the main admin GUI
 public class ControllerMainAdmin {
 	GUIMainAdmin gAdmin;
 

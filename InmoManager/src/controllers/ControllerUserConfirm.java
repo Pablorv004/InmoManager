@@ -44,7 +44,9 @@ public class ControllerUserConfirm {
         }
 
     }
-
+    /**
+     * Initializes all elements.
+     */
     public void initializeElements() {
         initializeUserInfo();
         initializePropertyInfo();
@@ -83,7 +85,9 @@ public class ControllerUserConfirm {
         assignedManager = ManageDatabase.retrieveRandomManager();
         userConfirm.getLblManager().setText("The manager you'll get assigned to is: " + assignedManager.getFullName());
     }
-
+    /**
+     * Completes the purchase, disposes and goes back to GUIUserView.
+     */
     public void completePurchase() {
         registerPurchase();
         JOptionPane.showMessageDialog(userConfirm, "Thank you! Your designated manager will contact you shortly.",
@@ -93,7 +97,9 @@ public class ControllerUserConfirm {
         userConfirm.getUserInterested().getUserView().dispose();
         new GUIMainUser(null);
     }
-
+    /**
+     * Registers the purchase in the DB.
+     */
     public void registerPurchase() {
         ManageDatabase.setPropertyAvailability(false,
                 userConfirm.getUserInterested().getUserInterested().getInterestedProperty());

@@ -15,6 +15,12 @@ import views.GUIMainManager;
 import views.GUIMainUser;
 import views.GUIRegister;
 
+/**
+ * This class is responsible for handling the login functionality of the
+ * application.
+ * It contains methods to check if a user exists and if the provided password
+ * matches the stored one.
+ */
 public class ControllerLogin {
 	private GUILogin login;
 
@@ -69,6 +75,16 @@ public class ControllerLogin {
 		return userFound;
 	}
 
+	/**
+	 * This method checks if the provided password matches the stored password for
+	 * the given username.
+	 * It determines which table to check based on the user access level set in the
+	 * class.
+	 * 
+	 * @param username The username to check the password for.
+	 * @param password The password to check against the stored password.
+	 * @return true if the passwords match, false otherwise.
+	 */
 	public boolean passwordMatches(String username, String password) {
 		try {
 			// Let's determine which table to check:
@@ -89,7 +105,6 @@ public class ControllerLogin {
 		return false;
 	}
 
-	
 	private class ActListener implements ActionListener {
 
 		@Override

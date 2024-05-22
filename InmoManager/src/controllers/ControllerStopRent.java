@@ -51,7 +51,9 @@ public class ControllerStopRent {
         }
 
     }
-
+    /**
+     * Initializes the list.
+     */
     public void initializeList() {
         List<Property> properties = ManageDatabase.getUserCurrentHomes(ConnectionDB.getCurrentUser().getDNI());
         DefaultListModel<Property> dlm = new DefaultListModel<>();

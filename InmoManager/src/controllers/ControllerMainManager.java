@@ -10,7 +10,7 @@ import views.GUILogin;
 import views.GUIMainManager;
 import views.GUIManageManagers;
 import views.GUIManageProperties;
-
+// Class to handle actions in the main manager GUI
 public class ControllerMainManager {
 	GUIMainManager gManager;
 

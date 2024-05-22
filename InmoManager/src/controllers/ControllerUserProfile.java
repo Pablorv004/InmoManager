@@ -88,7 +88,10 @@ public class ControllerUserProfile {
         userView.getPanelPictureMap().revalidate();
         userView.getPanelPictureMap().repaint();
     }
-
+    /**
+     * Applies changes to the user.
+     * @return true, if changes are accepted.
+     */
     public boolean applyChanges() {
         try {
             Client currentUser = (Client) ConnectionDB.getCurrentUser();
@@ -131,7 +134,10 @@ public class ControllerUserProfile {
             return false;
         }
     }
-
+    /**
+     * Checks if the passwords match.
+     * @return true, if the password in the Confirm Dialog matches the user's pass.
+     */
     public boolean passwordsMatch() {
         JPasswordField pwd = new JPasswordField(10);
         int action = JOptionPane.showConfirmDialog(userProfile, pwd, "Enter Password to Confirm changes",
@@ -145,7 +151,10 @@ public class ControllerUserProfile {
         }
 
     }
-
+    /**
+     * Checks if the fields are valid.
+     * @return true, if they are
+     */
     public boolean checkAllElements() {
         System.out.println("Validating fields...");
         return (FieldUtils.validateEmail(userProfile.getTxtEmail().getText(), userProfile,
@@ -158,7 +167,9 @@ public class ControllerUserProfile {
                         userProfile.getTxtDNI().getText())
                 && FieldUtils.validateRegion(userProfile.getTxtRegion().getText(), userProfile));
     }
-
+    /**
+     * Resets all buttons related to the edit.
+     */
     public void resetEditButtons() {
         userProfile.getBtnEdit().setText("Edit");
         userProfile.getBtnApply().setEnabled(false);
@@ -170,13 +181,17 @@ public class ControllerUserProfile {
         userProfile.getTxtRegion().setEditable(false);
         System.out.println("Reset edit buttons.");
     }
-
+    /**
+     * Cancels the edit.
+     */
     public void cancelEdit() {
         resetEditButtons();
         initializeElements();
         System.out.println("Canceled edit.");
     }
-
+    /**
+     * Enables all edit elements.
+     */
     private void enableEditElements() {
         userProfile.getBtnEdit().setText("Cancel");
         userProfile.getBtnApply().setEnabled(true);
@@ -188,7 +203,9 @@ public class ControllerUserProfile {
         userProfile.getTxtRegion().setEditable(true);
         System.out.println("Enabling edit mode...");
     }
-
+    /**
+     * Initializes all elements.
+     */
     private void initializeElements() {
         userProfile.getTxtDNI().setText(ConnectionDB.getCurrentUser().getDNI());
         userProfile.getTxtName().setText(ConnectionDB.getCurrentUser().getFullName());

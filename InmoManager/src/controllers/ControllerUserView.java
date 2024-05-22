@@ -93,7 +93,9 @@ public class ControllerUserView {
 			}
 		}
 	}
-
+	/**
+	 * Refreshes idx components to match currentIdx.
+	 */
 	public void refreshIdx() {
 
 		if (currentIdx == 0)
@@ -106,7 +108,9 @@ public class ControllerUserView {
 			userView.getBtnNext().setEnabled(true);
 		userView.getLblIndex().setText((currentIdx + 1) + "/" + properties.size());
 	}
-
+	/**
+	 * Sets the results found label.
+	 */
 	public void setResultsFound() {
 		userView.getLblResults().setText(properties.size() + " result(s) found.");
 		if (properties.size() == 0) {
@@ -115,13 +119,18 @@ public class ControllerUserView {
 			userView.getLblResults().setForeground(new Color(0, 128, 0));
 	}
 
+	/**
+	 * Loads the initial properties shown to the user.
+	 */
 	public void loadFirstProperties() {
 		String[] baseFilters = { "available = 1" };
 		properties = ManageDatabase.getProperties(true, true, baseFilters);
 		setResultsFound();
 		refreshIdx();
 	}
-
+	/**
+	 * Loads optional properties. Boolean-Fest
+	 */
 	public void loadOptionalProperties() {
 		currProperty = properties.get(currentIdx);
 		// These might not show...
@@ -178,7 +187,9 @@ public class ControllerUserView {
 		userView.getPanelSizes().repaint();
 
 	}
-
+	/**
+	 * Loads the property that corresponds to the currentIdx on screen.
+	 */
 	public void loadPropertyOnScreen() {
 		refreshIdx();
 		currProperty = properties.get(currentIdx);
@@ -239,7 +250,12 @@ public class ControllerUserView {
 	public void setProperties(List<Property> properties) {
 		this.properties = properties;
 	}
-
+	/**
+	 * Applies the filters.
+	 * @param checkRentable whether the Rentable_Properties table should be checked.
+	 * @param checkPurchasable whether the Purchasable_Properties table should be checked.
+	 * @param filters all the filters that have been established will be passed here.
+	 */
 	public void applyFilters(boolean checkRentable, boolean checkPurchasable, String... filters) {
 
 		properties = ManageDatabase.getProperties(checkRentable,

@@ -18,15 +18,11 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
-import models.Admin;
 import models.Client;
-import models.Manager;
-import models.User;
 import util.ConnectionDB;
 import util.FieldUtils;
 import views.GUIMainAdmin;
 import views.GUIManageClients;
-import views.GUIManageManagers;
 
 public class ControllerManageClients {
 	private GUIManageClients gClients;
