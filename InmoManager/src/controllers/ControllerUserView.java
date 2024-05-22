@@ -40,9 +40,13 @@ public class ControllerUserView {
 		if (interestedProperties.size() > 0) {
 			userView.getLblInterestedCount().setForeground(Color.RED);
 			userView.getLblInterestedCount().setFont(new Font("Tahoma", Font.PLAIN, 18));
+			userView.getBtnInterestedList().setContentAreaFilled(true);
+			userView.getBtnInterestedList().setBorderPainted(true);
 		} else {
 			userView.getLblInterestedCount().setForeground(Color.BLACK);
 			userView.getLblInterestedCount().setFont(new Font("Tahoma", Font.PLAIN, 14));
+			userView.getBtnInterestedList().setContentAreaFilled(false);
+			userView.getBtnInterestedList().setBorderPainted(false);
 		}
 
 	}
