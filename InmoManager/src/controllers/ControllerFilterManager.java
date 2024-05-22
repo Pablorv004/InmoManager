@@ -55,7 +55,7 @@ public class ControllerFilterManager {
 					resetAll();
 			}
 		}
-
+		
 		private void checkSelected() {
 		    if (gFilter.getCbxDNI().isSelected()) {
 		        filterByDNI();

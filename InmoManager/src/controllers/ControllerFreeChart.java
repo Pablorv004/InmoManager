@@ -71,7 +71,9 @@ public class ControllerFreeChart {
 		}
 
 	}
-
+	/**
+	 * Initializes the list on the right hand side of the UI.
+	 */
 	public void initializeList() {
 		DefaultListModel<String> dlm = new DefaultListModel<>();
 		for (JFreeChart chart : graphs) {
@@ -82,7 +84,9 @@ public class ControllerFreeChart {
 		freeChart.getPanelIdx().revalidate();
 		freeChart.getPanelIdx().repaint();
 	}
-
+	/**
+	 * Refreshes the idx for the whole UI to match the current index.
+	 */
 	public void refreshIdx() {
 		if (currentIdx == graphs.size() - 1 && currentIdx == 0) {
 			freeChart.getBtnNext().setEnabled(false);
@@ -100,12 +104,17 @@ public class ControllerFreeChart {
 		freeChart.getLblIndex().setText((currentIdx + 1) + "/" + graphs.size());
 		freeChart.getList().setSelectedIndex(currentIdx);
 	}
-
+	/**
+	 * Loads the graph with the current idx on the list.
+	 */
 	public void loadGraph() {
 		freeChart.getPanelChart().removeAll();
 		setGraphPanel(graphs.get(currentIdx));
 	}
-
+	/**
+	 * Initializes and repaints the panel in which the graph will be.
+	 * @param graph The graph to paint on the panel.
+	 */
 	public void setGraphPanel(JFreeChart graph) {
 		ChartPanel panel = new ChartPanel(graph);
 		panel.setMouseWheelEnabled(true);
@@ -115,7 +124,9 @@ public class ControllerFreeChart {
 		freeChart.getPanelChart().revalidate();
 		freeChart.getPanelChart().repaint();
 	}
-
+	/**
+	 * Initializes the graphs.
+	 */
 	public void initializeGraphs() {
 		graphs.add(generateSPYGraph());
 		graphs.add(generateSalesRentsGraph());
@@ -131,7 +142,10 @@ public class ControllerFreeChart {
 		refreshIdx();
 		loadGraph();
 	}
-
+	/**
+	 * Creates a Sales per year column graph.
+	 * @return the graph.
+	 */
 	public JFreeChart generateSPYGraph() {
 		Map<Integer, Integer> salesPerYear = ManageDatabase.getSalesPerYear();
 		DefaultCategoryDataset dts = new DefaultCategoryDataset();

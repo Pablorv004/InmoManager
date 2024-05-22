@@ -30,7 +30,10 @@ public class ControllerAddProperty {
 		addProperty.addRadioButtonListeners(new RadioButtonListeners());
 		addProperty.addCheckBoxListeners(new CheckBoxListeners());
 	}
-
+	/**
+	 * Checks if the inputs are valid.
+	 * @return true if inputs are valid.
+	 */
 	public boolean isNotValid() {
 		return (addProperty.getTxtAddress().getText().isBlank() || addProperty.getTxtCity().getText().isBlank()
 				|| addProperty.getTxtPropertySize().getText().isBlank() || addProperty.getTxtValue().getText().isBlank()
@@ -38,7 +41,10 @@ public class ControllerAddProperty {
 				|| (addProperty.getCbxGarage().isSelected() && addProperty.getTxtGarage().getText().isBlank())
 				|| (!addProperty.getRdBtnRent().isSelected() && !addProperty.getRdBtnSell().isSelected()));
 	}
-
+	/**
+	 * Gets the inserted property data.
+	 * @return Property it being Rentable or Purchasable depending on the Radio Button.
+	 */
 	public Property getPropertyData() {
 		try {
 			int terrainsize;
@@ -120,7 +126,7 @@ public class ControllerAddProperty {
 			addProperty.getLblFloors().setText("Floors: " + addProperty.getSliderFloors().getValue());
 		}
 	}
-
+	
 	private class ButtonListeners implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			JButton buttonPressed = (JButton) e.getSource();
