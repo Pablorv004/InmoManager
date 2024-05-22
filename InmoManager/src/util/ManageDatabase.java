@@ -15,7 +15,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -569,6 +568,25 @@ public class ManageDatabase {
 		} catch (ClassNotFoundException e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	public static Map<String, Integer> getAllPropertyTypesCount(){
+		Map<String, Integer> types = new HashMap<>();
+		try {
+			Connection conn = ConnectionDB.connect();
+			Statement st = conn.createStatement();
+			ResultSet rp = st.executeQuery("SELECT DISTINCT type FROM inmomanager.Rentable_Properties");
+			while(rp.next()){
+				types.put(rp.getString("type"), 1 + types.getOrDefault(rp.getString("type"), 0));
+			}
+			ResultSet rs = st.executeQuery("SELECT DISTINCT type FROM inmomanager.Purchasable_Properties");
+			while(rs.next()){
+				types.put(rs.getString("type"), 1 + types.getOrDefault(rs.getString("type"), 0));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return types;
 	}
 
 	public static Property getPurchasableProperty(ResultSet resultSet) {

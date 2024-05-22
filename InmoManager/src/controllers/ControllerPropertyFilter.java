@@ -34,12 +34,15 @@ public class ControllerPropertyFilter {
         this.parentFrame = parentFrame;
         initializeListCities();
         initializeCBCounts();
+        initializeCBFilter();
         distinguishFrame();
         
         
         this.propertyFilter.addActListeners(new ButtonListeners());
         this.propertyFilter.addItemListeners(new ItemListeners());
     }
+
+    
 
     private class ButtonListeners implements ActionListener {
 
@@ -153,6 +156,9 @@ public class ControllerPropertyFilter {
             String property = "propertySize BETWEEN " + propertyInit + " AND " + propertyFinal;
             filters.add(property);
         }
+        if(propertyFilter.getcBTypes().getSelectedIndex() != -1){
+            filters.add("type = '" + propertyFilter.getcBTypes().getSelectedItem() + "'");
+        }
         String terrainTextInit = propertyFilter.getTxtTerrainInit().getText();
         String terrainTextFinal = propertyFilter.getTxtTerrainFinal().getText();
         if (!terrainTextInit.isBlank() || !terrainTextFinal.isBlank()) {
@@ -218,6 +224,13 @@ public class ControllerPropertyFilter {
         }
         return cities;
     }
+    public void initializeCBFilter() {
+        for(String type : ManageDatabase.getAllPropertyTypesCount().keySet()){
+         propertyFilter.getcBTypes().addItem(type);
+        }
+        propertyFilter.getPanelData().revalidate();
+        propertyFilter.getPanelData().repaint();
+     }
     /**
      * Recovers a map containing the city and the quantity of properties in it, and puts it on a DefaultListModel to then apply, revalidate and repaint.
      */

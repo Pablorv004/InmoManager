@@ -93,6 +93,8 @@ public class GUIPropertyFilter extends JFrame {
 	private JComboBox<Integer> cbFloors;
 	private JComboBox<Integer> cbRooms;
 	private JComboBox<Integer> cbBathrooms;
+	private JLabel lblPropType;
+	private JComboBox<String> cBTypes;
 
 	/**
 	 * Create the frame.
@@ -142,7 +144,7 @@ public class GUIPropertyFilter extends JFrame {
 
 		panelData = new JPanel();
 		contentPane.add(panelData, BorderLayout.CENTER);
-		panelData.setLayout(new GridLayout(9, 2, 0, 0));
+		panelData.setLayout(new GridLayout(10, 2, 0, 0));
 
 		lblType = new JLabel("Type of property:");
 		panelData.add(lblType);
@@ -157,6 +159,12 @@ public class GUIPropertyFilter extends JFrame {
 		cbxSale = new JCheckBox("For Sale");
 		cbxSale.setSelected(true);
 		panelRentSale.add(cbxSale);
+		
+		lblPropType = new JLabel("Type (blank for default):");
+		panelData.add(lblPropType);
+		
+		cBTypes = new JComboBox<>();
+		panelData.add(cBTypes);
 
 		lblCities = new JLabel("Cities:");
 		panelData.add(lblCities);
@@ -369,6 +377,15 @@ public class GUIPropertyFilter extends JFrame {
 		btnReturn.addActionListener(listener);
 		btnApply.addActionListener(listener);
 		btnReset.addActionListener(listener);
+	}
+	
+
+	public JComboBox<String> getcBTypes() {
+		return cBTypes;
+	}
+
+	public void setcBTypes(JComboBox<String> cBTypes) {
+		this.cBTypes = cBTypes;
 	}
 
 	public JPanel getPanelButtons() {
