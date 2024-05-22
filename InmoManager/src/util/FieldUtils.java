@@ -29,11 +29,11 @@ public class FieldUtils {
 	}
 
 	// Checks DNI field format and checks if it already exists in the database
-	public static boolean validateDNI(String DNI, JFrame frame) {
+	public static boolean validateDNI(String DNI, JFrame frame, String oldDNI) {
 		if (!DNI.matches("[0-9]{8}[A-Z]")) {
 			JOptionPane.showMessageDialog(frame, "The DNI doesn't have a valid format [00000000A]");
 			return false;
-		} else if (findCoincidenceOnUsers(DNI, "dni", DNI)) {
+		} else if (findCoincidenceOnUsers(DNI, "dni", oldDNI)) {
 			JOptionPane.showMessageDialog(frame, "That DNI is already registered");
 			return false;
 		}
@@ -275,7 +275,7 @@ public class FieldUtils {
 	// Checks if the value exists in the tables: Admins, Managers and Clients
 	// Returns TRUE if it found at least one result or FALSE if it doesn't
 	public static <T> boolean findCoincidenceOnUsers(T input, String field, String DNI) {
-		boolean found = true;
+		boolean found = false;
 		try {
 			String query = "SELECT " + field + ", 'Managers' AS source FROM inmomanager.Managers WHERE " + field + " = ? AND DNI <> ? " +
                     		"UNION " +
@@ -295,8 +295,9 @@ public class FieldUtils {
             
 	        ResultSet rs = pst.executeQuery();
 	        
-	        if(!rs.next())
-	        	found = false;
+	        if(rs.next()) {
+	        	found = true;
+	        }
 
 	        rs.close();
 	        pst.close();

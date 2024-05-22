@@ -101,13 +101,15 @@ public class ControllerManageManagers {
 
 	// Checks if the values from the fields are valid
 	private void checkChanges() {
-		boolean validID = FieldUtils.validateUserID(gManage.getFieldID().getText().strip(), "Managers", gManage,gManage.getFieldDNI().getText().strip());
-		boolean validDNI = FieldUtils.validateDNI(gManage.getFieldDNI().getText(), gManage);
+		int selectedRow = gManage.getTable().getSelectedRow();
+		String dni = String.valueOf(gManage.getTable().getValueAt(selectedRow,1));
+		boolean validID = FieldUtils.validateUserID(gManage.getFieldID().getText().strip(), "Managers", gManage,dni);
+		boolean validDNI = FieldUtils.validateDNI(gManage.getFieldDNI().getText(), gManage, dni);
 		boolean validName = FieldUtils.validateName(gManage.getFieldName().getText().strip().replaceAll("\\s+", " "),gManage);
-		boolean validUsername = FieldUtils.validateUsername(gManage.getFieldUsername().getText().strip(), gManage,gManage.getFieldDNI().getText().strip());
+		boolean validUsername = FieldUtils.validateUsername(gManage.getFieldUsername().getText().strip(), gManage,dni);
 		boolean validPassword = FieldUtils.validatePassword(gManage.getFieldPassword().getPassword(), gManage);
-		boolean validEmail = FieldUtils.validateEmail(gManage.getFieldEmail().getText().strip(), gManage,gManage.getFieldDNI().getText().strip());
-		boolean validPhone = FieldUtils.validatePhone(gManage.getFieldPhone().getText().strip(), gManage,gManage.getFieldDNI().getText().strip());
+		boolean validEmail = FieldUtils.validateEmail(gManage.getFieldEmail().getText().strip(), gManage,dni);
+		boolean validPhone = FieldUtils.validatePhone(gManage.getFieldPhone().getText().strip(), gManage,dni);
 		boolean validCommission = FieldUtils.validateComission(gManage.getFieldCommission().getText().strip(), gManage);
 		boolean validBankAccount = FieldUtils.validateBankAccount(gManage.getFieldBank().getText().strip(), gManage);
 		boolean validManagerID = FieldUtils.validateManagerID(gManage.getFieldManagerID().getText().strip(), gManage);
@@ -115,7 +117,7 @@ public class ControllerManageManagers {
 
 		if (validID && validDNI && validName && validUsername && validPassword && validBankAccount && validEmail
 				&& validPhone && validSalary && validCommission && validManagerID) {
-			applyChanges();
+			applyChanges(dni);
 			managerList = getManagers();
 			updateTable();
 		}
@@ -123,7 +125,7 @@ public class ControllerManageManagers {
 	}
 
 	// Applies the changes updating the manager information searching by its DNI
-	private void applyChanges() {
+	private void applyChanges(String oldDNI) {
 		try {
 			Connection conn = ConnectionDB.connect();
 			PreparedStatement pst = conn.prepareStatement("UPDATE inmomanager.Managers "
@@ -153,7 +155,7 @@ public class ControllerManageManagers {
 			else
 				pst.setObject(10, gManage.getFieldManagerID().getText().strip());
 			pst.setObject(11, gManage.getFieldSalary().getText().strip());
-			pst.setObject(12, gManage.getFieldDNI().getText().strip());
+			pst.setObject(12, oldDNI);
 			
 			int result = pst.executeUpdate();
 			

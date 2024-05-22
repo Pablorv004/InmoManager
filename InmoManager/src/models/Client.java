@@ -38,5 +38,10 @@ public class Client extends User {
 	public String toString() {
 		return super.toString() + ", Region=" + region + ", Creation date=" + creationTime;
 	}
+	
+	public Object[] toArray() {
+		Object [] array = {this.getID(),this.getDNI(),this.getFullName(),this.getEmail(),this.getPhoneNum(),this.region};
+		return array;
+	}
 
 }

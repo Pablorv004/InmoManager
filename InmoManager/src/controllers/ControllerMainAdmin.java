@@ -9,6 +9,7 @@ import javax.swing.JOptionPane;
 import views.GUIFreeChart;
 import views.GUILogin;
 import views.GUIMainAdmin;
+import views.GUIManageClients;
 import views.GUIManageManagers;
 import views.GUIManageProperties;
 
@@ -41,9 +42,9 @@ public class ControllerMainAdmin {
 			} else if (btn == gAdmin.getBtnManageProperties()) {
 				gAdmin.dispose();
 				new GUIManageProperties(gAdmin.getgLogin());
-			} else if (btn == gAdmin.getBtnManageUsers()) {
+			} else if (btn == gAdmin.getBtnManageClients()) {
 				gAdmin.dispose();
-				// PLACEHOLDER FOR GUIUSERMANAGEMENT VIEW
+				new GUIManageClients(gAdmin.getgLogin());
 			} else if (btn == gAdmin.getBtnStatistics()) {
 				new GUIFreeChart(gAdmin);
 				gAdmin.dispose();

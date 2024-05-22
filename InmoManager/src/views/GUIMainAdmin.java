@@ -20,7 +20,7 @@ public class GUIMainAdmin extends JFrame {
 	private JLabel lblTitle;
 	private JButton btnManageProperties;
 	private JButton btnManageManagers;
-	private JButton btnManageUsers;
+	private JButton btnManageClients;
 	private JButton btnReturn;
 	private JSeparator separator;
 	private JButton btnStatistics;
@@ -68,10 +68,10 @@ public class GUIMainAdmin extends JFrame {
 		separator.setBounds(8, 63, 372, 9);
 		getContentPane().add(separator);
 		
-		btnManageUsers = new JButton("Manage Users");
-		btnManageUsers.setFont(new Font("SansSerif", Font.PLAIN, 13));
-		btnManageUsers.setBounds(29, 121, 150, 30);
-		getContentPane().add(btnManageUsers);
+		btnManageClients = new JButton("Manage Clients");
+		btnManageClients.setFont(new Font("SansSerif", Font.PLAIN, 13));
+		btnManageClients.setBounds(29, 121, 150, 30);
+		getContentPane().add(btnManageClients);
 		
 		btnStatistics = new JButton("Statistics");
 		btnStatistics.setFont(new Font("SansSerif", Font.PLAIN, 13));
@@ -86,7 +86,7 @@ public class GUIMainAdmin extends JFrame {
 	public void addActListeners(ActionListener listener) {
 		btnManageProperties.addActionListener(listener);
 		btnManageManagers.addActionListener(listener);
-		btnManageUsers.addActionListener(listener);
+		btnManageClients.addActionListener(listener);
 		btnStatistics.addActionListener(listener);
 		btnReturn.addActionListener(listener);
 	}
@@ -113,8 +113,8 @@ public class GUIMainAdmin extends JFrame {
 		return btnManageManagers;
 	}
 
-	public JButton getBtnManageUsers() {
-		return btnManageUsers;
+	public JButton getBtnManageClients() {
+		return btnManageClients;
 	}
 
 	public JButton getBtnReturn() {
@@ -133,8 +133,8 @@ public class GUIMainAdmin extends JFrame {
 		this.btnManageManagers = btnManageManagers;
 	}
 
-	public void setBtnManageUsers(JButton btnManageUsers) {
-		this.btnManageUsers = btnManageUsers;
+	public void setBtnManageClients(JButton btnManageClients) {
+		this.btnManageClients = btnManageClients;
 	}
 
 	public void setBtnReturn(JButton btnReturn) {

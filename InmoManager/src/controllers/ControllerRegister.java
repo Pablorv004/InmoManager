@@ -48,7 +48,7 @@ public class ControllerRegister {
 
 	private boolean validateFields() {
 		if (checkBlankValues()) {
-			boolean validDNI = FieldUtils.validateDNI(gRegister.getFieldDNI().getText().strip(), gRegister);
+			boolean validDNI = FieldUtils.validateDNI(gRegister.getFieldDNI().getText().strip(), gRegister,gRegister.getFieldDNI().getText().strip());
 			boolean validName = FieldUtils.validateName(gRegister.getFieldName().getText().strip().replaceAll("\\s+", " "), gRegister);
 			boolean validUsername = FieldUtils.validateUsername(gRegister.getFieldUsername().getText().strip(), gRegister, gRegister.getFieldDNI().getText().strip());
 			boolean validPassword = FieldUtils.validatePassword(gRegister.getFieldPassword().getPassword(), gRegister);
@@ -142,10 +142,9 @@ public class ControllerRegister {
 			if (insertedData > 0)
 				JOptionPane.showMessageDialog(gRegister, "User registered succesfully! You may now log-in!");
 			else
-				JOptionPane.showMessageDialog(gRegister, "Something went wrong! User could not been registered!",
+				JOptionPane.showMessageDialog(gRegister, "Something went wrong! User could not be registered!",
 						"Error", JOptionPane.ERROR_MESSAGE);
 
-			conn.close();
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
