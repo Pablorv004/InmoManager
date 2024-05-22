@@ -1,5 +1,6 @@
 package util;
 
+import java.time.Month;
 import java.util.List;
 
 import models.Property;
@@ -20,5 +21,23 @@ public class ConversionMethods {
             array[i] = list.get(i);
             }
             return array;
+    }
+
+    public static String getAbreviation(Month month) {
+        return switch (month) {
+            case JANUARY -> "JAN";
+            case FEBRUARY -> "FEB";
+            case MARCH -> "MAR";
+            case APRIL -> "APR";
+            case MAY -> "MAY";
+            case JUNE -> "JUN";
+            case JULY -> "JUL";
+            case AUGUST -> "AUG";
+            case SEPTEMBER -> "SEP";
+            case OCTOBER -> "OCT";
+            case NOVEMBER -> "NOV";
+            case DECEMBER -> "DEC";
+            default -> "NaN";
+        };
     }
 }

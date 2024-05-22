@@ -45,8 +45,8 @@ public class ControllerMainAdmin {
 				gAdmin.dispose();
 				// PLACEHOLDER FOR GUIUSERMANAGEMENT VIEW
 			} else if (btn == gAdmin.getBtnStatistics()) {
-				gAdmin.dispose();
 				new GUIFreeChart(gAdmin);
+				gAdmin.dispose();
 			}
 		}
 

@@ -38,7 +38,6 @@ public class ControllerManageProperties {
 	private GUIManageProperties gProperties;
 	private User currentUser;
 	private List<Property> propertyList;
-	private List<JCheckBox> extraList;
 	private String ID;
 	private String address;
 	private String city;
@@ -57,7 +56,6 @@ public class ControllerManageProperties {
 		this.gProperties = gProperties;
 		this.currentUser = ConnectionDB.getCurrentUser();
 		this.propertyList = ManageDatabase.getProperties(true, true, new String[] {});
-		this.extraList = getExtraCheckboxes();
 		updateTable();
 		fillComboType();
 		
@@ -200,14 +198,6 @@ public class ControllerManageProperties {
 		setEnabledAll(gProperties.getPanelForm(), false);
 	}
 
-	private void updateToRentable(Property rentableProperty) {
-
-	}
-
-	private void updateToPurchasable(Property purchasableProperty) {
-
-	}
-
 	private boolean checkFields() {
 		// Property values
 		ID = gProperties.getFieldID().getText().strip();
@@ -245,7 +235,7 @@ public class ControllerManageProperties {
 	}
 	private void fillComboType() {
 		gProperties.getComboType().addItem("Flat");
-		gProperties.getComboType().addItem("Department");
+		gProperties.getComboType().addItem("Apartment");
 		gProperties.getComboType().addItem("Detached House");
 	}
 
@@ -339,20 +329,6 @@ public class ControllerManageProperties {
 		setCheckboxes(property);
 	}
 
-	// Gets all the JCheckboxes from the "Extras" panel and adds it to a list, then returns it
-	private List<JCheckBox> getExtraCheckboxes() {
-		List<JCheckBox> cbxList = new ArrayList<>();
-		cbxList.add(gProperties.getCbxAC());
-		cbxList.add(gProperties.getCbxPool());
-		cbxList.add(gProperties.getCbxBasement());
-		cbxList.add(gProperties.getCbxLift());
-		cbxList.add(gProperties.getCbxGarage());
-		cbxList.add(gProperties.getCbxTerrace());
-		cbxList.add(gProperties.getCbxGarden());
-		
-		return cbxList;
-	}
-	
 	// Sets the selections of the "Extras" panel JCheckboxes depending of the property
 	private void setCheckboxes(Property property) {
 	    setCheckbox(gProperties.getCbxGarden(), property.isHasGarden());

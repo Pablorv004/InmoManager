@@ -120,6 +120,12 @@ public class ControllerFreeChart {
 		graphs.add(generateSPYGraph());
 		graphs.add(generateSalesRentsGraph());
 		graphs.add(generateSPMGraph());
+		graphs.add(generateCityCountMap());
+		graphs.add(generateManagerPerformanceGraph());
+		graphs.add(generateFeatureCountGraph());
+		graphs.add(generatePropertyTypeCountGraph());
+		graphs.add(generateSalesPerCityGraph());
+		graphs.add(generateRentsPerCityGraph());
 		refreshIdx();
 		loadGraph();
 	}
@@ -155,6 +161,70 @@ public class ControllerFreeChart {
 			dts.setValue(entry.getValue(), "Sales", entry.getKey());
 		}
 		return ChartFactory.createBarChart("Sales per month", "Month", "Sales", dts, PlotOrientation.VERTICAL, true,
+				true, false);
+	}
+
+	public JFreeChart generateCityCountMap() {
+		Map<String, Integer> cityCount = ManageDatabase.getCityCountMap(true, true);
+		DefaultPieDataset<String> dpd = new DefaultPieDataset<>();
+		for (Map.Entry<String, Integer> entry : cityCount.entrySet()) {
+			dpd.setValue(entry.getKey(), entry.getValue());
+		}
+		return ChartFactory.createPieChart("City Count", dpd, true, true, false);
+	}
+
+	public JFreeChart generateManagerPerformanceGraph() {
+		Map<String, Integer> managerSales = ManageDatabase.managerSales();
+		Map<String, Integer> managerRents = ManageDatabase.managerRents();
+		DefaultCategoryDataset dcd = new DefaultCategoryDataset();
+		for (Map.Entry<String, Integer> entry : managerSales.entrySet()) {
+			dcd.setValue(entry.getValue(), "Purchases", entry.getKey());
+		}
+		for (Map.Entry<String, Integer> entre : managerRents.entrySet()) {
+			dcd.setValue(entre.getValue(), "Rents", entre.getKey());
+		}
+
+		return ChartFactory.createBarChart("Manager Performance", "Manager", "Sales", dcd, PlotOrientation.VERTICAL,
+				true, true, false);
+	}
+
+	public JFreeChart generateFeatureCountGraph() {
+		Map<String, Integer> featureCount = ManageDatabase.featureCountMap();
+		DefaultCategoryDataset dcd = new DefaultCategoryDataset();
+		for (Map.Entry<String, Integer> entry : featureCount.entrySet()) {
+			dcd.setValue(entry.getValue(), "Count", entry.getKey());
+		}
+		return ChartFactory.createBarChart("Feature Count", "Feature", "Count", dcd, PlotOrientation.VERTICAL,
+				true, true, false);
+	}
+
+	public JFreeChart generatePropertyTypeCountGraph() {
+		Map<String, Integer> propertyTypeCount = ManageDatabase.propertyTypeCountMap();
+		DefaultPieDataset<String> dpd = new DefaultPieDataset<>();
+		for (Map.Entry<String, Integer> entry : propertyTypeCount.entrySet()) {
+			dpd.setValue(entry.getKey(), entry.getValue());
+		}
+		return ChartFactory.createPieChart("Property Type Count", dpd, true, true, false);
+	}
+
+	public JFreeChart generateSalesPerCityGraph() {
+		Map<String, Integer> salesPerCity = ManageDatabase.salesCityCostMap();
+		DefaultCategoryDataset dcd = new DefaultCategoryDataset();
+		for (Map.Entry<String, Integer> entry : salesPerCity.entrySet()) {
+			dcd.setValue(entry.getValue(), "Total", entry.getKey());
+		}
+		return ChartFactory.createBarChart("Purchases Per City Revenue", "City", "Revenue", dcd, PlotOrientation.VERTICAL, true,
+				true,
+				false);
+	}
+
+	public JFreeChart generateRentsPerCityGraph() {
+		Map<String, Integer> rentsPerCityAvg = ManageDatabase.rentsCityCostMap();
+		DefaultCategoryDataset dcd = new DefaultCategoryDataset();
+		for (Map.Entry<String, Integer> entry : rentsPerCityAvg.entrySet()) {
+			dcd.setValue(entry.getValue(), "Total", entry.getKey());
+		}
+		return ChartFactory.createBarChart("Rents Per City Revenue", "City", "Revenue", dcd, PlotOrientation.VERTICAL, true,
 				true, false);
 	}
 }

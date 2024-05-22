@@ -86,7 +86,7 @@ public class GUIManageProperties extends JFrame {
 	private ControllerManageProperties controller;
 	private JButton btnAdd;
 	private JButton btnDelete;
-	private JComboBox comboType;
+	private JComboBox<String> comboType;
 
 	public GUIManageProperties(GUILogin gLogin) {
 		super("Property Management");
@@ -395,7 +395,7 @@ public class GUIManageProperties extends JFrame {
 		btnApply.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		btnApply.setEnabled(false);
 
-		comboType = new JComboBox();
+		comboType = new JComboBox<>();
 		comboType.setEnabled(false);
 		comboType.setBounds(235, 44, 127, 22);
 		panelForm.add(comboType);
@@ -697,11 +697,11 @@ public class GUIManageProperties extends JFrame {
 		this.btnDelete = btnDelete;
 	}
 
-	public JComboBox getComboType() {
+	public JComboBox<String> getComboType() {
 		return comboType;
 	}
 
-	public void setComboType(JComboBox comboType) {
+	public void setComboType(JComboBox<String> comboType) {
 		this.comboType = comboType;
 	}
 }

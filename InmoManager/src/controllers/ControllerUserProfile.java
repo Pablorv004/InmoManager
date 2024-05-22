@@ -2,6 +2,7 @@ package controllers;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -9,6 +10,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 
 import models.Client;
+import models.Property;
 import util.ConnectionDB;
 import util.FieldUtils;
 import util.ManageDatabase;
@@ -47,25 +49,26 @@ public class ControllerUserProfile {
                     applyChanges();
                 }
             } else if (source == userProfile.getBtnHomes()) {
-                
+
                 userView = new GUIUserView(userProfile);
                 userView.getControllerUserView()
                         .setProperties(ManageDatabase.getUserHomes(ConnectionDB.getCurrentUser().getDNI()));
                 if (userView.getControllerUserView().getProperties().size() == 0) {
                     JOptionPane.showMessageDialog(userProfile, "You don't have any inserted homes!");
                     userView.dispose();
-                } else{
+                } else {
                     userProfile.dispose();
                     getFilteredView();
                 }
             } else if (source == userProfile.getBtnRents()) {
-                userView = new GUIUserView(userProfile);
-                userView.getControllerUserView()
-                        .setProperties(ManageDatabase.getUserCurrentHomes(ConnectionDB.getCurrentUser().getDNI()));
-                if (userView.getControllerUserView().getProperties().size() == 0) {
+                List<Property> properties = ManageDatabase.getUserCurrentHomes(ConnectionDB.getCurrentUser().getDNI());
+
+                if (properties.size() == 0) {
                     JOptionPane.showMessageDialog(userView, "You don't have any rents!");
-                    userView.dispose();
-                } else{
+                } else {
+                    userView = new GUIUserView(userProfile);
+                    userView.getControllerUserView()
+                            .setProperties(properties);
                     userProfile.dispose();
                     getFilteredView();
                 }
