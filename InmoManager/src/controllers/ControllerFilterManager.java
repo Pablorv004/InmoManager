@@ -211,7 +211,7 @@ public class ControllerFilterManager {
 
 		private void filterByDNI() {
 			String DNI = gFilter.getFieldDNI().getText().strip();
-			if (FieldUtils.validateDNI(DNI, gFilter)) {
+			if (FieldUtils.validateDNI(DNI, gFilter,DNI)) {
 				List<Manager> filteredList = new ArrayList<>();
 				for (Manager m : gFilter.getgManageController().getManagerList()) {
 					if (m.getDNI().equalsIgnoreCase(DNI))

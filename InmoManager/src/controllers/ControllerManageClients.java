@@ -119,24 +119,26 @@ public class ControllerManageClients {
 
 	// Checks if the values from the fields are valid
 	private void checkChanges() {
+		int selectedRow = gClients.getTable().getSelectedRow();
+		String dni = String.valueOf(gClients.getTable().getValueAt(selectedRow,1));
 		boolean validID = FieldUtils.validateUserID(gClients.getFieldID().getText().strip(), "Clients", gClients,
-				gClients.getFieldDNI().getText().strip());
-		boolean validDNI = FieldUtils.validateDNI(gClients.getFieldDNI().getText(), gClients);
+				dni);
+		boolean validDNI = FieldUtils.validateDNI(gClients.getFieldDNI().getText(), gClients, dni);
 		boolean validName = FieldUtils.validateName(gClients.getFieldName().getText().strip().replaceAll("\\s+", " "),
 				gClients);
 		boolean validUsername = FieldUtils.validateUsername(gClients.getFieldUsername().getText().strip(), gClients,
-				gClients.getFieldDNI().getText().strip());
+				dni);
 		boolean validPassword = FieldUtils.validatePassword(gClients.getFieldPassword().getPassword(), gClients);
 		boolean validEmail = FieldUtils.validateEmail(gClients.getFieldEmail().getText().strip(), gClients,
-				gClients.getFieldDNI().getText().strip());
+				dni);
 		boolean validPhone = FieldUtils.validatePhone(gClients.getFieldPhone().getText().strip(), gClients,
-				gClients.getFieldDNI().getText().strip());
+				dni);
 		boolean validRegion = FieldUtils.validateRegion(gClients.getFieldRegion().getText().strip().replaceAll("\\s+", " "), gClients);
 		boolean validBankAccount = FieldUtils.validateBankAccount(gClients.getFieldBank().getText().strip(), gClients);
 
 		if (validID && validDNI && validName && validUsername && validPassword && validBankAccount && validEmail
 				&& validPhone && validRegion) {
-			applyChanges();
+			applyChanges(dni);
 			clientList = getClients();
 			updateTable();
 		}
@@ -144,7 +146,7 @@ public class ControllerManageClients {
 	}
 
 	// Applies the changes updating the client information searching by its DNI
-	private void applyChanges() {
+	private void applyChanges(String oldDNI) {
 		try {
 			Connection conn = ConnectionDB.connect();
 			PreparedStatement pst = conn.prepareStatement("UPDATE inmomanager.Clients " + "SET id = ?, " + "DNI = ?, "
@@ -159,7 +161,7 @@ public class ControllerManageClients {
 			pst.setObject(7, gClients.getFieldPhone().getText().strip());
 			pst.setObject(8, gClients.getFieldRegion().getText().strip());
 			pst.setObject(9, gClients.getFieldBank().getText().strip());
-			pst.setObject(10, gClients.getFieldDNI().getText().strip());
+			pst.setObject(10, oldDNI);
 
 			int result = pst.executeUpdate();
 
