@@ -28,7 +28,12 @@ import models.Purchasable_Property;
 import models.Rentable_Property;
 
 public class ManageDatabase {
-	// 600 Undocumented lines of code? Yippeeeeeeeeeeeeeeeeeeeee
+	/**
+	 * Gets all user homes.
+	 * 
+	 * @param DNI
+	 * @return a List<Property> of all user homes.
+	 */
 	public static List<Property> getUserHomes(String DNI) {
 		List<Property> properties = new ArrayList<Property>();
 		try {
@@ -56,6 +61,12 @@ public class ManageDatabase {
 		return null;
 	}
 
+	/**
+	 * Gets the current user's homes.
+	 * 
+	 * @param DNI
+	 * @return a List<Property> of all current user's homes.
+	 */
 	public static List<Property> getUserCurrentHomes(String DNI) {
 		List<Property> properties = new ArrayList<Property>();
 		try {
@@ -75,6 +86,11 @@ public class ManageDatabase {
 		return null;
 	}
 
+	/**
+	 * Updates a client in the DB with the client's current information.
+	 * 
+	 * @param client the client.
+	 */
 	public static void updateClient(Client client) {
 		if (client == null) {
 			System.out.println("Client is null.");
@@ -107,6 +123,11 @@ public class ManageDatabase {
 		}
 	}
 
+	/**
+	 * Gets the count of each manager's rented properties.
+	 * 
+	 * @return a Map with Key being the manager and Value being the count.
+	 */
 	public static Map<String, Integer> managerRents() {
 		Map<String, Integer> rents = new HashMap<>();
 		try {
@@ -124,6 +145,11 @@ public class ManageDatabase {
 		return rents;
 	}
 
+	/**
+	 * Gets the count of each manager's sold properties.
+	 * 
+	 * @return a Map with Key being the manager and Value being the count.
+	 */
 	public static Map<String, Integer> managerSales() {
 		Map<String, Integer> sales = new HashMap<String, Integer>();
 		try {
@@ -142,6 +168,11 @@ public class ManageDatabase {
 		return sales;
 	}
 
+	/**
+	 * This method counts the features from all properties.
+	 * 
+	 * @return A Map<String, Integer> containing this information.
+	 */
 	public static Map<String, Integer> featureCountMap() {
 		Map<String, Integer> features = new HashMap<>();
 		List<Property> properties = getProperties(true, true, new String[0]);
@@ -164,6 +195,12 @@ public class ManageDatabase {
 		return features;
 	}
 
+	/**
+	 * Counts the property types.
+	 * 
+	 * @return A Map<String, Integer> that contains all property types, with their
+	 *         respective count.
+	 */
 	public static Map<String, Integer> propertyTypeCountMap() {
 		Map<String, Integer> propertyTypes = new HashMap<>();
 		List<Property> properties = getProperties(true, true, new String[0]);
@@ -174,6 +211,11 @@ public class ManageDatabase {
 		return propertyTypes;
 	}
 
+	/**
+	 * Sums up all sales in all cities.
+	 * 
+	 * @return A Map<String, Integer> containing the respective information.
+	 */
 	public static Map<String, Integer> salesCityCostMap() {
 		Map<String, Integer> salesCityCost = new HashMap<>();
 		List<Property> properties = getProperties(false, true, new String[0]);
@@ -184,6 +226,11 @@ public class ManageDatabase {
 		return salesCityCost;
 	}
 
+	/**
+	 * Sums up all rents in all cities.
+	 * 
+	 * @return A Map<String, Integer> containing the respective information.
+	 */
 	public static Map<String, Integer> rentsCityCostMap() {
 		Map<String, Integer> rentsCityCost = new HashMap<>();
 
@@ -196,6 +243,11 @@ public class ManageDatabase {
 		return rentsCityCost;
 	}
 
+	/**
+	 * Counts all rents and sales, separately.
+	 * 
+	 * @return A 2-size int array, being int[0] = Rents, int[1] = Purchases.
+	 */
 	public static int[] countRentsSales() {
 		int[] result = new int[2];
 		try {
@@ -216,6 +268,11 @@ public class ManageDatabase {
 		return result;
 	}
 
+	/**
+	 * Gets a count of all sales in all calendar months.
+	 * 
+	 * @return A Map<String, Integer> containing this information.
+	 */
 	public static Map<String, Integer> getSalesPerMonth() {
 		Map<String, Integer> salesPerMonth = new LinkedHashMap<>();
 		for (Month m : Month.values())
@@ -245,6 +302,11 @@ public class ManageDatabase {
 		return null;
 	}
 
+	/**
+	 * Stops an ongoing rent.
+	 * 
+	 * @param property the property to stop renting.
+	 */
 	public static void stopRent(Property property) {
 		try {
 			Connection conn = ConnectionDB.connect();
@@ -265,6 +327,12 @@ public class ManageDatabase {
 		}
 	}
 
+	/**
+	 * Recollects the amount of sales every year.
+	 * 
+	 * @return a Map<Integer, Integer> containing all the needed information,
+	 *         sorted.
+	 */
 	public static Map<Integer, Integer> getSalesPerYear() {
 		Map<Integer, Integer> salesPerYear = new TreeMap<>();
 		try {
@@ -290,6 +358,13 @@ public class ManageDatabase {
 		return null;
 	}
 
+	/**
+	 * Changes a property's availability.
+	 * 
+	 * @param state    if true, changes the state to available(1). if not, to
+	 *                 unavailable(0).
+	 * @param property The property to change.
+	 */
 	public static void setPropertyAvailability(boolean state, Property property) {
 		try {
 			int availability = state ? 1 : 0;
@@ -309,6 +384,11 @@ public class ManageDatabase {
 		System.out.println("Property state changed.");
 	}
 
+	/**
+	 * Retrieves a random manager to assign to a purchase.
+	 * 
+	 * @return a random Manager.
+	 */
 	public static Manager retrieveRandomManager() {
 		try {
 			Connection conn = ConnectionDB.connect();
@@ -336,6 +416,12 @@ public class ManageDatabase {
 		}
 	}
 
+	/**
+	 * Updates the current client's bank information to a new one.
+	 * 
+	 * @param client      The cient to update.
+	 * @param newBankInfo The updated bank information.
+	 */
 	public static void updateClientBankInfo(Client client, String newBankInfo) {
 		try {
 			Connection conn = ConnectionDB.connect();
@@ -349,6 +435,13 @@ public class ManageDatabase {
 		System.out.println("Updated client bank information.");
 	}
 
+	/**
+	 * Inserts a purchase into the database.
+	 * 
+	 * @param property The purchased property.
+	 * @param client   The client who purchased it.
+	 * @param manager  The manager who supervised the purchase.
+	 */
 	public static void insertPurchase(Property property, Client client, Manager manager) {
 		try {
 			Connection conn = ConnectionDB.connect();
@@ -372,6 +465,14 @@ public class ManageDatabase {
 		}
 	}
 
+	/**
+	 * Gets a count of all properties, grouped by city.
+	 * 
+	 * @param searchRentable    if true, searches the rentable properties table.
+	 * @param searchPurchasable if true, seraches the purchasable properties table.
+	 * @return the Map<String, Integer> containing the count of properties in each
+	 *         city.
+	 */
 	public static Map<String, Integer> getCityCountMap(boolean searchRentable, boolean searchPurchasable) {
 		Map<String, Integer> cityCountMap = new LinkedHashMap<>();
 		try {
@@ -414,6 +515,14 @@ public class ManageDatabase {
 		return sortedMap;
 	}
 
+	/**
+	 * Checks if a property exists in the table.
+	 * 
+	 * @param searchRentable    if true, searches the rentable properties table.
+	 * @param searchPurchasable if true, searches the purchasable properties table.
+	 * @param property          the property to search for.
+	 * @return true, if the property exists.
+	 */
 	public static boolean propertyExists(boolean searchRentable, boolean searchPurchasable, Property property) {
 		try {
 			Connection conn = ConnectionDB.connect();
@@ -435,6 +544,11 @@ public class ManageDatabase {
 		return false;
 	}
 
+	/**
+	 * Gets the average for rentable properties, grouped by types.
+	 * 
+	 * @return a Map<String, Integer> containing them.
+	 */
 	public static Map<String, Integer> getRentableTypeAvgMap() {
 		Map<String, Integer> map = new HashMap<String, Integer>();
 		try {
@@ -453,6 +567,11 @@ public class ManageDatabase {
 		return map;
 	}
 
+	/**
+	 * Gets the average for purchasable properties, grouped by types.
+	 * 
+	 * @return a Map<String, Integer> containing them.
+	 */
 	public static Map<String, Integer> getPurchasableTypeAvgMap() {
 		Map<String, Integer> map = new HashMap<String, Integer>();
 		try {
@@ -471,6 +590,16 @@ public class ManageDatabase {
 		return map;
 	}
 
+	/**
+	 * Gets filtered properties from the database.
+	 * 
+	 * @param searchRentables   boolean to indicate if there's a search in the
+	 *                          Rentable_Properties table.
+	 * @param searchPurchasable boolean to indicate if there's a search in the
+	 *                          Purchasable_Properties table.
+	 * @param filters           filters to apply to the search.
+	 * @return a List<Property> that contains all filtered properties.
+	 */
 	public static List<Property> getProperties(boolean searchRentables, boolean searchPurchasable, String... filters) {
 		List<Property> properties = new ArrayList<Property>();
 		try {
@@ -522,6 +651,12 @@ public class ManageDatabase {
 		return properties;
 	}
 
+	/**
+	 * Gets a rentableProperty from a Database.
+	 * 
+	 * @param resultSet the resultSet to extract data from.
+	 * @return the rentable property.
+	 */
 	public static Property getRentableProperty(ResultSet resultSet) {
 		try {
 			boolean hasGarden = resultSet.getInt("hasGarden") == 1 ? true : false;
@@ -547,6 +682,13 @@ public class ManageDatabase {
 		return null;
 	}
 
+	/**
+	 * Updates a property in the database.
+	 * 
+	 * @param oldProperty the old property to update.
+	 * @param newProperty the new property.
+	 * @param frame
+	 */
 	public static void updateProperty(Property oldProperty, Property newProperty, JFrame frame) {
 		int hasBasement = newProperty.isHasBasement() ? 1 : 0;
 		int hasGarage = newProperty.isHasGarage() ? 1 : 0;
@@ -609,6 +751,11 @@ public class ManageDatabase {
 		}
 	}
 
+	/**
+	 * Gets all property types.
+	 * 
+	 * @return a Set<String> containing all property types.
+	 */
 	public static Set<String> getPropertyTypes() {
 		Set<String> types = new HashSet<>();
 		try {
@@ -628,6 +775,12 @@ public class ManageDatabase {
 		return types;
 	}
 
+	/**
+	 * Gets a purchasable property from a resultSet.
+	 * 
+	 * @param resultSet the resultset.
+	 * @return the property.
+	 */
 	public static Property getPurchasableProperty(ResultSet resultSet) {
 		try {
 			boolean hasGarden = resultSet.getInt("hasGarden") == 1 ? true : false;
@@ -656,6 +809,11 @@ public class ManageDatabase {
 		return null;
 	}
 
+	/**
+	 * Adds a property to the DB.
+	 * 
+	 * @param property the property.
+	 */
 	public static void addPropertyToDatabase(Property property) {
 		if (property != null) {
 			int hasBasement = property.isHasBasement() ? 1 : 0;

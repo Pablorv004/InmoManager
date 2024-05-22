@@ -16,7 +16,12 @@ public class ConnectionDB {
     private static Connection conn = null;
     private static String currentUsername;
     private static String userAccessLvl;
-
+    /**
+     * Connects to the database.
+     * @return the current connection.
+     * @throws SQLException
+     * @throws ClassNotFoundException
+     */
     public static Connection connect() throws SQLException, ClassNotFoundException {
         if (conn == null) {
             try {
@@ -49,7 +54,10 @@ public class ConnectionDB {
     public static void setLoginUsername(String loginUsername) {
         ConnectionDB.currentUsername = loginUsername;
     }
-
+    /**
+     * Gets the user connected to the system.
+     * @return the User that's connected. Null if the user's not connected to the system yet.
+     */
     public static User getCurrentUser() {
 		User user = null;
 		try {
